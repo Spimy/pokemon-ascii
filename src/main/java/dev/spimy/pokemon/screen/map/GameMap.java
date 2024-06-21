@@ -1,0 +1,64 @@
+package dev.spimy.pokemon.screen.map;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
+public class GameMap {
+    private String currentMap;
+    private final HashMap<String, MapLayer> doors = new HashMap<>();
+    private final HashMap<String, ArrayList<String>> loadedMaps = new HashMap<>();
+
+    public GameMap() {
+        this.currentMap = MapLayer.OVERWORLD.resourcePath;
+        this.loadMaps();
+    }
+
+    private void loadMaps() {
+        for (MapLayer mapLayer : MapLayer.values()) {
+            doors.put(mapLayer.doorChar, mapLayer);
+
+            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(mapLayer.resourcePath)) {
+                if (inputStream == null) continue;
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                ArrayList<String> mapRows = new ArrayList<>();
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    mapRows.add(line);
+                }
+
+                final int length = mapRows.stream().map(String::length).max(Integer::compareTo).orElse(0);
+                final ArrayList<String> formattedMapRows = mapRows
+                    .stream()
+                    .map(row -> row + " ".repeat(length - row.length()))
+                    .collect(Collectors.toCollection(ArrayList::new));
+
+                this.loadedMaps.put(mapLayer.resourcePath, formattedMapRows);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void setCurrentMap(final MapLayer newMapLayer) {
+        this.currentMap = newMapLayer.resourcePath;
+    }
+
+    public String getCurrentMap() {
+        return this.currentMap;
+    }
+
+    public ArrayList<String> getCurrentMapData() {
+        return this.loadedMaps.get(this.getCurrentMap());
+    }
+
+    public HashMap<String, MapLayer> getDoors() {
+        return doors;
+    }
+}
