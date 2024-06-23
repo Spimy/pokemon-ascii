@@ -32,13 +32,13 @@ public class Player {
     }
 
     public void move() {
-        position.setPrevX(position.getCurrX());
-        position.setPrevY(position.getCurrY());
+        this.position.setPrevX(this.position.getCurrX());
+        this.position.setPrevY(this.position.getCurrY());
         switch (this.direction) {
-            case UP -> position.setCurrX(position.getCurrX() - 1);
-            case DOWN -> position.setCurrX(position.getCurrX() + 1);
-            case LEFT -> position.setCurrY(position.getCurrY() - 1);
-            case RIGHT -> position.setCurrY(position.getCurrY() + 1);
+            case UP -> this.position.setCurrX(this.position.getCurrX() - 1);
+            case DOWN -> this.position.setCurrX(this.position.getCurrX() + 1);
+            case LEFT -> this.position.setCurrY(this.position.getCurrY() - 1);
+            case RIGHT -> this.position.setCurrY(this.position.getCurrY() + 1);
         }
     }
 

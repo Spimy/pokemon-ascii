@@ -9,27 +9,26 @@ import java.io.IOException;
 
 public class InputHandler implements Runnable {
     private final GameManager gameManager;
-    private final NonBlockingReader keyReader;
+    private final Terminal terminal;
     private final Control control;
 
     public InputHandler(final GameManager gameManager) {
         this.gameManager = gameManager;
-
-        final Terminal terminal = this.gameManager.getTerminal();
-
+        this.terminal = this.gameManager.getTerminal();
         this.control = this.gameManager.getControl();
-        this.keyReader = terminal.reader();
     }
 
     @Override
     @SuppressWarnings("InfiniteLoopStatement")
     public void run() {
         int key;
+        final NonBlockingReader keyReader = this.terminal.reader();
+
         try {
             while (true) {
                 key = keyReader.read();
-                synchronized (gameManager) {
-                    switch(gameManager.getState()) {
+                synchronized (this.gameManager) {
+                    switch(this.gameManager.getState()) {
                         case State.FIRST -> this.handleFirstStateInput(key);
                         case State.PLAY -> this.handlePlayStateInput(key);
                         case State.GAMEOVER -> this.handleGameOverStateInput(key);
@@ -43,53 +42,53 @@ public class InputHandler implements Runnable {
     }
 
     private void handleFirstStateInput(final int key) {
-        if (control.isPlay(key)) {
-            gameManager.notify();
+        if (this.control.isPlay(key)) {
+            this.gameManager.notify();
             return;
         }
 
-        if (control.isQuit(key)) {
-            gameManager.quit();
+        if (this.control.isQuit(key)) {
+            this.gameManager.quit();
         }
     }
 
     private void handlePlayStateInput(final int key) {
-        if (control.isPlay(key)) {
-            synchronized (gameManager) {
-                gameManager.setState(gameManager.getState() == State.PAUSE ? State.PLAY : State.PAUSE);
+        if (this.control.isPlay(key)) {
+            synchronized (this.gameManager) {
+                this.gameManager.setState(this.gameManager.getState() == State.PAUSE ? State.PLAY : State.PAUSE);
             }
             return;
         }
 
-        if (control.isQuit(key)) {
-            gameManager.quit();
+        if (this.control.isQuit(key)) {
+            this.gameManager.quit();
             return;
         }
 
-        gameManager.handleInput(key);
+        this.gameManager.handleInput(key);
     }
 
     private void handleGameOverStateInput(final int key) {
-        if (control.isPlay(key)) {
-            gameManager.setState(State.FIRST);
-            gameManager.notify();
+        if (this.control.isPlay(key)) {
+            this.gameManager.setState(State.FIRST);
+            this.gameManager.notify();
             return;
         }
 
-        if (control.isQuit(key)) {
-            gameManager.quit();
+        if (this.control.isQuit(key)) {
+            this.gameManager.quit();
         }
     }
 
     private void handlePauseStateInput(final int key) {
-        if (control.isPlay(key)) {
-            gameManager.setState(State.PLAY);
-            gameManager.notify();
+        if (this.control.isPlay(key)) {
+            this.gameManager.setState(State.PLAY);
+            this.gameManager.notify();
             return;
         }
 
-        if (control.isQuit(key)) {
-            gameManager.quit();
+        if (this.control.isQuit(key)) {
+            this.gameManager.quit();
         }
     }
 }

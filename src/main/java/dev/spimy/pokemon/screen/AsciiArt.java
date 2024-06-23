@@ -13,11 +13,11 @@ public class AsciiArt {
     final private ArrayList<Color> outOfBoundDialogueTheme;
 
     public AsciiArt(final Theme theme) {
-        logoTheme = theme.getTheme();
-        controlsTheme = theme.getTheme();
-        gameOverTheme = theme.getTheme();
-        pauseTheme = theme.getTheme();
-        outOfBoundDialogueTheme = theme.getTheme();
+        this.logoTheme = theme.getTheme();
+        this.controlsTheme = theme.getTheme();
+        this.gameOverTheme = theme.getTheme();
+        this.pauseTheme = theme.getTheme();
+        this.outOfBoundDialogueTheme = theme.getTheme();
     }
 
     public String getLogo() {
@@ -80,7 +80,7 @@ public class AsciiArt {
     }
 
     public ArrayList<Color> getLogoTheme() {
-        return logoTheme;
+        return this.logoTheme;
     }
 
     public ArrayList<Color> getControlsTheme() {

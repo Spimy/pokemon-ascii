@@ -95,10 +95,10 @@ public class GameManager {
                         Thread.sleep(1500);
                         cleared = false;
 
-                        player.backtrack();
+                        this.player.backtrack();
 
                         while (!this.renderer.isWithinBounds(this.player)) {
-                            player.move();
+                            this.player.move();
                         }
 
                         this.setState(State.PLAY);
@@ -124,7 +124,7 @@ public class GameManager {
         this.terminal.puts(InfoCmp.Capability.clear_screen);
 
         this.map.setCurrentMap(this.map.getDoors().get(selectedDoor.charAt(0)));
-        this.player.position = new Position(terminal.getHeight() / 2, terminal.getWidth() / 2);
+        this.player.position = new Position(this.terminal.getHeight() / 2, this.terminal.getWidth() / 2);
     }
 
     public State getState() {

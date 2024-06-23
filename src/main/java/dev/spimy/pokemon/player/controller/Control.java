@@ -15,26 +15,26 @@ public class Control {
     int lowd = 100;         // d
 
     public boolean isPlay(final int key) {
-        return (key == lowp || key == upp);
+        return (key == this.lowp || key == this.upp);
     }
 
     public boolean isQuit(final int key) {
-        return (key == upq || key == lowq);
+        return (key == this.upq || key == this.lowq);
     }
 
     public boolean isUp(final int key) {
-        return (key == upw || key == loww);
+        return (key == this.upw || key == this.loww);
     }
 
     public boolean isLeft(final int key) {
-        return (key == upa || key == lowa);
+        return (key == this.upa || key == this.lowa);
     }
 
     public boolean isDown(final int key) {
-        return (key == ups || key == lows);
+        return (key == this.ups || key == this.lows);
     }
 
     public boolean isRight(final int key) {
-        return (key == upd || key == lowd);
+        return (key == this.upd || key == this.lowd);
     }
 }

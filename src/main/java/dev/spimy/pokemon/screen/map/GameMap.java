@@ -22,7 +22,7 @@ public class GameMap {
 
     private void loadMaps() {
         for (final MapLayer mapLayer : MapLayer.values()) {
-            doors.put(mapLayer.doorChar, mapLayer);
+            this.doors.put(mapLayer.doorChar, mapLayer);
 
             try (final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(mapLayer.resourcePath)) {
                 if (inputStream == null) continue;
@@ -61,7 +61,7 @@ public class GameMap {
     }
 
     public HashMap<Character, MapLayer> getDoors() {
-        return doors;
+        return this.doors;
     }
 
     public List<Character> getWalls() {

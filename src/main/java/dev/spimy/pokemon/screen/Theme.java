@@ -9,14 +9,14 @@ public class Theme {
   final private ArrayList<ArrayList<Color>> themeColors;
 
   public Theme() {
-    backgroundColor = Color.DEFAULT;
-    themeColors = createThemeArray();
+    this.backgroundColor = Color.DEFAULT;
+    this.themeColors = this.createThemeArray();
   }
 
   public ArrayList<Color> getTheme() {
     while (true) {
-      final ArrayList<Color> c = themeColors.get(ThreadLocalRandom.current().nextInt(themeColors.size()));
-      if (c.getFirst() != backgroundColor) return c;
+      final ArrayList<Color> c = this.themeColors.get(ThreadLocalRandom.current().nextInt(this.themeColors.size()));
+      if (c.getFirst() != this.backgroundColor) return c;
     }
   }
 
@@ -42,6 +42,6 @@ public class Theme {
   }
 
   public Color getBackground() {
-    return backgroundColor;
+    return this.backgroundColor;
   }
 }

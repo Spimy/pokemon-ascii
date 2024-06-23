@@ -13,7 +13,7 @@ public class Position {
     }
 
     public int getCurrX() {
-        return currX;
+        return this.currX;
     }
 
     public void setCurrX(final int currX) {
@@ -21,7 +21,7 @@ public class Position {
     }
 
     public int getCurrY() {
-        return currY;
+        return this.currY;
     }
 
     public void setCurrY(final int currY) {
@@ -29,7 +29,7 @@ public class Position {
     }
 
     public int getPrevX() {
-        return prevX;
+        return this.prevX;
     }
 
     public void setPrevX(final int prevX) {
@@ -37,7 +37,7 @@ public class Position {
     }
 
     public int getPrevY() {
-        return prevY;
+        return this.prevY;
     }
 
     public void setPrevY(final int prevY) {
@@ -45,7 +45,7 @@ public class Position {
     }
 
     public String getMapChar() {
-        return mapChar;
+        return this.mapChar;
     }
 
     public void setMapChar(final String mapChar) {
