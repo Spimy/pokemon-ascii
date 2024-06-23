@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Renderer {
-    private final GameManager gameManager;
     private final Terminal terminal;
     private final Theme theme;
     private final AsciiArt ascii;
@@ -23,10 +22,9 @@ public class Renderer {
     private final ArrayList<Color> borderTheme;
 
     public Renderer(GameManager gameManager, Theme theme, GameMap map) {
-        this.gameManager = gameManager;
-        this.terminal = this.gameManager.getTerminal();
+        this.terminal = gameManager.getTerminal();
         this.theme = theme;
-        this.ascii = new AsciiArt(this.terminal, this.theme);
+        this.ascii = new AsciiArt(this.theme);
         this.map = map;
 
         this.borderTheme = this.theme.getTheme();
@@ -151,7 +149,7 @@ public class Renderer {
         drawBorder();
         renderMapName();
 
-        final String dialogue = new AsciiArt(this.terminal, new Theme()).getOutOfBoundDialogue();
+        final String dialogue = new AsciiArt(new Theme()).getOutOfBoundDialogue();
 
         final int BOTTOM_MARGIN = 2;
         final String[] dialogueArray = dialogue.split("\n");

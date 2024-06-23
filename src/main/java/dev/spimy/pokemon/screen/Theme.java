@@ -23,11 +23,11 @@ public class Theme {
   }
 
   private ArrayList<ArrayList<Color>> createThemeArray() {
-    Color[] JlineColors = Color.values();
+    Color[] JLineColors = Color.values();
     ArrayList<ArrayList<Color>> Colors = new ArrayList<>();
     int index = 0;
-    for (Color foreground : JlineColors) {
-      for (Color background : JlineColors) {
+    for (Color foreground : JLineColors) {
+      for (Color background : JLineColors) {
         if (foreground != background &&
             (foreground != Color.DEFAULT && background != Color.DEFAULT) &&
             background != Color.BLACK) {

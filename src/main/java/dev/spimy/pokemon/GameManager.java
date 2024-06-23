@@ -3,7 +3,6 @@ package dev.spimy.pokemon;
 import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.Position;
 import dev.spimy.pokemon.player.controller.Control;
-import dev.spimy.pokemon.player.controller.Direction;
 import dev.spimy.pokemon.screen.Renderer;
 import dev.spimy.pokemon.screen.Theme;
 import dev.spimy.pokemon.screen.map.GameMap;
@@ -74,12 +73,8 @@ public class GameManager {
                         cleared = true;
                     }
 
-                    if (
-                            this.player.position.getMapChar() != null &&
-                            this.map.getWalls().contains(this.player.position.getMapChar().charAt(0))
-                    ) {
-                        this.player.backtrack();
-                    }
+                    String mapChar = this.player.position.getMapChar();
+                    if (mapChar != null && this.map.getWalls().contains(mapChar.charAt(0))) this.player.backtrack();
 
                     if (!this.renderer.isWithinBounds(this.player)) {
                         this.setState(State.OUTOFBOUNDS);
@@ -100,9 +95,10 @@ public class GameManager {
                         Thread.sleep(1000);
                         cleared = false;
 
-                        this.player.backtrack();
+                        player.backtrack();
+
                         while (!this.renderer.isWithinBounds(this.player)) {
-                            this.player.move();
+                            player.move();
                         }
 
                         this.setState(State.PLAY);

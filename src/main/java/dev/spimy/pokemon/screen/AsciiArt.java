@@ -2,7 +2,6 @@ package dev.spimy.pokemon.screen;
 
 
 import org.jline.jansi.Ansi.Color;
-import org.jline.terminal.Terminal;
 
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ public class AsciiArt {
     final private ArrayList<Color> pauseTheme;
     final private ArrayList<Color> outOfBoundDialogueTheme;
 
-    public AsciiArt(Terminal terminal, Theme theme) {
+    public AsciiArt(Theme theme) {
         logoTheme = theme.getTheme();
         controlsTheme = theme.getTheme();
         gameOverTheme = theme.getTheme();

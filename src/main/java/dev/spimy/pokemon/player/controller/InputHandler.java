@@ -8,16 +8,17 @@ import org.jline.utils.NonBlockingReader;
 import java.io.IOException;
 
 public class InputHandler implements Runnable {
-    private final Terminal terminal;
     private final GameManager gameManager;
     private final NonBlockingReader keyReader;
     private final Control control;
 
     public InputHandler(GameManager gameManager) {
         this.gameManager = gameManager;
-        this.terminal = gameManager.getTerminal();
+
+        final Terminal terminal = this.gameManager.getTerminal();
+
+        this.control = this.gameManager.getControl();
         this.keyReader = terminal.reader();
-        this.control = gameManager.getControl();
     }
 
     @Override
