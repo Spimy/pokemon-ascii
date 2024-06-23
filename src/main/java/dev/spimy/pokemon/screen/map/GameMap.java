@@ -6,12 +6,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameMap {
     private MapLayer currentMap;
     private final HashMap<Character, MapLayer> doors = new HashMap<>();
     private final HashMap<String, ArrayList<String>> loadedMaps = new HashMap<>();
+    private final List<Character> walls = List.of('_', '/', '\\', '|');
 
     public GameMap() {
         this.currentMap = MapLayer.OVERWORLD;
@@ -60,5 +62,9 @@ public class GameMap {
 
     public HashMap<Character, MapLayer> getDoors() {
         return doors;
+    }
+
+    public List<Character> getWalls() {
+        return this.walls;
     }
 }
