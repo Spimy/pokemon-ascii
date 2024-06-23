@@ -46,13 +46,13 @@ public class Renderer {
   }
 
   public void renderGame(Player player) {
-    drawMap();
+    renderMap();
     drawBorder();
     renderPlayer(player);
     updateScreen();
   }
 
-  private void drawMap() {
+  private void renderMap() {
     final ArrayList<String> map = this.map.getCurrentMapData();
     final int startRow = Math.floorDiv(this.buffer.length - map.size(), 2);
 
