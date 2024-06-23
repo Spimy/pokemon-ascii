@@ -93,18 +93,10 @@ public class GameManager {
                         Thread.sleep(1000);
                         cleared = false;
 
-                        switch (player.getDirection()) {
-                            case Direction.UP -> this.player.setDirection(Direction.DOWN);
-                            case Direction.DOWN -> this.player.setDirection(Direction.UP);
-                            case Direction.LEFT -> this.player.setDirection(Direction.RIGHT);
-                            case Direction.RIGHT -> this.player.setDirection(Direction.LEFT);
-                        }
-
+                        this.player.backtrack();
                         while (!this.renderer.isWithinBounds(this.player)) {
-                            player.move();
+                            this.player.move();
                         }
-
-                        player.move();
 
                         this.setState(State.PLAY);
                     } catch (InterruptedException e) {
