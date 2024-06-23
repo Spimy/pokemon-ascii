@@ -9,7 +9,7 @@ public class Theme {
   final private ArrayList<ArrayList<Color>> themeColors;
 
   public Theme() {
-    this.backgroundColor = Color.DEFAULT;
+    this.backgroundColor = Color.BLACK;
     this.themeColors = this.createThemeArray();
   }
 
