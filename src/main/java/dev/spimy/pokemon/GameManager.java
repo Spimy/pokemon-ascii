@@ -64,6 +64,7 @@ public class GameManager {
         return this.terminal;
     }
 
+    @SuppressWarnings("InfiniteLoopStatement")
     private void gameLoop() {
         boolean cleared = false;
 

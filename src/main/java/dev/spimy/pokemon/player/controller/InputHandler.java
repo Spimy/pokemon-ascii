@@ -21,6 +21,7 @@ public class InputHandler implements Runnable {
     }
 
     @Override
+    @SuppressWarnings("InfiniteLoopStatement")
     public void run() {
         int key;
         try {
