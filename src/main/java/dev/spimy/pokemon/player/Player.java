@@ -42,6 +42,16 @@ public class Player {
         }
     }
 
+    public void backtrack() {
+        switch (this.direction) {
+            case Direction.UP -> this.setDirection(Direction.DOWN);
+            case Direction.DOWN -> this.setDirection(Direction.UP);
+            case Direction.LEFT -> this.setDirection(Direction.RIGHT);
+            case Direction.RIGHT -> this.setDirection(Direction.LEFT);
+        }
+        this.move();
+    }
+
     public void setDirection(final int key) {
         if (control.isUp(key)) {
             this.direction = Direction.UP;
@@ -56,9 +66,5 @@ public class Player {
 
     public void setDirection(final Direction direction) {
         this.direction = direction;
-    }
-
-    public Direction getDirection() {
-        return this.direction;
     }
 }
