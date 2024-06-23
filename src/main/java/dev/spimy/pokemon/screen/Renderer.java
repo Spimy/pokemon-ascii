@@ -149,7 +149,7 @@ public class Renderer {
         drawBorder();
         renderMapName();
 
-        final String dialogue = new AsciiArt(new Theme()).getOutOfBoundDialogue();
+        final String dialogue = this.ascii.getOutOfBoundDialogue();
 
         final int BOTTOM_MARGIN = 2;
         final String[] dialogueArray = dialogue.split("\n");
