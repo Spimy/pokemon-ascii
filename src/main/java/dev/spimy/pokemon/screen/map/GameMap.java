@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class GameMap {
-    private String currentMap;
+    private MapLayer currentMap;
     private final HashMap<String, MapLayer> doors = new HashMap<>();
     private final HashMap<String, ArrayList<String>> loadedMaps = new HashMap<>();
 
     public GameMap() {
-        this.currentMap = MapLayer.OVERWORLD.resourcePath;
+        this.currentMap = MapLayer.OVERWORLD;
         this.loadMaps();
     }
 
@@ -47,15 +47,15 @@ public class GameMap {
     }
 
     public void setCurrentMap(final MapLayer newMapLayer) {
-        this.currentMap = newMapLayer.resourcePath;
+        this.currentMap = newMapLayer;
     }
 
-    public String getCurrentMap() {
+    public MapLayer getCurrentMap() {
         return this.currentMap;
     }
 
     public ArrayList<String> getCurrentMapData() {
-        return this.loadedMaps.get(this.getCurrentMap());
+        return this.loadedMaps.get(this.getCurrentMap().resourcePath);
     }
 
     public HashMap<String, MapLayer> getDoors() {

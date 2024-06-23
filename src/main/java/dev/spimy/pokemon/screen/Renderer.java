@@ -47,7 +47,7 @@ public class Renderer {
 
   public void renderGame(Player player) {
     renderMap();
-    drawBorder();
+    renderMapName();
     renderPlayer(player);
     updateScreen();
   }
@@ -81,15 +81,16 @@ public class Renderer {
   }
 
   // Used as reference, will remove later
-  private void renderScore() {
+  private void renderMapName() {
     drawBorder();
-    String[] scoreArray = ("Score: " + 1).split("");
+
     int y = (int) (terminal.getWidth() * 0.05);
-    for (int i = 0; i < scoreArray.length; i++) {
+    for (int i = 0; i < this.map.getCurrentMap().toString().length(); i++) {
       String s = Ansi.ansi()
-          .a(scoreArray[i])
+          .a(this.map.getCurrentMap().toString().charAt(i))
           .reset()
           .toString();
+
       buffer[0][y + i] = s;
     }
   }
