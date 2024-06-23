@@ -92,7 +92,7 @@ public class GameManager {
                     try {
                         this.renderer.renderOutOfBounds();
 
-                        Thread.sleep(1000);
+                        Thread.sleep(1500);
                         cleared = false;
 
                         player.backtrack();
