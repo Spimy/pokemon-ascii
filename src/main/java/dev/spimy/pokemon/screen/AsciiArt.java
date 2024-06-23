@@ -12,7 +12,7 @@ public class AsciiArt {
     final private ArrayList<Color> pauseTheme;
     final private ArrayList<Color> outOfBoundDialogueTheme;
 
-    public AsciiArt(Theme theme) {
+    public AsciiArt(final Theme theme) {
         logoTheme = theme.getTheme();
         controlsTheme = theme.getTheme();
         gameOverTheme = theme.getTheme();

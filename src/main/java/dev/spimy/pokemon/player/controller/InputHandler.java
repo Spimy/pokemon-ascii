@@ -12,7 +12,7 @@ public class InputHandler implements Runnable {
     private final NonBlockingReader keyReader;
     private final Control control;
 
-    public InputHandler(GameManager gameManager) {
+    public InputHandler(final GameManager gameManager) {
         this.gameManager = gameManager;
 
         final Terminal terminal = this.gameManager.getTerminal();
@@ -42,7 +42,7 @@ public class InputHandler implements Runnable {
         }
     }
 
-    private void handleFirstStateInput(int key) {
+    private void handleFirstStateInput(final int key) {
         if (control.isPlay(key)) {
             gameManager.notify();
             return;
@@ -53,7 +53,7 @@ public class InputHandler implements Runnable {
         }
     }
 
-    private void handlePlayStateInput(int key) {
+    private void handlePlayStateInput(final int key) {
         if (control.isPlay(key)) {
             synchronized (gameManager) {
                 gameManager.setState(gameManager.getState() == State.PAUSE ? State.PLAY : State.PAUSE);
@@ -69,7 +69,7 @@ public class InputHandler implements Runnable {
         gameManager.handleInput(key);
     }
 
-    private void handleGameOverStateInput(int key) {
+    private void handleGameOverStateInput(final int key) {
         if (control.isPlay(key)) {
             gameManager.setState(State.FIRST);
             gameManager.notify();
@@ -81,7 +81,7 @@ public class InputHandler implements Runnable {
         }
     }
 
-    private void handlePauseStateInput(int key) {
+    private void handlePauseStateInput(final int key) {
         if (control.isPlay(key)) {
             gameManager.setState(State.PLAY);
             gameManager.notify();

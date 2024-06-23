@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        try (Terminal terminal = TerminalBuilder.builder().system(true).dumb(false).build()) {
+        try (final Terminal terminal = TerminalBuilder.builder().system(true).dumb(false).build()) {
             final GameManager gameManager = new GameManager(State.FIRST, terminal);
             final Thread inputHandler = new Thread(new InputHandler(gameManager));
             inputHandler.start();

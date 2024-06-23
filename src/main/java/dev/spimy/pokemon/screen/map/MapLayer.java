@@ -9,7 +9,7 @@ public enum MapLayer {
     public final String resourcePath;
     public final char doorChar;
 
-    MapLayer(String resourcePath, char doorChar) {
+    MapLayer(final String resourcePath, final char doorChar) {
         this.resourcePath = resourcePath;
         this.doorChar = doorChar;
     }

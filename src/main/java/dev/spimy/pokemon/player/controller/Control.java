@@ -14,27 +14,27 @@ public class Control {
     int upd = 68;           // D
     int lowd = 100;         // d
 
-    public boolean isPlay(int key) {
+    public boolean isPlay(final int key) {
         return (key == lowp || key == upp);
     }
 
-    public boolean isQuit(int key) {
+    public boolean isQuit(final int key) {
         return (key == upq || key == lowq);
     }
 
-    public boolean isUp(int key) {
+    public boolean isUp(final int key) {
         return (key == upw || key == loww);
     }
 
-    public boolean isLeft(int key) {
+    public boolean isLeft(final int key) {
         return (key == upa || key == lowa);
     }
 
-    public boolean isDown(int key) {
+    public boolean isDown(final int key) {
         return (key == ups || key == lows);
     }
 
-    public boolean isRight(int key) {
+    public boolean isRight(final int key) {
         return (key == upd || key == lowd);
     }
 }

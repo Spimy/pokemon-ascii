@@ -60,7 +60,7 @@ public class Renderer {
 
         int y = (int) (terminal.getWidth() * 0.05);
         for (int i = 0; i < this.map.getCurrentMap().toString().length(); i++) {
-            String s = Ansi.ansi()
+            final String s = Ansi.ansi()
                     .a(this.map.getCurrentMap().toString().charAt(i))
                     .reset()
                     .toString();
@@ -135,21 +135,21 @@ public class Renderer {
     }
 
     private int renderLogo() {
-        String[] logoArray = this.ascii.getLogo().split("\n");
+        final String[] logoArray = this.ascii.getLogo().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.2);
         this.renderContent(logoArray, startRow);
         return startRow + logoArray.length;
     }
 
     private int renderPause() {
-        String[] pauseArray = this.ascii.getPause().split("\n");
+        final String[] pauseArray = this.ascii.getPause().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.25);
         this.renderContent(pauseArray, startRow);
         return startRow + pauseArray.length;
     }
 
     public int renderGameOverText() {
-        String[] gameOverArray = this.ascii.getGameOver().split("\n");
+        final String[] gameOverArray = this.ascii.getGameOver().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.33);
         this.renderContent(gameOverArray, startRow);
         return gameOverArray.length;
@@ -162,7 +162,7 @@ public class Renderer {
      * @param content the content to display
      * @param y the start row
      */
-    private void renderContent(String[] content, int y) {
+    private void renderContent(final String[] content, int y) {
         for (int i = y; i < y + content.length; i++) {
             final String contentRow = content[i - y];
             final int startCol = Math.floorDiv(this.terminal.getWidth() - contentRow.length(), 2);
@@ -187,11 +187,11 @@ public class Renderer {
         }
     }
 
-    private void renderContent(ArrayList<String> content, int y) {
+    private void renderContent(final ArrayList<String> content, int y) {
         this.renderContent(content.toArray(new String[0]), y);
     }
 
-    public void renderPlayer(Player player) {
+    public void renderPlayer(final Player player) {
         if (isWithinBounds(player)) {
             buffer[player.position.getPrevX()][player.position.getPrevY()] = Ansi.ansi()
                     .bg(Color.DEFAULT)
@@ -209,7 +209,7 @@ public class Renderer {
         }
     }
 
-    public boolean isWithinBounds(Player player) {
+    public boolean isWithinBounds(final Player player) {
         return
             player.position.getCurrX() > 0 &&
             player.position.getCurrX() < terminal.getHeight() - 1 &&

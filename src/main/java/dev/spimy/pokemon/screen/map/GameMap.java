@@ -21,15 +21,15 @@ public class GameMap {
     }
 
     private void loadMaps() {
-        for (MapLayer mapLayer : MapLayer.values()) {
+        for (final MapLayer mapLayer : MapLayer.values()) {
             doors.put(mapLayer.doorChar, mapLayer);
 
-            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(mapLayer.resourcePath)) {
+            try (final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(mapLayer.resourcePath)) {
                 if (inputStream == null) continue;
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line;
-                ArrayList<String> mapRows = new ArrayList<>();
+                final ArrayList<String> mapRows = new ArrayList<>();
 
                 while ((line = bufferedReader.readLine()) != null) {
                     mapRows.add(line);

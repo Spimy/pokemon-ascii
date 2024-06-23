@@ -48,7 +48,7 @@ public class Position {
         return mapChar;
     }
 
-    public void setMapChar(String mapChar) {
+    public void setMapChar(final String mapChar) {
         this.mapChar = mapChar;
     }
 }

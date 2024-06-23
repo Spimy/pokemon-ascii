@@ -15,22 +15,22 @@ public class Theme {
 
   public ArrayList<Color> getTheme() {
     while (true) {
-      ArrayList<Color> c = themeColors.get(
-          ThreadLocalRandom.current().nextInt(themeColors.size()));
-      if (c.getFirst() != backgroundColor)
-        return c;
+      final ArrayList<Color> c = themeColors.get(ThreadLocalRandom.current().nextInt(themeColors.size()));
+      if (c.getFirst() != backgroundColor) return c;
     }
   }
 
   private ArrayList<ArrayList<Color>> createThemeArray() {
-    Color[] JLineColors = Color.values();
-    ArrayList<ArrayList<Color>> Colors = new ArrayList<>();
+    final Color[] JLineColors = Color.values();
+    final ArrayList<ArrayList<Color>> Colors = new ArrayList<>();
     int index = 0;
-    for (Color foreground : JLineColors) {
-      for (Color background : JLineColors) {
-        if (foreground != background &&
+    for (final Color foreground : JLineColors) {
+      for (final Color background : JLineColors) {
+        if (
+            foreground != background &&
             (foreground != Color.DEFAULT && background != Color.DEFAULT) &&
-            background != Color.BLACK) {
+            background != Color.BLACK
+        ) {
           Colors.add(new ArrayList<>());
           Colors.get(index).add(background);
           Colors.get(index).add(foreground);

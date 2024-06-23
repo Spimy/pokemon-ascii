@@ -16,7 +16,7 @@ public class Player {
     public Position position;
     private Direction direction;
 
-    public Player(Terminal terminal, Control control, Theme theme) {
+    public Player(final Terminal terminal, final Control control, final Theme theme) {
         this.control = control;
         this.theme = theme.getTheme();
 
@@ -28,7 +28,7 @@ public class Player {
     }
 
     public ArrayList<Ansi.Color> getTheme() {
-        return theme;
+        return this.theme;
     }
 
     public void move() {
@@ -53,13 +53,13 @@ public class Player {
     }
 
     public void setDirection(final int key) {
-        if (control.isUp(key)) {
+        if (this.control.isUp(key)) {
             this.direction = Direction.UP;
-        } else if (control.isLeft(key)) {
+        } else if (this.control.isLeft(key)) {
             this.direction = Direction.LEFT;
-        } else if (control.isDown(key)) {
+        } else if (this.control.isDown(key)) {
             this.direction = Direction.DOWN;
-        } else if (control.isRight(key)) {
+        } else if (this.control.isRight(key)) {
             this.direction = Direction.RIGHT;
         }
     }

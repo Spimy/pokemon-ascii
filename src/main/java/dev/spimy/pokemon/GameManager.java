@@ -19,7 +19,7 @@ public class GameManager {
     private Renderer renderer;
     private State state;
 
-    public GameManager(State state, final Terminal terminal) {
+    public GameManager(final State state, final Terminal terminal) {
         this.state = state;
         this.terminal = terminal;
         this.control = new Control();
@@ -30,7 +30,7 @@ public class GameManager {
         this.terminal.enterRawMode();
         this.terminal.puts(InfoCmp.Capability.cursor_invisible);
 
-        Theme theme = new Theme();
+        final Theme theme = new Theme();
         this.renderer = new Renderer(this, theme, this.map);
         this.player = new Player(this.terminal, this.control, theme);
     }
@@ -73,7 +73,7 @@ public class GameManager {
                         cleared = true;
                     }
 
-                    String mapChar = this.player.position.getMapChar();
+                    final String mapChar = this.player.position.getMapChar();
                     if (mapChar != null && this.map.getWalls().contains(mapChar.charAt(0))) this.player.backtrack();
 
                     if (!this.renderer.isWithinBounds(this.player)) {
@@ -131,7 +131,7 @@ public class GameManager {
         return this.state;
     }
 
-    public void setState(State state) {
+    public void setState(final State state) {
         this.state = state;
     }
 
