@@ -74,6 +74,13 @@ public class GameManager {
                         cleared = true;
                     }
 
+                    if (
+                            this.player.position.getMapChar() != null &&
+                            this.map.getWalls().contains(this.player.position.getMapChar().charAt(0))
+                    ) {
+                        this.player.backtrack();
+                    }
+
                     if (!this.renderer.isWithinBounds(this.player)) {
                         this.setState(State.OUTOFBOUNDS);
                         continue;
