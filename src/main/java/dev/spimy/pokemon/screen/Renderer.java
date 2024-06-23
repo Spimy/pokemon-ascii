@@ -35,10 +35,6 @@ public class Renderer {
         drawBorder();
     }
 
-    public ArrayList<Color> getBorderTheme() {
-        return borderTheme;
-    }
-
     public void initializeArrays() {
         for (int i = 0; i < terminal.getHeight(); i++) {
             Arrays.fill(screen[i], Ansi.ansi().bg(theme.getBackground()).a(" ").reset().toString());
@@ -56,29 +52,7 @@ public class Renderer {
     private void renderMap() {
         final ArrayList<String> map = this.map.getCurrentMapData();
         final int startRow = Math.floorDiv(this.buffer.length - map.size(), 2);
-
-        for (int i = startRow; i < startRow + map.size(); i++) {
-            final String mapRow = map.get(i - startRow);
-            final int startCol = Math.floorDiv(this.buffer[i].length - mapRow.length(), 2);
-
-            for (int j = startCol; j < startCol + mapRow.length(); j++) {
-                String curChar = String.valueOf(mapRow.charAt(j - startCol));
-
-                if (curChar.equals(";")) {
-                    String character = Ansi.ansi()
-                            .bg(Color.DEFAULT)
-                            .fg(Color.GREEN)
-                            .a(curChar)
-                            .reset()
-                            .toString();
-
-                    this.buffer[i][j] = character;
-                    continue;
-                }
-
-                this.buffer[i][j] = curChar;
-            }
-        }
+        this.renderContent(map, startRow);
     }
 
     private void renderMapName() {
@@ -124,15 +98,15 @@ public class Renderer {
     public void renderStartMenu() {
         initializeArrays();
         drawBorder();
-        renderLogo();
-        renderControls();
+        final int controlStartRow = renderLogo();
+        this.renderContent(this.ascii.getControls().split("\n"), controlStartRow);
         updateScreen();
     }
 
     public void renderPauseMenu() {
         drawBorder();
-        renderPause();
-        renderControls();
+        final int controlStartRow = renderPause();
+        this.renderContent(this.ascii.getControls().split("\n"), controlStartRow);
         updateScreen();
     }
 
@@ -140,8 +114,8 @@ public class Renderer {
     public void renderGameOver() {
         initializeArrays();
         drawBorder();
-        renderGameOverText();
-        renderControls();
+        final int controlStartRow = renderGameOverText();
+        this.renderContent(this.ascii.getControls().split("\n"), controlStartRow);
         updateScreen();
     }
 
@@ -155,60 +129,66 @@ public class Renderer {
         final String[] dialogueArray = dialogue.split("\n");
         final int startRow = this.terminal.getHeight() - dialogueArray.length - BOTTOM_MARGIN;
 
-        for (int i = startRow; i < startRow + dialogueArray.length; i++) {
-            final String dialogueRow = dialogueArray[i - startRow];
-            final int startCol = Math.floorDiv(this.terminal.getWidth() - dialogueRow.length(), 2);
-
-            for (int j = startCol; j < startCol + dialogueRow.length(); j++) {
-                buffer[i][j] = Ansi.ansi()
-                        .bg(ascii.getOutOfBoundDialogueTheme().get(0))
-                        .fg(ascii.getOutOfBoundDialogueTheme().get(1))
-                        .a(dialogueRow.charAt(j - startCol))
-                        .reset()
-                        .toString();
-            }
-        }
+        this.renderContent(dialogueArray, startRow);
 
         updateScreen();
     }
 
-    // Will try to clean up the math a bit later
-    private void renderControls() {
-        String[][] controlsArray = convertTo2DArray(ascii.getControls());
-        drawText(controlsArray, terminal.getHeight() * 0.4, terminal.getWidth() * 0.43, ascii.getControlsTheme());
+    private int renderLogo() {
+        String[] logoArray = this.ascii.getLogo().split("\n");
+        final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.2);
+        this.renderContent(logoArray, startRow);
+        return startRow + logoArray.length;
     }
 
-    private void renderLogo() {
-        String[][] logoArray = convertTo2DArray(ascii.getLogo());
-        drawText(logoArray, terminal.getHeight() * 0.1, terminal.getWidth() * 0.33, ascii.getLogoTheme());
+    private int renderPause() {
+        String[] pauseArray = this.ascii.getPause().split("\n");
+        final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.25);
+        this.renderContent(pauseArray, startRow);
+        return startRow + pauseArray.length;
     }
 
-    private void renderPause() {
-        String[][] pauseArray = convertTo2DArray(ascii.getPause());
-        drawText(pauseArray, terminal.getHeight() * 0.25, terminal.getWidth() * 0.44, ascii.getPauseTheme());
+    public int renderGameOverText() {
+        String[] gameOverArray = this.ascii.getGameOver().split("\n");
+        final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.33);
+        this.renderContent(gameOverArray, startRow);
+        return gameOverArray.length;
     }
 
-    public void renderGameOverText() {
-        String[][] gameOverArray = convertTo2DArray(ascii.getGameOver());
-        drawText(gameOverArray, terminal.getHeight() * 0.15, terminal.getWidth() * 0.36, ascii.getGameOverTheme());
-    }
 
-    private void drawText(String[][] grid, double x, double y, ArrayList<Color> colorTheme) {
-        for (String[] row : grid) {
-            for (int j = 0; j < row.length; j++) {
-                String cellContent = row[j];
+    /**
+     * Always centered horizontally
+     *
+     * @param content the content to display
+     * @param y the start row
+     */
+    private void renderContent(String[] content, int y) {
+        for (int i = y; i < y + content.length; i++) {
+            final String contentRow = content[i - y];
+            final int startCol = Math.floorDiv(this.terminal.getWidth() - contentRow.length(), 2);
 
-                String l = Ansi.ansi()
-                        .bg(colorTheme.get(0))
-                        .fg(colorTheme.get(1))
-                        .a(cellContent)
-                        .reset()
-                        .toString();
+            for (int j = startCol; j < startCol + contentRow.length(); j++) {
+                final String curChar = String.valueOf(contentRow.charAt(j - startCol));
 
-                buffer[(int) x][(int) y + j] = l;
+                if (curChar.equals(";")) {
+                    final String character = Ansi.ansi()
+                            .bg(Color.DEFAULT)
+                            .fg(Color.GREEN)
+                            .a(curChar)
+                            .reset()
+                            .toString();
+
+                    this.buffer[i][j] = character;
+                    continue;
+                }
+
+                this.buffer[i][j] = curChar;
             }
-            x++;
         }
+    }
+
+    private void renderContent(ArrayList<String> content, int y) {
+        this.renderContent(content.toArray(new String[0]), y);
     }
 
     public void renderPlayer(Player player) {
@@ -235,16 +215,5 @@ public class Renderer {
             player.position.getCurrX() < terminal.getHeight() - 1 &&
             player.position.getCurrY() > 0 &&
             player.position.getCurrY() < terminal.getWidth() - 1;
-    }
-
-    private String[][] convertTo2DArray(String text) {
-        String[] rows = text.split("\n");
-        String[][] logo2DArray = new String[rows.length][];
-
-        for (int i = 0; i < rows.length; i++) {
-            logo2DArray[i] = rows[i].split("");
-        }
-
-        return logo2DArray;
     }
 }
