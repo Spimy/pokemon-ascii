@@ -3,7 +3,7 @@ package dev.spimy.pokemon;
 import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.Position;
 import dev.spimy.pokemon.player.controller.Control;
-import dev.spimy.pokemon.screen.AsciiArt;
+import dev.spimy.pokemon.player.controller.Direction;
 import dev.spimy.pokemon.screen.Renderer;
 import dev.spimy.pokemon.screen.Theme;
 import dev.spimy.pokemon.screen.map.GameMap;
@@ -32,9 +32,7 @@ public class GameManager {
         this.terminal.puts(InfoCmp.Capability.cursor_invisible);
 
         Theme theme = new Theme();
-        AsciiArt ascii = new AsciiArt(this.terminal, theme);
-
-        this.renderer = new Renderer(this.terminal, theme, ascii, this.map);
+        this.renderer = new Renderer(this, theme, this.map);
         this.player = new Player(this.terminal, this.control, theme);
     }
 
@@ -64,7 +62,7 @@ public class GameManager {
         return this.terminal;
     }
 
-    @SuppressWarnings("InfiniteLoopStatement")
+    @SuppressWarnings({"InfiniteLoopStatement", "BusyWait"})
     private void gameLoop() {
         boolean cleared = false;
 
@@ -76,12 +74,41 @@ public class GameManager {
                         cleared = true;
                     }
 
+                    if (!this.renderer.isWithinBounds(this.player)) {
+                        this.setState(State.OUTOFBOUNDS);
+                        this.renderer.renderOutOfBounds();
+                        continue;
+                    }
+
                     this.renderer.renderGame(this.player);
                 }
                 case State.PAUSE -> {
                     this.renderer.renderPauseMenu();
                     this.renderer.drawBorder();
                     cleared = false;
+                }
+                case State.OUTOFBOUNDS -> {
+                    try {
+                        Thread.sleep(1000);
+                        cleared = false;
+
+                        switch (player.getDirection()) {
+                            case Direction.UP -> this.player.setDirection(Direction.DOWN);
+                            case Direction.DOWN -> this.player.setDirection(Direction.UP);
+                            case Direction.LEFT -> this.player.setDirection(Direction.RIGHT);
+                            case Direction.RIGHT -> this.player.setDirection(Direction.LEFT);
+                        }
+
+                        while (!this.renderer.isWithinBounds(this.player)) {
+                            player.move();
+                        }
+
+                        player.move();
+
+                        this.setState(State.PLAY);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
@@ -95,7 +122,7 @@ public class GameManager {
     }
 
     public void checkDoor() {
-        final String selectedDoor = this.player.position.getMapChar().toUpperCase();
+        final String selectedDoor = this.player.position.getMapChar();
         if (!this.map.getDoors().containsKey(selectedDoor.charAt(0))) return;
 
         this.terminal.puts(InfoCmp.Capability.clear_screen);

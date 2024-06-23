@@ -53,4 +53,12 @@ public class Player {
             this.direction = Direction.RIGHT;
         }
     }
+
+    public void setDirection(final Direction direction) {
+        this.direction = direction;
+    }
+
+    public Direction getDirection() {
+        return this.direction;
+    }
 }
