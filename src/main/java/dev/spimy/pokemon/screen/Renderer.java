@@ -149,6 +149,7 @@ public class Renderer {
 
     public void renderOutOfBounds() {
         drawBorder();
+        renderMapName();
 
         final String dialogue = new AsciiArt(this.terminal, new Theme()).getOutOfBoundDialogue();
 
