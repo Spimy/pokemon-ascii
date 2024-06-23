@@ -37,8 +37,8 @@ public class Renderer {
 
     public void initializeArrays() {
         for (int i = 0; i < this.terminal.getHeight(); i++) {
-            Arrays.fill(this.screen[i], Ansi.ansi().bg(this.theme.getBackground()).a(" ").reset().toString());
-            Arrays.fill(this.buffer[i], Ansi.ansi().bg(this.theme.getBackground()).a(" ").reset().toString());
+            Arrays.fill(this.screen[i], Ansi.ansi().bg(Color.BLACK).a(" ").reset().toString());
+            Arrays.fill(this.buffer[i], Ansi.ansi().bg(Color.BLACK).a(" ").reset().toString());
         }
     }
 
@@ -194,18 +194,18 @@ public class Renderer {
     public void renderPlayer(final Player player) {
         if (this.isWithinBounds(player)) {
             this.buffer[player.position.getPrevX()][player.position.getPrevY()] = Ansi.ansi()
-                    .bg(Color.DEFAULT)
-                    .a(player.position.getMapChar())
-                    .reset()
-                    .toString();
+                .bg(Color.BLACK)
+                .a(" ")
+                .reset()
+                .toString();
 
             player.position.setMapChar(this.buffer[player.position.getCurrX()][player.position.getCurrY()]);
 
             this.buffer[player.position.getCurrX()][player.position.getCurrY()] = Ansi.ansi()
-                    .bg(player.getTheme().getFirst())
-                    .a(" ")
-                    .reset()
-                    .toString();
+                .bg(Color.BLUE)
+                .a(" ")
+                .reset()
+                .toString();
         }
     }
 
