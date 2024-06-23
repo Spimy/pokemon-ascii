@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class GameMap {
     private MapLayer currentMap;
-    private final HashMap<String, MapLayer> doors = new HashMap<>();
+    private final HashMap<Character, MapLayer> doors = new HashMap<>();
     private final HashMap<String, ArrayList<String>> loadedMaps = new HashMap<>();
 
     public GameMap() {
@@ -58,7 +58,7 @@ public class GameMap {
         return this.loadedMaps.get(this.getCurrentMap().resourcePath);
     }
 
-    public HashMap<String, MapLayer> getDoors() {
+    public HashMap<Character, MapLayer> getDoors() {
         return doors;
     }
 }

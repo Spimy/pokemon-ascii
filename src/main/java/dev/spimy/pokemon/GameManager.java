@@ -95,11 +95,11 @@ public class GameManager {
 
     public void checkDoor() {
         final String selectedDoor = this.player.position.getMapChar().toUpperCase();
-        if (!this.map.getDoors().containsKey(selectedDoor)) return;
+        if (!this.map.getDoors().containsKey(selectedDoor.charAt(0))) return;
 
         this.terminal.puts(InfoCmp.Capability.clear_screen);
 
-        this.map.setCurrentMap(this.map.getDoors().get(selectedDoor));
+        this.map.setCurrentMap(this.map.getDoors().get(selectedDoor.charAt(0)));
         this.player.position = new Position(terminal.getHeight() / 2, terminal.getWidth() / 2);
     }
 
