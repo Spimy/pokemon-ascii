@@ -101,6 +101,8 @@ public class GameManager {
                             this.player.move();
                         }
 
+                        this.player.move();
+
                         this.setState(State.PLAY);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
