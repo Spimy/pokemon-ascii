@@ -76,7 +76,6 @@ public class GameManager {
 
                     if (!this.renderer.isWithinBounds(this.player)) {
                         this.setState(State.OUTOFBOUNDS);
-                        this.renderer.renderOutOfBounds();
                         continue;
                     }
 
@@ -89,6 +88,8 @@ public class GameManager {
                 }
                 case State.OUTOFBOUNDS -> {
                     try {
+                        this.renderer.renderOutOfBounds();
+
                         Thread.sleep(1000);
                         cleared = false;
 
