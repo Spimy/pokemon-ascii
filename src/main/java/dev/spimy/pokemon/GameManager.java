@@ -8,10 +8,7 @@ import dev.spimy.pokemon.screen.map.MapLayer;
 import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class GameManager {
     final private Terminal terminal;
