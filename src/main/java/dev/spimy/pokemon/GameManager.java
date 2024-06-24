@@ -119,9 +119,10 @@ public class GameManager {
         final String selectedDoor = this.player.getPosition().getMapChar();
         if (!this.map.getDoors().containsKey(selectedDoor.charAt(0))) return;
 
-        this.terminal.puts(InfoCmp.Capability.clear_screen);
+        final boolean isSet = this.map.setCurrentMap(this.map.getDoors().get(selectedDoor.charAt(0)));
+        if (!isSet) return;
 
-        this.map.setCurrentMap(this.map.getDoors().get(selectedDoor.charAt(0)));
+        this.terminal.puts(InfoCmp.Capability.clear_screen);
         this.player.setPosition(this.terminal.getHeight() / 2, this.terminal.getWidth() / 2);
     }
 

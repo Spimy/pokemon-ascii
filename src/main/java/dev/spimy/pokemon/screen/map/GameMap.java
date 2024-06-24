@@ -48,8 +48,10 @@ public class GameMap {
         }
     }
 
-    public void setCurrentMap(final MapLayer newMapLayer) {
+    public boolean setCurrentMap(final MapLayer newMapLayer) {
+        if (newMapLayer.doorChar == this.currentMap.doorChar) return false;
         this.currentMap = newMapLayer;
+        return true;
     }
 
     public MapLayer getCurrentMap() {
