@@ -130,21 +130,6 @@ public class Renderer {
         this.updateScreen();
     }
 
-    // Used as reference, will remove later
-    public void renderGameOver() {
-        this.initializeArrays();
-        this.drawBorder();
-
-        final int controlStartRow = renderGameOverText();
-        this.renderContent(
-                Ascii.getControls().getContent().split("\n"),
-                controlStartRow,
-                Ascii.getControls().getColor()
-        );
-
-        this.updateScreen();
-    }
-
     public void renderOutOfBounds() {
         this.drawBorder();
         this.renderMapName();
@@ -171,14 +156,6 @@ public class Renderer {
         this.renderContent(pauseArray, startRow, Ascii.getPause().getColor());
         return startRow + pauseArray.length;
     }
-
-    public int renderGameOverText() {
-        final String[] gameOverArray = Ascii.getGameOver().getContent().split("\n");
-        final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.33);
-        this.renderContent(gameOverArray, startRow, Ascii.getGameOver().getColor());
-        return startRow + gameOverArray.length;
-    }
-
 
     /**
      * Always centered horizontally
