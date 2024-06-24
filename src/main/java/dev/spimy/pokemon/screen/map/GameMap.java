@@ -69,4 +69,19 @@ public class GameMap {
     public List<Character> getWalls() {
         return this.walls;
     }
+
+    public HashMap<Character, Integer[]> getDoorCoordinates(final String[][] buffer) {
+        final HashMap<Character, Integer[]> doorCoordinates = new HashMap<>();
+
+        for (int i = 0; i < buffer.length; i++) {
+            for (int j = 0; j < buffer[i].length; j++) {
+                if (this.getDoors().containsKey(buffer[i][j].charAt(0))) {
+                    doorCoordinates.put(buffer[i][j].charAt(0), new Integer[]{i, j});
+                }
+            }
+        }
+
+
+        return doorCoordinates;
+    }
 }

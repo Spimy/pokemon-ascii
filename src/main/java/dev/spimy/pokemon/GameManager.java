@@ -4,8 +4,14 @@ import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.controller.Control;
 import dev.spimy.pokemon.screen.Renderer;
 import dev.spimy.pokemon.screen.map.GameMap;
+import dev.spimy.pokemon.screen.map.MapLayer;
 import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameManager {
     final private Terminal terminal;
@@ -116,14 +122,35 @@ public class GameManager {
     }
 
     public void checkDoor() {
-        final String selectedDoor = this.player.getPosition().getMapChar();
-        if (!this.map.getDoors().containsKey(selectedDoor.charAt(0))) return;
+        final char selectedDoor = this.player.getPosition().getMapChar().charAt(0);
+        if (!this.map.getDoors().containsKey(selectedDoor)) return;
 
-        final boolean isSet = this.map.setCurrentMap(this.map.getDoors().get(selectedDoor.charAt(0)));
+        final MapLayer mapBeforeSet = this.map.getCurrentMap();
+
+        final boolean isSet = this.map.setCurrentMap(this.map.getDoors().get(selectedDoor));
         if (!isSet) return;
 
         this.terminal.puts(InfoCmp.Capability.clear_screen);
-        this.player.setPosition(this.terminal.getHeight() / 2, this.terminal.getWidth() / 2);
+
+        // This is here to let the buffer update before proceeding
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        final HashMap<Character, Integer[]> doors = this.map.getDoorCoordinates(this.renderer.getBuffer());
+        Integer[] coordinates;
+
+        if (mapBeforeSet == MapLayer.OVERWORLD) {
+            coordinates = doors.get(MapLayer.OVERWORLD.doorChar);
+            coordinates = new Integer[]{coordinates[0] - 1, coordinates[1]};
+        } else {
+            coordinates = doors.get(mapBeforeSet.doorChar);
+            coordinates = new Integer[]{coordinates[0] + 1, coordinates[1]};
+        }
+
+        this.player.setPosition(coordinates[0], coordinates[1]);
     }
 
     public State getState() {

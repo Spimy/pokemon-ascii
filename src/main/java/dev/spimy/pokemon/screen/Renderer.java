@@ -183,13 +183,13 @@ public class Renderer {
     /**
      * Always centered horizontally
      *
-     * @param content the content to display
-     * @param x       the start row
-     * @param fg      the foreground (text) color, defaults to Theme.FOREGROUND_COLOR if not provided
+     * @param content   the content to display
+     * @param startRow  the start row
+     * @param fg        the foreground (text) color, defaults to Theme.FOREGROUND_COLOR if not provided
      */
-    private void renderContent(final String[] content, int x, Color fg) {
-        for (int i = x; i < x + content.length; i++) {
-            final String contentRow = content[i - x];
+    private void renderContent(final String[] content, int startRow, Color fg) {
+        for (int i = startRow; i < startRow + content.length; i++) {
+            final String contentRow = content[i - startRow];
             final int startCol = Math.floorDiv(this.terminal.getWidth() - contentRow.length(), 2);
 
             for (int j = startCol; j < startCol + contentRow.length(); j++) {
@@ -249,5 +249,9 @@ public class Renderer {
             player.getPosition().getCurrX() < this.terminal.getHeight() - 1 &&
             player.getPosition().getCurrY() > 0 &&
             player.getPosition().getCurrY() < this.terminal.getWidth() - 1;
+    }
+
+    public String[][] getBuffer() {
+        return this.buffer;
     }
 }
