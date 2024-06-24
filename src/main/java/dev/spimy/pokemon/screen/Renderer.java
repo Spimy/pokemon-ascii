@@ -95,9 +95,22 @@ public class Renderer {
         this.drawBorder();
 
         final int controlStartRow = renderLogo();
+
+        this.renderContent(
+                "It is recommended to go full screen on your terminal.".split("\n"),
+                controlStartRow + 1,
+                Theme.FOREGROUND_COLOR
+        );
+
+        this.renderContent(
+                "Restart to take effect.".split("\n"),
+                controlStartRow + 2,
+                Theme.FOREGROUND_COLOR
+        );
+
         this.renderContent(
                 Ascii.getControls().getContent().split("\n"),
-                controlStartRow,
+                controlStartRow + 4,
                 Ascii.getControls().getColor()
         );
 
@@ -149,7 +162,7 @@ public class Renderer {
         final String[] logoArray = Ascii.getLogo().getContent().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.2);
         this.renderContent(logoArray, startRow, Ascii.getLogo().getColor());
-        return startRow + logoArray.length + 1;
+        return startRow + logoArray.length;
     }
 
     private int renderPause() {
