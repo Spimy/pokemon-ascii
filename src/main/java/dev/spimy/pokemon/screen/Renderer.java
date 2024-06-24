@@ -97,7 +97,8 @@ public class Renderer {
         final int controlStartRow = renderLogo();
         this.renderContent(
                 Ascii.getControls().getContent().split("\n"),
-                controlStartRow
+                controlStartRow,
+                Ascii.getControls().getColor()
         );
 
         this.updateScreen();
@@ -109,7 +110,8 @@ public class Renderer {
         final int controlStartRow = renderPause();
         this.renderContent(
                 Ascii.getControls().getContent().split("\n"),
-                controlStartRow
+                controlStartRow,
+                Ascii.getControls().getColor()
         );
 
         this.updateScreen();
@@ -123,7 +125,8 @@ public class Renderer {
         final int controlStartRow = renderGameOverText();
         this.renderContent(
                 Ascii.getControls().getContent().split("\n"),
-                controlStartRow
+                controlStartRow,
+                Ascii.getControls().getColor()
         );
 
         this.updateScreen();
@@ -133,13 +136,11 @@ public class Renderer {
         this.drawBorder();
         this.renderMapName();
 
-        final String dialogue = Ascii.getOutOfBoundDialogue().getContent();
-
         final int BOTTOM_MARGIN = 2;
-        final String[] dialogueArray = dialogue.split("\n");
+        final String[] dialogueArray = Ascii.getOutOfBoundDialogue().getContent().split("\n");
         final int startRow = this.terminal.getHeight() - dialogueArray.length - BOTTOM_MARGIN;
 
-        this.renderContent(dialogueArray, startRow);
+        this.renderContent(dialogueArray, startRow, Ascii.getOutOfBoundDialogue().getColor());
 
         this.updateScreen();
     }
@@ -148,21 +149,21 @@ public class Renderer {
         final String[] logoArray = Ascii.getLogo().getContent().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.2);
         this.renderContent(logoArray, startRow, Ascii.getLogo().getColor());
-        return startRow + logoArray.length;
+        return startRow + logoArray.length + 1;
     }
 
     private int renderPause() {
         final String[] pauseArray = Ascii.getPause().getContent().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.25);
-        this.renderContent(pauseArray, startRow);
+        this.renderContent(pauseArray, startRow, Ascii.getPause().getColor());
         return startRow + pauseArray.length;
     }
 
     public int renderGameOverText() {
         final String[] gameOverArray = Ascii.getGameOver().getContent().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.33);
-        this.renderContent(gameOverArray, startRow);
-        return gameOverArray.length;
+        this.renderContent(gameOverArray, startRow, Ascii.getGameOver().getColor());
+        return startRow + gameOverArray.length;
     }
 
 
