@@ -8,8 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Player {
     private final Control control;
+    private final Position position;
 
-    public Position position;
     private Direction direction;
 
     public Player(final Terminal terminal, final Control control) {
@@ -57,5 +57,14 @@ public class Player {
 
     public void setDirection(final Direction direction) {
         this.direction = direction;
+    }
+
+    public Position getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(final int x, final int y) {
+        this.position.setCurrX(x);
+        this.position.setCurrY(y);
     }
 }

@@ -2,6 +2,7 @@ package dev.spimy.pokemon.screen;
 
 import dev.spimy.pokemon.GameManager;
 import dev.spimy.pokemon.player.Player;
+import dev.spimy.pokemon.player.Position;
 import dev.spimy.pokemon.screen.map.GameMap;
 import org.jline.jansi.Ansi;
 import org.jline.jansi.Ansi.Color;
@@ -92,7 +93,7 @@ public class Renderer {
     public void renderStartMenu() {
         this.initializeArrays();
         this.drawBorder();
-        
+
         final int controlStartRow = renderLogo();
         this.renderContent(
                 Ascii.getControls().getContent().split("\n"),
@@ -195,11 +196,11 @@ public class Renderer {
                 if (fg.equals(Theme.FOREGROUND_COLOR)) this.buffer[i][j] = curChar;
                 else {
                     this.buffer[i][j] = Ansi.ansi()
-                        .bg(Theme.BACKGROUND_COLOR)
-                        .fg(fg)
-                        .a(curChar)
-                        .reset()
-                        .toString();
+                            .bg(Theme.BACKGROUND_COLOR)
+                            .fg(fg)
+                            .a(curChar)
+                            .reset()
+                            .toString();
                 }
             }
         }
@@ -215,15 +216,16 @@ public class Renderer {
 
     public void renderPlayer(final Player player) {
         if (this.isWithinBounds(player)) {
-            this.buffer[player.position.getPrevX()][player.position.getPrevY()] = Ansi.ansi()
+            Position position = player.getPosition();
+            this.buffer[position.getPrevX()][position.getPrevY()] = Ansi.ansi()
                 .bg(Theme.BACKGROUND_COLOR)
                 .a(" ")
                 .reset()
                 .toString();
 
-            player.position.setMapChar(this.buffer[player.position.getCurrX()][player.position.getCurrY()]);
+            position.setMapChar(this.buffer[position.getCurrX()][position.getCurrY()]);
 
-            this.buffer[player.position.getCurrX()][player.position.getCurrY()] = Ansi.ansi()
+            this.buffer[position.getCurrX()][position.getCurrY()] = Ansi.ansi()
                 .bg(Theme.PLAYER_COLOR)
                 .a(" ")
                 .reset()
@@ -233,9 +235,9 @@ public class Renderer {
 
     public boolean isWithinBounds(final Player player) {
         return
-            player.position.getCurrX() > 0 &&
-            player.position.getCurrX() < this.terminal.getHeight() - 1 &&
-            player.position.getCurrY() > 0 &&
-            player.position.getCurrY() < this.terminal.getWidth() - 1;
+            player.getPosition().getCurrX() > 0 &&
+            player.getPosition().getCurrX() < this.terminal.getHeight() - 1 &&
+            player.getPosition().getCurrY() > 0 &&
+            player.getPosition().getCurrY() < this.terminal.getWidth() - 1;
     }
 }
