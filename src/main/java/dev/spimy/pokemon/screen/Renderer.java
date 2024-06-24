@@ -207,10 +207,6 @@ public class Renderer {
         }
     }
 
-    private void renderContent(final String[] content, int y) {
-        this.renderContent(content, y, Theme.FOREGROUND_COLOR);
-    }
-
     private void renderContent(final ArrayList<String> content, int y) {
         this.renderContent(content.toArray(new String[0]), y, Theme.FOREGROUND_COLOR);
     }
