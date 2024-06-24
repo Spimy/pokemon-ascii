@@ -13,21 +13,15 @@ import java.util.Arrays;
 
 public class Renderer {
     private final Terminal terminal;
-    private final Theme theme;
-    private final AsciiArt ascii;
     private final GameMap map;
 
     private final String[][] screen;
     private final String[][] buffer;
-    private final ArrayList<Color> borderTheme;
 
-    public Renderer(GameManager gameManager, Theme theme, GameMap map) {
+    public Renderer(GameManager gameManager, GameMap map) {
         this.terminal = gameManager.getTerminal();
-        this.theme = theme;
-        this.ascii = new AsciiArt(this.theme);
         this.map = map;
 
-        this.borderTheme = this.theme.getTheme();
         this.screen = new String[this.terminal.getHeight()][this.terminal.getWidth()];
         this.buffer = new String[this.terminal.getHeight()][this.terminal.getWidth()];
 
@@ -37,8 +31,8 @@ public class Renderer {
 
     public void initializeArrays() {
         for (int i = 0; i < this.terminal.getHeight(); i++) {
-            Arrays.fill(this.screen[i], Ansi.ansi().bg(Color.BLACK).a(" ").reset().toString());
-            Arrays.fill(this.buffer[i], Ansi.ansi().bg(Color.BLACK).a(" ").reset().toString());
+            Arrays.fill(this.screen[i], Ansi.ansi().bg(Theme.BACKGROUND_COLOR).a(" ").reset().toString());
+            Arrays.fill(this.buffer[i], Ansi.ansi().bg(Theme.BACKGROUND_COLOR).a(" ").reset().toString());
         }
     }
 
@@ -86,27 +80,37 @@ public class Renderer {
 
     public void drawBorder() {
         for (int i = 0; i < this.terminal.getWidth(); i++) {
-            this.buffer[0][i] = Ansi.ansi().bg(this.borderTheme.getFirst()).a(" ").reset().toString();
-            this.buffer[this.terminal.getHeight() - 1][i] = Ansi.ansi().bg(this.borderTheme.getFirst()).a(" ").reset().toString();
+            this.buffer[0][i] = Ansi.ansi().bg(Theme.BORDER_COLOR).a(" ").reset().toString();
+            this.buffer[this.terminal.getHeight() - 1][i] = Ansi.ansi().bg(Theme.BORDER_COLOR).a(" ").reset().toString();
         }
         for (int i = 0; i < this.terminal.getHeight(); i++) {
-            this.buffer[i][0] = Ansi.ansi().bg(this.borderTheme.getFirst()).a(" ").reset().toString();
-            this.buffer[i][terminal.getWidth() - 1] = Ansi.ansi().bg(this.borderTheme.getFirst()).a(" ").reset().toString();
+            this.buffer[i][0] = Ansi.ansi().bg(Theme.BORDER_COLOR).a(" ").reset().toString();
+            this.buffer[i][terminal.getWidth() - 1] = Ansi.ansi().bg(Theme.BORDER_COLOR).a(" ").reset().toString();
         }
     }
 
     public void renderStartMenu() {
         this.initializeArrays();
         this.drawBorder();
+        
         final int controlStartRow = renderLogo();
-        this.renderContent(this.ascii.getControls().split("\n"), controlStartRow);
+        this.renderContent(
+                Ascii.getControls().getContent().split("\n"),
+                controlStartRow
+        );
+
         this.updateScreen();
     }
 
     public void renderPauseMenu() {
         this.drawBorder();
+
         final int controlStartRow = renderPause();
-        this.renderContent(this.ascii.getControls().split("\n"), controlStartRow);
+        this.renderContent(
+                Ascii.getControls().getContent().split("\n"),
+                controlStartRow
+        );
+
         this.updateScreen();
     }
 
@@ -114,8 +118,13 @@ public class Renderer {
     public void renderGameOver() {
         this.initializeArrays();
         this.drawBorder();
+
         final int controlStartRow = renderGameOverText();
-        this.renderContent(this.ascii.getControls().split("\n"), controlStartRow);
+        this.renderContent(
+                Ascii.getControls().getContent().split("\n"),
+                controlStartRow
+        );
+
         this.updateScreen();
     }
 
@@ -123,7 +132,7 @@ public class Renderer {
         this.drawBorder();
         this.renderMapName();
 
-        final String dialogue = this.ascii.getOutOfBoundDialogue();
+        final String dialogue = Ascii.getOutOfBoundDialogue().getContent();
 
         final int BOTTOM_MARGIN = 2;
         final String[] dialogueArray = dialogue.split("\n");
@@ -135,21 +144,21 @@ public class Renderer {
     }
 
     private int renderLogo() {
-        final String[] logoArray = this.ascii.getLogo().split("\n");
+        final String[] logoArray = Ascii.getLogo().getContent().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.2);
-        this.renderContent(logoArray, startRow);
+        this.renderContent(logoArray, startRow, Ascii.getLogo().getColor());
         return startRow + logoArray.length;
     }
 
     private int renderPause() {
-        final String[] pauseArray = this.ascii.getPause().split("\n");
+        final String[] pauseArray = Ascii.getPause().getContent().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.25);
         this.renderContent(pauseArray, startRow);
         return startRow + pauseArray.length;
     }
 
     public int renderGameOverText() {
-        final String[] gameOverArray = this.ascii.getGameOver().split("\n");
+        final String[] gameOverArray = Ascii.getGameOver().getContent().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.33);
         this.renderContent(gameOverArray, startRow);
         return gameOverArray.length;
@@ -160,9 +169,10 @@ public class Renderer {
      * Always centered horizontally
      *
      * @param content the content to display
-     * @param y the start row
+     * @param y       the start row
+     * @param fg      the foreground (text) color, defaults to Theme.FOREGROUND_COLOR if not provided
      */
-    private void renderContent(final String[] content, int y) {
+    private void renderContent(final String[] content, int y, Color fg) {
         for (int i = y; i < y + content.length; i++) {
             final String contentRow = content[i - y];
             final int startCol = Math.floorDiv(this.terminal.getWidth() - contentRow.length(), 2);
@@ -172,8 +182,8 @@ public class Renderer {
 
                 if (curChar.equals(";")) {
                     final String character = Ansi.ansi()
-                            .bg(Color.DEFAULT)
-                            .fg(Color.GREEN)
+                            .bg(Theme.BACKGROUND_COLOR)
+                            .fg(Theme.GRASS_COLOR)
                             .a(curChar)
                             .reset()
                             .toString();
@@ -182,19 +192,31 @@ public class Renderer {
                     continue;
                 }
 
-                this.buffer[i][j] = curChar;
+                if (fg.equals(Theme.FOREGROUND_COLOR)) this.buffer[i][j] = curChar;
+                else {
+                    this.buffer[i][j] = Ansi.ansi()
+                        .bg(Theme.BACKGROUND_COLOR)
+                        .fg(fg)
+                        .a(curChar)
+                        .reset()
+                        .toString();
+                }
             }
         }
     }
 
+    private void renderContent(final String[] content, int y) {
+        this.renderContent(content, y, Theme.FOREGROUND_COLOR);
+    }
+
     private void renderContent(final ArrayList<String> content, int y) {
-        this.renderContent(content.toArray(new String[0]), y);
+        this.renderContent(content.toArray(new String[0]), y, Theme.FOREGROUND_COLOR);
     }
 
     public void renderPlayer(final Player player) {
         if (this.isWithinBounds(player)) {
             this.buffer[player.position.getPrevX()][player.position.getPrevY()] = Ansi.ansi()
-                .bg(Color.BLACK)
+                .bg(Theme.BACKGROUND_COLOR)
                 .a(" ")
                 .reset()
                 .toString();
@@ -202,7 +224,7 @@ public class Renderer {
             player.position.setMapChar(this.buffer[player.position.getCurrX()][player.position.getCurrY()]);
 
             this.buffer[player.position.getCurrX()][player.position.getCurrY()] = Ansi.ansi()
-                .bg(Color.BLUE)
+                .bg(Theme.PLAYER_COLOR)
                 .a(" ")
                 .reset()
                 .toString();

@@ -4,7 +4,6 @@ import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.Position;
 import dev.spimy.pokemon.player.controller.Control;
 import dev.spimy.pokemon.screen.Renderer;
-import dev.spimy.pokemon.screen.Theme;
 import dev.spimy.pokemon.screen.map.GameMap;
 import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp;
@@ -30,9 +29,8 @@ public class GameManager {
         this.terminal.enterRawMode();
         this.terminal.puts(InfoCmp.Capability.cursor_invisible);
 
-        final Theme theme = new Theme();
-        this.renderer = new Renderer(this, theme, this.map);
-        this.player = new Player(this.terminal, this.control, theme);
+        this.renderer = new Renderer(this, this.map);
+        this.player = new Player(this.terminal, this.control);
     }
 
     public void startGame() {

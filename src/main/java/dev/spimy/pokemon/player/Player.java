@@ -2,33 +2,24 @@ package dev.spimy.pokemon.player;
 
 import dev.spimy.pokemon.player.controller.Control;
 import dev.spimy.pokemon.player.controller.Direction;
-import dev.spimy.pokemon.screen.Theme;
-import org.jline.jansi.Ansi;
 import org.jline.terminal.Terminal;
 
-import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Player {
     private final Control control;
-    private final ArrayList<Ansi.Color> theme;
 
     public Position position;
     private Direction direction;
 
-    public Player(final Terminal terminal, final Control control, final Theme theme) {
+    public Player(final Terminal terminal, final Control control) {
         this.control = control;
-        this.theme = theme.getTheme();
 
         final int height = terminal.getHeight();
         final int width = terminal.getWidth();
 
         this.position = new Position(height / 2, width / 2);
         this.direction = Direction.values()[ThreadLocalRandom.current().nextInt(Direction.values().length)];
-    }
-
-    public ArrayList<Ansi.Color> getTheme() {
-        return this.theme;
     }
 
     public void move() {
