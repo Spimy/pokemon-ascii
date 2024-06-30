@@ -24,7 +24,8 @@ public class GameMap {
         this.grass = Ansi.ansi()
                 .bg(Theme.BACKGROUND_COLOR)
                 .fg(Theme.GRASS_COLOR)
-                .a(';').reset()
+                .a(';')
+                .reset()
                 .toString();
         this.loadMaps();
     }
