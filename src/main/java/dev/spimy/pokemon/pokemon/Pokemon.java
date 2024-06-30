@@ -8,8 +8,11 @@ public class Pokemon {
     // Type of the Pokemon (e.g., fire, water, grass)
     private String type;
 
-    // HP (hit points/health) of the Pokemon
-    private double HP;
+    // max HP (hit points/health) of the Pokemon
+    private double maxHp;
+
+    // current HP (hit points/health) of the Pokemon
+    private double currentHp;
 
     // Attack power of the Pokemon
     private double attackPower;
@@ -21,10 +24,11 @@ public class Pokemon {
     private String status;
 
     // Default constructor
-    public Pokemon(String name, String type, double HP, double attackPower, double speed, String status) {
+    public Pokemon(String name, String type, double maxHp, double currentHp, double attackPower, double speed, String status) {
         this.name = name;
         this.type = type;
-        this.HP = HP;
+        this.maxHp = maxHp;
+        this.currentHp= currentHp;
         this.attackPower = attackPower;
         this.speed = speed;
         this.status = status;
@@ -39,12 +43,20 @@ public class Pokemon {
         this.type = type;
     }
 
-    public double getHP() {
-        return HP;
+    public double getMaxHp() {
+        return maxHp;
     }
 
-    public void setHP(double HP) {
-        this.HP = HP;
+    public void setMaxHp(double maxHp) {
+        this.maxHp = maxHp;
+    }
+
+    public double getCurrentHp() {
+        return currentHp;
+    }
+
+    public void setCurrentHp(double currentHp) {
+        this.currentHp = currentHp;
     }
 
     public double getAttackPower() {
