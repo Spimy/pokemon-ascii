@@ -8,10 +8,10 @@ public class Pokemon {
     // Type of the Pokemon (e.g., fire, water, grass)
     private String type;
 
-    // max HP (hit points/health) of the Pokemon
+    // Max HP (hit points/health) of the Pokemon
     private double maxHp;
 
-    // current HP (hit points/health) of the Pokemon
+    // Current HP (hit points/health) of the Pokemon
     private double currentHp;
 
     // Attack power of the Pokemon
@@ -24,11 +24,11 @@ public class Pokemon {
     private String status;
 
     // Default constructor
-    public Pokemon(String name, String type, double maxHp, double currentHp, double attackPower, double speed, String status) {
+    public Pokemon(final String name, final String type, final double maxHp, final double currentHp, final double attackPower, final double speed, final String status) {
         this.name = name;
         this.type = type;
         this.maxHp = maxHp;
-        this.currentHp= currentHp;
+        this.currentHp = currentHp;
         this.attackPower = attackPower;
         this.speed = speed;
         this.status = status;
@@ -39,7 +39,7 @@ public class Pokemon {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -47,7 +47,7 @@ public class Pokemon {
         return maxHp;
     }
 
-    public void setMaxHp(double maxHp) {
+    public void setMaxHp(final double maxHp) {
         this.maxHp = maxHp;
     }
 
@@ -55,7 +55,7 @@ public class Pokemon {
         return currentHp;
     }
 
-    public void setCurrentHp(double currentHp) {
+    public void setCurrentHp(final double currentHp) {
         this.currentHp = currentHp;
     }
 
@@ -63,7 +63,7 @@ public class Pokemon {
         return attackPower;
     }
 
-    public void setAttackPower(double attackPower) {
+    public void setAttackPower(final double attackPower) {
         this.attackPower = attackPower;
     }
 
@@ -71,7 +71,7 @@ public class Pokemon {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(final double speed) {
         this.speed = speed;
     }
 
@@ -79,7 +79,7 @@ public class Pokemon {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(final String status) {
         this.status = status;
     }
 
