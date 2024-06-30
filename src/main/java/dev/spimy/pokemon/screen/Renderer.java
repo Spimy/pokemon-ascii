@@ -173,14 +173,7 @@ public class Renderer {
                 final String curChar = String.valueOf(contentRow.charAt(j - startCol));
 
                 if (curChar.equals(";")) {
-                    final String character = Ansi.ansi()
-                            .bg(Theme.BACKGROUND_COLOR)
-                            .fg(Theme.GRASS_COLOR)
-                            .a(curChar)
-                            .reset()
-                            .toString();
-
-                    this.buffer[i][j] = character;
+                    this.buffer[i][j] = this.map.getGrass();
                     continue;
                 }
 

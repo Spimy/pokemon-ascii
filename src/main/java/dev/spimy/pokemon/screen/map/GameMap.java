@@ -1,5 +1,8 @@
 package dev.spimy.pokemon.screen.map;
 
+import dev.spimy.pokemon.screen.Theme;
+import org.jline.jansi.Ansi;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,9 +17,15 @@ public class GameMap {
     private final HashMap<Character, MapLayer> doors = new HashMap<>();
     private final HashMap<String, ArrayList<String>> loadedMaps = new HashMap<>();
     private final List<Character> walls = List.of('_', '/', '\\', '|');
+    private final String grass;
 
     public GameMap() {
         this.currentMap = MapLayer.OVERWORLD;
+        this.grass = Ansi.ansi()
+                .bg(Theme.BACKGROUND_COLOR)
+                .fg(Theme.GRASS_COLOR)
+                .a(';').reset()
+                .toString();
         this.loadMaps();
     }
 
@@ -83,5 +92,9 @@ public class GameMap {
 
 
         return doorCoordinates;
+    }
+
+    public String getGrass() {
+        return this.grass;
     }
 }
