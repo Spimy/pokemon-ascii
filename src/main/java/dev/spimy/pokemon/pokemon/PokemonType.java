@@ -1,11 +1,13 @@
+package dev.spimy.pokemon.pokemon;
+
 import java.util.List;
 
-public enum type {
+public enum PokemonType {
 	FIRE,
 	WATER,
 	GRASS;
 	
-	private List<type> weakAgainst;
+	private List<PokemonType> weakAgainst;
 	
 	static {
 		FIRE.weakAgainst = List.of(WATER);
@@ -13,7 +15,7 @@ public enum type {
 		GRASS.weakAgainst = List.of(FIRE);
 	}
 	
-	public List<type> getWeakAgainst(){
+	public List<PokemonType> getWeakAgainst(){
 		return weakAgainst;
 	}
 }
