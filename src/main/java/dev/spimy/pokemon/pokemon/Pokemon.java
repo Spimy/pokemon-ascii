@@ -6,7 +6,7 @@ public class Pokemon {
     private String name;
 
     // Type of the Pokemon (e.g., fire, water, grass)
-    private String type;
+    private PokemonType type;
 
     // Max HP (hit points/health) of the Pokemon
     private double maxHp;
@@ -24,7 +24,7 @@ public class Pokemon {
     private String status;
 
     // Default constructor
-    public Pokemon(final String name, final String type, final double maxHp, final double currentHp, final double attackPower, final double speed, final String status) {
+    public Pokemon(final String name, final PokemonType type, final double maxHp, final double currentHp, final double attackPower, final double speed, final String status) {
         this.name = name;
         this.type = type;
         this.maxHp = maxHp;
@@ -35,12 +35,8 @@ public class Pokemon {
     }
 
     // Getters and Setters
-    public String getType() {
+    public PokemonType getType() {
         return type;
-    }
-
-    public void setType(final String type) {
-        this.type = type;
     }
 
     public double getMaxHp() {
