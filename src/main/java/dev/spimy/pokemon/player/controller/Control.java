@@ -13,6 +13,7 @@ public class Control {
     final int lows = 115;         // s
     final int upd = 68;           // D
     final int lowd = 100;         // d
+    final int enter = 13;         // enter / return
 
     public boolean isPlay(final int key) {
         return (key == this.lowp || key == this.upp);
@@ -36,5 +37,9 @@ public class Control {
 
     public boolean isRight(final int key) {
         return (key == this.upd || key == this.lowd);
+    }
+
+    public boolean isEnter(final int key) {
+        return key == this.enter;
     }
 }

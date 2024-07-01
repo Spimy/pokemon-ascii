@@ -31,8 +31,12 @@ public class InputHandler implements Runnable {
                     switch(this.gameManager.getState()) {
                         case State.FIRST -> this.handleFirstStateInput(key);
                         case State.PLAY -> this.handlePlayStateInput(key);
-                        case State.GAMEOVER -> this.handleGameOverStateInput(key);
                         case State.PAUSE -> this.handlePauseStateInput(key);
+                        case State.BATTLEEND -> this.handleBattleEndStateInput(key);
+                    }
+
+                    if (this.control.isQuit(key)) {
+                        this.gameManager.quit();
                     }
                 }
             }
@@ -44,11 +48,6 @@ public class InputHandler implements Runnable {
     private void handleFirstStateInput(final int key) {
         if (this.control.isPlay(key)) {
             this.gameManager.notify();
-            return;
-        }
-
-        if (this.control.isQuit(key)) {
-            this.gameManager.quit();
         }
     }
 
@@ -60,35 +59,20 @@ public class InputHandler implements Runnable {
             return;
         }
 
-        if (this.control.isQuit(key)) {
-            this.gameManager.quit();
-            return;
-        }
-
         this.gameManager.handleInput(key);
-    }
-
-    private void handleGameOverStateInput(final int key) {
-        if (this.control.isPlay(key)) {
-            this.gameManager.setState(State.FIRST);
-            this.gameManager.notify();
-            return;
-        }
-
-        if (this.control.isQuit(key)) {
-            this.gameManager.quit();
-        }
     }
 
     private void handlePauseStateInput(final int key) {
         if (this.control.isPlay(key)) {
             this.gameManager.setState(State.PLAY);
             this.gameManager.notify();
-            return;
         }
+    }
 
-        if (this.control.isQuit(key)) {
-            this.gameManager.quit();
+    private void handleBattleEndStateInput(final int key) {
+        if (this.control.isEnter(key)) {
+            this.gameManager.setState(State.PLAY);
+            this.gameManager.notify();
         }
     }
 }
