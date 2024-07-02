@@ -5,8 +5,6 @@ import dev.spimy.pokemon.battle.BattleManager;
 import dev.spimy.pokemon.player.controller.InputHandler;
 
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Class to handle input from players
