@@ -2,7 +2,8 @@ package dev.spimy.pokemon.battle;
 
 import dev.spimy.pokemon.GameManager;
 import dev.spimy.pokemon.State;
-import org.jline.utils.InfoCmp;
+import dev.spimy.pokemon.battle.qte.ActionSelection;
+import dev.spimy.pokemon.battle.qte.AttackAction;
 
 import java.util.*;
 
@@ -25,7 +26,6 @@ public class BattleManager {
         this.battleLoop();
     }
 
-    @SuppressWarnings("BusyWait")
     private void battleLoop() {
         while (this.gameManager.getState() == State.BATTLE) {
             System.out.printf("Opponent 1 HP: %s/100%s%n", this.opponents[0], this.caughtPokemons.contains(0) ? "(caught)" : "");
@@ -56,24 +56,33 @@ public class BattleManager {
             final Optional<Integer> catchablePokemon = Arrays.stream(this.opponents).filter(o -> o > 0 && o < 50).findFirst();
 
             if (catchablePokemon.isEmpty()) {
-                this.attack();
+                this.battle();
                 continue;
             }
 
             // TODO: start QTE to choose between attack
             // This simulates the result of the QTE action for choosing attack or attempt catch
-            final boolean isAttack = true;
+            final boolean isBattle = new ActionSelection(this.gameManager, this)
+                    .execute(5)
+                    .isBattle();
 
-            if (isAttack) {
-                this.attack();
+            if (isBattle) {
+                System.out.println("battle");
+                System.out.println(
+                    new AttackAction(this.gameManager, this)
+                            .execute(2)
+                            .getCharged()
+                );
+                this.battle();
                 continue;
             }
 
+            System.out.println("catch");
             this.catchPokemon(Arrays.asList(this.opponents).indexOf(catchablePokemon.get()));
         }
     }
 
-    private void attack() {
+    private void battle() {
         // TODO: randomly choose QTE action
         // Currently just does a random amount of damage
         final Random random = new Random();
