@@ -40,7 +40,7 @@ public abstract class QuickTimeEvent<T> {
         }
     }
 
-    public QuickTimeEvent(GameManager gameManager, BattleManager battleManager) {
+    public QuickTimeEvent(final GameManager gameManager, final BattleManager battleManager) {
         this.random = new Random();
         this.gameManager = gameManager;
         this.battleManager = battleManager;

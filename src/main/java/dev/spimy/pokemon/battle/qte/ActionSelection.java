@@ -6,7 +6,7 @@ import dev.spimy.pokemon.battle.BattleManager;
 public class ActionSelection extends QuickTimeEvent<ActionSelection> {
     private boolean isBattle;
 
-    public ActionSelection(GameManager gameManager, BattleManager battleManager) {
+    public ActionSelection(final GameManager gameManager, final BattleManager battleManager) {
         super(gameManager, battleManager);
     }
 

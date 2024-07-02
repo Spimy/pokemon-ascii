@@ -7,7 +7,7 @@ public class AttackAction extends QuickTimeEvent<AttackAction> {
     private int charged;
     private final int maxCharge = 100;
 
-    public AttackAction(GameManager gameManager, BattleManager battleManager) {
+    public AttackAction(final GameManager gameManager, final BattleManager battleManager) {
         super(gameManager, battleManager);
     }
 
