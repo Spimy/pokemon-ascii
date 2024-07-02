@@ -6,15 +6,6 @@ import dev.spimy.pokemon.player.controller.InputHandler;
 
 import java.util.Random;
 
-/**
- * Class to handle input from players
- * 'Enter' to stop wheel in randomizePokeBalls class
- * 'w' to charge up attack in chargeUpAttack class
- * 'a' to dodge to the left and 'd' to dodge to the right in dodgeAttack class
- * QTEActive to check whether any QTE is running
- * List of private enums to randomize the QTEs
- */
-
 public abstract class QuickTimeEvent<T> {
     protected final Random random;
     protected final GameManager gameManager;
