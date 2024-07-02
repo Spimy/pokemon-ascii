@@ -2,8 +2,7 @@ package dev.spimy.pokemon.player.controller;
 
 import dev.spimy.pokemon.GameManager;
 import dev.spimy.pokemon.State;
-import dev.spimy.pokemon.battle.BattleManager;
-import dev.spimy.pokemon.battle.QuickTimeEvents;
+import dev.spimy.pokemon.battle.qte.QuickTimeEvent;
 import org.jline.terminal.Terminal;
 import org.jline.utils.NonBlockingReader;
 
@@ -14,7 +13,7 @@ public class InputHandler implements Runnable {
     private final Terminal terminal;
     private final Control control;
 
-    private static QuickTimeEvents quickTimeEvents;
+    private static QuickTimeEvent<?> quickTimeEvent;
 
     public InputHandler(final GameManager gameManager) {
         this.gameManager = gameManager;
@@ -38,7 +37,7 @@ public class InputHandler implements Runnable {
                         case State.PAUSE -> this.handlePauseStateInput(key);
                         case State.BATTLEEND -> this.handleBattleEndStateInput(key);
                         case State.BATTLE -> {
-                            if (quickTimeEvents != null) quickTimeEvents.handleInputs(key);
+                            if (quickTimeEvent != null) quickTimeEvent.handleInputs(key);
                         }
 
                     }
@@ -84,12 +83,12 @@ public class InputHandler implements Runnable {
         }
     }
 
-    public static QuickTimeEvents getQuickTimeEvents() {
-        return quickTimeEvents;
+    public static QuickTimeEvent<?> getQuickTimeEvents() {
+        return quickTimeEvent;
     }
 
-    public static void setQuickTimeEvents(QuickTimeEvents quickTimeEvents) {
-        InputHandler.quickTimeEvents = quickTimeEvents;
+    public static void setQuickTimeEvents(QuickTimeEvent<?> quickTimeEvent) {
+        InputHandler.quickTimeEvent = quickTimeEvent;
     }
 
 }
