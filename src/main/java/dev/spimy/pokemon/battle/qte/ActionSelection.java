@@ -16,15 +16,15 @@ public class ActionSelection extends QuickTimeEvent<ActionSelection> {
      */
     @Override
     public ActionSelection execute(final int eventTimeSeconds) {
-        System.out.println("W: Battle | S: Catch");
+        System.out.println("A: Battle | D: Catch");
 
         while (System.currentTimeMillis() < this.startTime + (eventTimeSeconds * 1000L)) {
-            if (this.gameManager.getControl().isUp(qteActionKey)) {
+            if (this.gameManager.getControl().isLeft(qteActionKey)) {
                 this.qteActive = false;
                 this.isBattle = true;
             }
 
-            if (this.gameManager.getControl().isDown(qteActionKey)) {
+            if (this.gameManager.getControl().isRight(qteActionKey)) {
                 this.qteActive = false;
                 this.isBattle = false;
             }
