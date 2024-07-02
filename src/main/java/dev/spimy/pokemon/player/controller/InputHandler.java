@@ -83,10 +83,6 @@ public class InputHandler implements Runnable {
         }
     }
 
-    public static QuickTimeEvent<?> getQuickTimeEvents() {
-        return quickTimeEvent;
-    }
-
     public static void setQuickTimeEvents(QuickTimeEvent<?> quickTimeEvent) {
         InputHandler.quickTimeEvent = quickTimeEvent;
     }
