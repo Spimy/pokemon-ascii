@@ -1,20 +1,19 @@
 package dev.spimy.pokemon.battle.qte;
 
 import dev.spimy.pokemon.GameManager;
-import dev.spimy.pokemon.battle.BattleManager;
 
 public class BattleActionSelection extends QuickTimeEvent<BattleActionSelection> {
     private boolean isDodge = false;
 
-    public BattleActionSelection(final GameManager gameManager, final BattleManager battleManager) {
-        super(gameManager, battleManager);
+    public BattleActionSelection(final GameManager gameManager) {
+        super(gameManager, 2);
     }
 
     @Override
-    public BattleActionSelection execute(final int eventTimeSeconds) {
+    public BattleActionSelection execute() {
         System.out.println("A: Continue | D: Attempt Dodge");
 
-        while (System.currentTimeMillis() < this.startTime + (eventTimeSeconds * 1000L)) {
+        while (System.currentTimeMillis() < this.endTime) {
             if (this.gameManager.getControl().isLeft(qteActionKey)) {
                 this.qteActive = false;
                 this.isDodge = false;

@@ -1,24 +1,19 @@
 package dev.spimy.pokemon.battle.qte;
 
 import dev.spimy.pokemon.GameManager;
-import dev.spimy.pokemon.battle.BattleManager;
 
 public class ActionSelection extends QuickTimeEvent<ActionSelection> {
     private boolean isBattle;
 
-    public ActionSelection(final GameManager gameManager, final BattleManager battleManager) {
-        super(gameManager, battleManager);
+    public ActionSelection(final GameManager gameManager) {
+        super(gameManager, 5);
     }
 
-    /**
-     * @param eventTimeSeconds the amount of time this QTE can last for in seconds
-     * @return the action selection instance
-     */
     @Override
-    public ActionSelection execute(final int eventTimeSeconds) {
+    public ActionSelection execute() {
         System.out.println("A: Battle | D: Catch");
 
-        while (System.currentTimeMillis() < this.startTime + (eventTimeSeconds * 1000L)) {
+        while (System.currentTimeMillis() < this.endTime) {
             if (this.gameManager.getControl().isLeft(qteActionKey)) {
                 this.qteActive = false;
                 this.isBattle = true;

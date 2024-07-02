@@ -1,20 +1,19 @@
 package dev.spimy.pokemon.battle.qte;
 
 import dev.spimy.pokemon.GameManager;
-import dev.spimy.pokemon.battle.BattleManager;
 
 public class DodgeAction extends QuickTimeEvent<DodgeAction> {
     private boolean dodgeLeft;
 
-    public DodgeAction(final GameManager gameManager, final BattleManager battleManager) {
-        super(gameManager, battleManager);
+    public DodgeAction(final GameManager gameManager) {
+        super(gameManager, 2);
     }
 
     @Override
-    public DodgeAction execute(final int eventTimeSeconds) {
+    public DodgeAction execute() {
         System.out.println("A: Dodge Left | D: Dodge Right");
 
-        while (System.currentTimeMillis() < this.startTime + (eventTimeSeconds * 1000L)) {
+        while (System.currentTimeMillis() < this.endTime) {
             if (this.gameManager.getControl().isRight(qteActionKey)) {
                 this.qteActive = false;
                 this.dodgeLeft = false;

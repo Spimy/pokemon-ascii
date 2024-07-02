@@ -1,21 +1,20 @@
 package dev.spimy.pokemon.battle.qte;
 
 import dev.spimy.pokemon.GameManager;
-import dev.spimy.pokemon.battle.BattleManager;
 
 public class AttackAction extends QuickTimeEvent<AttackAction> {
     private int charged;
 
-    public AttackAction(final GameManager gameManager, final BattleManager battleManager) {
-        super(gameManager, battleManager);
+    public AttackAction(final GameManager gameManager) {
+        super(gameManager, 2);
     }
 
     @Override
-    public AttackAction execute(final int eventTimeSeconds) {
+    public AttackAction execute() {
         System.out.println("Tap 'W' Repeatedly to Charge Up");
         final int maxCharge = 100;
 
-        while (System.currentTimeMillis() < this.startTime + (eventTimeSeconds * 1000L)) {
+        while (System.currentTimeMillis() < this.endTime) {
             if (this.gameManager.getControl().isUp(this.qteActionKey)) {
                 final int amount = this.random.nextInt(1, 10);
 

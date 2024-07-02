@@ -72,8 +72,8 @@ public class BattleManager {
                 continue;
             }
 
-            final boolean isBattle = new ActionSelection(this.gameManager, this)
-                    .execute(5)
+            final boolean isBattle = new ActionSelection(this.gameManager)
+                    .execute()
                     .isBattle();
 
             if (isBattle) {
@@ -117,8 +117,8 @@ public class BattleManager {
                 final Random random = new Random();
                 final int charge = random.nextInt(1, 100);
 
-                attemptDodge = new BattleActionSelection(this.gameManager, this)
-                        .execute(2)
+                attemptDodge = new BattleActionSelection(this.gameManager)
+                        .execute()
                         .isDodge();
 
                 if (!attemptDodge) {
@@ -127,8 +127,8 @@ public class BattleManager {
                 }
 
                 final boolean isAttackLeft = this.gameManager.getSuccessChance(50);
-                final boolean isDodgeLeft = new DodgeAction(this.gameManager, this)
-                        .execute(2)
+                final boolean isDodgeLeft = new DodgeAction(this.gameManager)
+                        .execute()
                         .isDodgeLeft();
 
                 if (isAttackLeft && isDodgeLeft) {
@@ -140,7 +140,7 @@ public class BattleManager {
                 System.out.println("Successfully dodged.");
                 break;
             } else {
-                final AttackAction action = new AttackAction(this.gameManager, this).execute(2);
+                final AttackAction action = new AttackAction(this.gameManager).execute();
                 final int charge = action.getCharged();
                 this.attack(playerPokemon, opponent, charge);
             }
