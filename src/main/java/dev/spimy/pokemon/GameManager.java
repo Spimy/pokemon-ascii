@@ -1,5 +1,6 @@
 package dev.spimy.pokemon;
 
+import dev.spimy.pokemon.battle.BattleManager;
 import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.controller.Control;
 import dev.spimy.pokemon.screen.Renderer;
@@ -9,6 +10,7 @@ import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class GameManager {
     final private Terminal terminal;
@@ -107,6 +109,21 @@ public class GameManager {
                         throw new RuntimeException(e);
                     }
                 }
+                case State.BATTLE -> {
+                    this.terminal.puts(InfoCmp.Capability.clear_screen);
+                    new BattleManager(this).startBattle();
+                }
+                case State.BATTLEEND -> {
+                    synchronized (this) {
+                        try {
+                            System.out.println("Press Enter/Return to continue...");
+                            this.wait();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    cleared = false;
+                }
             }
         }
     }
@@ -116,6 +133,7 @@ public class GameManager {
         this.player.move();
         this.renderer.renderPlayer(this.player);
         this.checkDoor();
+        this.checkGrass();
     }
 
     public void checkDoor() {
@@ -150,6 +168,16 @@ public class GameManager {
         this.player.setPosition(coordinates[0], coordinates[1]);
     }
 
+    public void checkGrass() {
+        final String mapChar = this.player.getPosition().getMapChar();
+        if (!mapChar.equals(this.map.getGrass())) return;
+
+        final boolean foundWildPokemon = getSuccessChance(15);
+        if (!foundWildPokemon) return;
+
+        this.setState(State.BATTLE);
+    }
+
     public State getState() {
         return this.state;
     }
@@ -162,5 +190,14 @@ public class GameManager {
         System.out.print("\u001B[H\u001B[2J");
         System.out.print("\u001B[H\u001B[2J");
         System.exit(0);
+    }
+
+    public boolean getSuccessChance(final int percentageSuccess) {
+        if (percentageSuccess <= 0) return false;
+        if (percentageSuccess >= 100) return true;
+
+        final Random random = new Random();
+        final int percent = 100;
+        return random.nextInt(0, percent + 1) > percent - percentageSuccess;
     }
 }
