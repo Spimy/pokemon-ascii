@@ -4,6 +4,8 @@ import dev.spimy.pokemon.GameManager;
 import dev.spimy.pokemon.State;
 import dev.spimy.pokemon.battle.qte.ActionSelection;
 import dev.spimy.pokemon.battle.qte.AttackAction;
+import dev.spimy.pokemon.battle.qte.BattleActionSelection;
+import dev.spimy.pokemon.battle.qte.DodgeAction;
 import dev.spimy.pokemon.pokemon.Pokemon;
 import dev.spimy.pokemon.pokemon.PokemonType;
 
@@ -36,23 +38,7 @@ public class BattleManager {
 
     private void battleLoop() {
         while (this.gameManager.getState() == State.BATTLE) {
-            System.out.printf(
-                    "Opponent 1 HP: %s/%s%s%n",
-                    this.opponents[0].getCurrentHp(),
-                    this.opponents[0].getMaxHp(),
-                    this.caughtPokemons
-                            .stream()
-                            .anyMatch(o -> o.getName().equals(this.opponents[0].getName())) ? "(caught)" : ""
-            );
-            System.out.printf("Opponent 2 HP: %s/%s%s%n",
-                    this.opponents[1].getCurrentHp(),
-                    this.opponents[1].getMaxHp(),
-                    this.caughtPokemons
-                            .stream()
-                            .anyMatch(o -> o.getName().equals(this.opponents[1].getName())) ? "(caught)" : ""
-            );
-            System.out.printf("Player Pokemon 1 HP: %s/100%n", this.playerPokemons[0].getCurrentHp());
-            System.out.printf("Player Pokemon 2 HP: %s/100%n", this.playerPokemons[1].getCurrentHp());
+            this.displayStats();
 
             final boolean caughtAndDeadPokemon = Arrays.stream(this.opponents)
                     .anyMatch(o -> o.getCurrentHp() == 0) && !this.caughtPokemons.isEmpty();
@@ -65,7 +51,6 @@ public class BattleManager {
             // If all opponents Pokémon have 0 HP or if all player Pokémon have 0 HP, the battle is over
             if (caughtAndDeadPokemon || allOpponentPokemonDead || allPokemonCaught || allPlayerPokemonDead) {
                 // TODO: Calculate battle points
-
                 if (allPlayerPokemonDead) {
                     System.out.println("You lost.");
                 } else {
@@ -78,11 +63,12 @@ public class BattleManager {
 
             // If HP is below 50 then the Pokémon can be caught
             final Optional<Pokemon> catchablePokemon = Arrays.stream(this.opponents)
-                    .filter(o -> o.getCurrentHp() > 0 && o.getCurrentHp() < 50)
+                    .filter(o -> o.getCurrentHp() > 0 && o.getCurrentHp() < 50 && !this.caughtPokemons.contains(o))
                     .findFirst();
 
             if (catchablePokemon.isEmpty()) {
                 this.battle();
+                System.out.println();
                 continue;
             }
 
@@ -93,32 +79,67 @@ public class BattleManager {
             if (isBattle) {
                 System.out.println("battle");
                 this.battle();
+                System.out.println();
                 continue;
             }
 
             System.out.println("catch");
             this.catchPokemon(catchablePokemon.get());
+            System.out.println();
         }
     }
 
-    /**
-     *
-     */
+    private void displayStats() {
+        System.out.printf(
+                "Opponent 1 HP: %s/%s%s%n",
+                this.opponents[0].getCurrentHp(),
+                this.opponents[0].getMaxHp(),
+                this.caughtPokemons.contains(this.opponents[0]) ? "(caught)" : ""
+        );
+        System.out.printf("Opponent 2 HP: %s/%s%s%n",
+                this.opponents[1].getCurrentHp(),
+                this.opponents[1].getMaxHp(),
+                this.caughtPokemons.contains(this.opponents[1]) ? "(caught)" : ""
+        );
+        System.out.printf("Player Pokemon 1 HP: %s/100%n", this.playerPokemons[0].getCurrentHp());
+        System.out.printf("Player Pokemon 2 HP: %s/100%n", this.playerPokemons[1].getCurrentHp());
+    }
+
     private void battle() {
         final Pokemon opponent = this.choosePokemon(this.opponents);
         final Pokemon playerPokemon = this.choosePokemon(this.playerPokemons);
 
-        boolean attemptDodge = false;
+        boolean attemptDodge;
         final int opponentIndex = opponent.getSpeed() > playerPokemon.getSpeed() ? 0 : 1;
 
         for (int i = 0; i < 2; i++) {
             if (i == opponentIndex) {
-//                attemptDodge = true;
                 final Random random = new Random();
                 final int charge = random.nextInt(1, 100);
-                this.attack(opponent, playerPokemon, charge);
+
+                attemptDodge = new BattleActionSelection(this.gameManager, this)
+                        .execute(2)
+                        .isDodge();
+
+                if (!attemptDodge) {
+                    this.attack(opponent, playerPokemon, charge);
+                    continue;
+                }
+
+                final boolean isAttackLeft = this.gameManager.getSuccessChance(50);
+                final boolean isDodgeLeft = new DodgeAction(this.gameManager, this)
+                        .execute(2)
+                        .isDodgeLeft();
+
+                if (isAttackLeft && isDodgeLeft) {
+                    System.out.println("Dodge failed.");
+                    this.attack(opponent, playerPokemon, charge);
+                    break;
+                }
+
+                System.out.println("Successfully dodged.");
+                break;
             } else {
-                if (attemptDodge) return;
                 final AttackAction action = new AttackAction(this.gameManager, this).execute(2);
                 final int charge = action.getCharged();
                 this.attack(playerPokemon, opponent, charge);
