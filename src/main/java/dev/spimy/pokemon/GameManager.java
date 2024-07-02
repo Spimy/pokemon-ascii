@@ -192,7 +192,7 @@ public class GameManager {
         System.exit(0);
     }
 
-    public boolean getSuccessChance(final int percentageSuccess) {
+    public boolean getSuccessChance(final double percentageSuccess) {
         if (percentageSuccess <= 0) return false;
         if (percentageSuccess >= 100) return true;
 
