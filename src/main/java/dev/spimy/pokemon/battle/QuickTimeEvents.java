@@ -16,11 +16,10 @@ import java.util.Scanner;
  */
 
 public class QuickTimeEvents {
-    private Scanner scanner;
-    private Random random;
-    private GameManager gameManager;
-    private BattleManager battleManager;
-    private volatile boolean qteActive = false;
+    private final Random random;
+    private final GameManager gameManager;
+    private final BattleManager battleManager;
+    private boolean qteActive = false;
     private QTEType currentQTE;
     private int pressCount = 0;
     private long endTime;
@@ -32,80 +31,45 @@ public class QuickTimeEvents {
     }
 
     public QuickTimeEvents(GameManager gameManager, BattleManager battleManager) {
-        this.scanner = new Scanner(System.in);
         this.random = new Random();
         this.gameManager = gameManager;
         this.battleManager = battleManager;
         InputHandler.setQuickTimeEvents(this);
     }
 
-    public void startQTE(QTEType qteType) {
-        this.currentQTE = qteType;
-        this.pressCount = 0;
-        qteActive = true;
+
+    public void startBattleQTE(QTEType qteType) {
+        // Dodge and Attack
+        long start = System.currentTimeMillis();
+        switch (qteType) {
+            case DODGE_ATTACK:
+                endTime = start + (5 * 1000); // (seconds * 1000ms), 5 seconds
+                System.out.println("Press 'Enter' to stop the wheel!");
+                if (System.currentTimeMillis() > endTime && qteActive) {
+                    qteActive = false;
+                    break;
+                }
+
+            case CHARGE_UP_ATTACK:
+                endTime = start + (10 * 1000); // (seconds * 1000ms), 10 seconds
+                System.out.println("Press 'Enter' to stop the wheel!");
+                if (System.currentTimeMillis() > endTime && qteActive) {
+                    qteActive = false;
+                    break;
+                }
+        }
+    }
+
+    // Catching Pokemon
+    public void catchPokemon(QTEType qteType) {
         long start = System.currentTimeMillis();
         switch (qteType) {
             case RANDOMIZE_POKEBALLS:
                 endTime = start + (30 * 1000); // (seconds * 1000ms), 30 seconds
                 System.out.println("Press 'Enter' to stop the wheel!");
-                new randomizePokeballs().startQTE();
-                break;
-            case CHARGE_UP_ATTACK:
-                endTime = start + (5 * 1000); // (seconds * 1000ms), 5 seconds
-                System.out.println("Spam 'w' to charge up your attack");
-                new chargeUpAttack().startQTE();
-                break;
-            case DODGE_ATTACK:
-                endTime = start + (2 * 1000); // (seconds * 1000ms), 2 seconds
-                System.out.println("Press 'Enter' to stop the wheel!");
-                new dodgeAttack().startQTE();
-                break;
-        }
-    }
-    private class randomizePokeballs {
-        public void startQTE() {
-            while (System.currentTimeMillis() < endTime && qteActive) {
-                // Checks for whether user has inputted the key
-                // Idk if this works
-                // Its the same
-                if (scanner.hasNextLine()) {
-                    handleInputs(scanner.nextLine().charAt(0));
-                }
-            }
-
-            if (qteActive) {
-                qteActive = false;
-                System.out.println("Wheel was not stopped within allocated time.");
-            }
-        }
-    }
-
-    private class chargeUpAttack {
-        public void startQTE() {
-            while (System.currentTimeMillis() < endTime && qteActive) {
-                if (scanner.hasNextLine()) {
-                    handleInputs(scanner.nextLine().charAt(0));
-                }
-            }
-
-            if (qteActive) {
-                qteActive = false;
-                System.out.println("Attack not fully charge. Normal Attack");
-            }
-        }
-    }
-
-    private class dodgeAttack {
-        public void startQTE() {
-            while (System.currentTimeMillis() < endTime && qteActive) {
-                if (scanner.hasNextLine()) {
-                    handleInputs(scanner.nextLine().charAt(0));
-                }
-            }
-
-            if (qteActive) {
-                qteActive = false;
-                System.out.println("Attack not fully charge. Normal Attack");
+                if (System.currentTimeMillis() > endTime && qteActive) {
+                    qteActive = false;
+                    break;
             }
         }
     }
@@ -120,7 +84,6 @@ public class QuickTimeEvents {
                 if (this.gameManager.getControl().isEnter(key)) {
                     qteActive = false;
                     int result = random.nextInt(100) + 1;
-                    // Random numbers in placed, idk how to code this
                     if (result <= 15) {
                         System.out.println("You got a Poké Ball!");
                     } else if (result <= 45) {
