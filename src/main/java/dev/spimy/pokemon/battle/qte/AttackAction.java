@@ -28,10 +28,11 @@ public class AttackAction extends QuickTimeEvent<AttackAction> {
 
                 this.charged += amount;
                 this.qteActionKey = -1;
-                System.out.println(this.charged);
+                System.out.printf("%s -> ", this.charged);
             }
         }
 
+        System.out.println(this.charged);
         this.qteActive = false;
         return this;
     }
