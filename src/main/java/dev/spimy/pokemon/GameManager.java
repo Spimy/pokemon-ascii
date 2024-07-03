@@ -3,6 +3,7 @@ package dev.spimy.pokemon;
 import dev.spimy.pokemon.battle.BattleManager;
 import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.controller.Control;
+import dev.spimy.pokemon.saves.Scoreboard;
 import dev.spimy.pokemon.screen.Renderer;
 import dev.spimy.pokemon.screen.map.GameMap;
 import dev.spimy.pokemon.screen.map.MapLayer;
@@ -16,6 +17,7 @@ public class GameManager {
     final private Terminal terminal;
     final private Control control;
     final private GameMap map;
+    final private Scoreboard scoreboard;
 
     private Player player;
     private Renderer renderer;
@@ -26,6 +28,7 @@ public class GameManager {
         this.terminal = terminal;
         this.control = new Control();
         this.map = new GameMap();
+        this.scoreboard = new Scoreboard();
     }
 
     private void setup() {
@@ -187,6 +190,7 @@ public class GameManager {
     }
 
     public void quit() {
+//        this.scoreboard.updateSaveFile();
         System.out.print("\u001B[H\u001B[2J");
         System.out.print("\u001B[H\u001B[2J");
         System.exit(0);
@@ -203,5 +207,9 @@ public class GameManager {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Scoreboard getScoreboard() {
+        return scoreboard;
     }
 }
