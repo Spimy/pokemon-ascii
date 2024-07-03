@@ -200,4 +200,8 @@ public class GameManager {
         final int percent = 100;
         return random.nextInt(0, percent + 1) > percent - percentageSuccess;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
 }
