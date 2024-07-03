@@ -19,6 +19,7 @@ public abstract class CsvSerializer<T> {
         this.loadSaveFile();
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     protected File getSaveFile() {
         try {
             final File dataFolder = new File(
