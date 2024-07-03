@@ -228,7 +228,10 @@ public class BattleManager {
         final boolean isCrit = this.gameManager.getSuccessChance(from.getCritRate() + extraCritRate);
 
         // Only count if the Pokémon belongs to the player
-        if (isCrit && this.playerPokemons.contains(from)) this.numCrit++;
+        if (isCrit && this.playerPokemons.contains(from)) {
+            System.out.println("Critical hit!");
+            this.numCrit++;
+        }
 
         final int critical = isCrit ? 2 : 1;
         final int constant1 = 2;
@@ -237,8 +240,10 @@ public class BattleManager {
         final double typeMultiplier;
         if (to.getType().getWeakAgainst().contains(from.getType())) {
             typeMultiplier = 1.5;
+            System.out.println("It was very effective!");
         } else if (from.getType().getWeakAgainst().contains(to.getType())) {
             typeMultiplier = 0.5;
+            System.out.println("It was not very effective!");
         } else {
             typeMultiplier = 1;
         }
