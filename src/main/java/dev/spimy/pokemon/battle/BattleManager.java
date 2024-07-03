@@ -4,6 +4,7 @@ import dev.spimy.pokemon.GameManager;
 import dev.spimy.pokemon.State;
 import dev.spimy.pokemon.battle.qte.*;
 import dev.spimy.pokemon.player.Pokeball;
+import dev.spimy.pokemon.player.controller.Direction;
 import dev.spimy.pokemon.pokemon.Pokemon;
 import dev.spimy.pokemon.pokemon.PokemonType;
 
@@ -124,12 +125,16 @@ public class BattleManager {
                     continue;
                 }
 
-                final boolean isAttackLeft = this.gameManager.getSuccessChance(50);
-                final boolean isDodgeLeft = new DodgeAction(this.gameManager)
-                        .execute()
-                        .isDodgeLeft();
+                final Direction attackDirection =
+                        this.gameManager.getSuccessChance(50) ?
+                        Direction.LEFT :
+                        Direction.RIGHT;
 
-                if (isAttackLeft && isDodgeLeft) {
+                final Direction dodgeDirection = new DodgeAction(this.gameManager)
+                        .execute()
+                        .getDirection();
+
+                if (attackDirection == dodgeDirection) {
                     System.out.println("Dodge failed.");
                     this.attack(opponent, playerPokemon, charge);
                     break;
