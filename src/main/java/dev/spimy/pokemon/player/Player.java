@@ -4,16 +4,21 @@ import dev.spimy.pokemon.player.controller.Control;
 import dev.spimy.pokemon.player.controller.Direction;
 import org.jline.terminal.Terminal;
 
+import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Player {
     private final Control control;
     private final Position position;
+    private final HashMap<Pokeball, Integer> inventory = new HashMap<>();
 
     private Direction direction;
 
     public Player(final Terminal terminal, final Control control) {
         this.control = control;
+        this.inventory.put(Pokeball.NORMAL, 10);
+        this.inventory.put(Pokeball.ULTRA, 10);
+        this.inventory.put(Pokeball.MASTER, 10);
 
         final int height = terminal.getHeight();
         final int width = terminal.getWidth();
@@ -66,5 +71,9 @@ public class Player {
     public void setPosition(final int x, final int y) {
         this.position.setCurrX(x);
         this.position.setCurrY(y);
+    }
+
+    public HashMap<Pokeball, Integer> getInventory() {
+        return inventory;
     }
 }
