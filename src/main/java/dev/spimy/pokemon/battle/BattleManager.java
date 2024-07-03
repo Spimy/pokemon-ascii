@@ -136,6 +136,9 @@ public class BattleManager {
         final Pokemon playerPokemon = this.choosePokemon(this.playerPokemons);
         final int chargeToAttack = 20;
 
+        System.out.println();
+        System.out.printf("%s vs %s%n", playerPokemon.getName(), opponent.getName());
+
         boolean attemptDodge;
         final int opponentIndex = opponent.getSpeed() > playerPokemon.getSpeed() ? 0 : 1;
 
@@ -225,10 +228,12 @@ public class BattleManager {
     private int getDamage(final Pokemon from, final Pokemon to, final int charge) {
         final int extraCritThreshold = 80;
         final int extraCritRate = charge >= extraCritThreshold ? 15 : 0;
+
         final boolean isCrit = this.gameManager.getSuccessChance(from.getCritRate() + extraCritRate);
+        final boolean isPlayer = this.playerPokemons.contains(from);
 
         // Only count if the Pokémon belongs to the player
-        if (isCrit && this.playerPokemons.contains(from)) {
+        if (isCrit && isPlayer) {
             System.out.println("Critical hit!");
             this.numCrit++;
         }
@@ -240,10 +245,10 @@ public class BattleManager {
         final double typeMultiplier;
         if (to.getType().getWeakAgainst().contains(from.getType())) {
             typeMultiplier = 1.5;
-            System.out.println("It was very effective!");
+            if (isPlayer) System.out.println("It was very effective!");
         } else if (from.getType().getWeakAgainst().contains(to.getType())) {
             typeMultiplier = 0.5;
-            System.out.println("It was not very effective!");
+            if (isPlayer) System.out.println("It was not very effective!");
         } else {
             typeMultiplier = 1;
         }
