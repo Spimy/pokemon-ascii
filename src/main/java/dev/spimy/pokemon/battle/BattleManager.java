@@ -140,6 +140,8 @@ public class BattleManager {
 
         for (int i = 0; i < 2; i++) {
             if (i == opponentIndex) {
+                if (opponent.getCurrentHp() == 0) continue;
+
                 final Random random = new Random();
                 final int charge = random.nextInt(20, 100);
 
@@ -170,6 +172,8 @@ public class BattleManager {
                 System.out.println("Successfully dodged.");
                 break;
             } else {
+                if (playerPokemon.getCurrentHp() == 0) continue;
+
                 final AttackAction action = new AttackAction(this.gameManager).execute();
                 final int charge = action.getCharged();
                 this.attack(playerPokemon, opponent, charge);
