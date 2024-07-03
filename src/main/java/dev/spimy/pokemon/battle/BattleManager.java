@@ -12,12 +12,12 @@ import java.util.*;
 
 public class BattleManager {
     private final List<Pokemon> opponents = List.of(
-            new Pokemon("Squirtle", PokemonType.WATER, 100, 100, 100, 100, "", 75, 200),
-            new Pokemon("Charmander", PokemonType.FIRE, 100, 100, 100, 100, "", 75, 200)
+            new Pokemon("Golduck", PokemonType.WATER, 321, 321, 210, 100, "", 69, 200),
+            new Pokemon("Flareon", PokemonType.FIRE, 524, 524, 124, 120, "", 32, 200)
     );
     private final List<Pokemon> playerPokemons = List.of(
-            new Pokemon("Squirtle", PokemonType.WATER, 100, 100, 100, 100, "", 75, 200),
-            new Pokemon("Charmander", PokemonType.FIRE, 100, 100, 100, 100, "", 75, 200)
+            new Pokemon("Squirtle", PokemonType.WATER, 428, 428, 144, 105, "", 75, 200),
+            new Pokemon("Charmander", PokemonType.FIRE, 232, 232, 269, 130, "", 47, 200)
     );
 
     private final List<Pokemon> caughtPokemons = new ArrayList<>();
@@ -64,7 +64,12 @@ public class BattleManager {
             // If HP is below 50 then the Pokémon can be caught
             final Optional<Pokemon> catchablePokemon = this.opponents
                     .stream()
-                    .filter(o -> o.getCurrentHp() > 0 && o.getCurrentHp() < 50 && !this.caughtPokemons.contains(o))
+                    .filter(
+                            o -> ((double) o.getCurrentHp() / o.getMaxHp() * 100) > 0
+                                    && ((double) o.getCurrentHp() / o.getMaxHp() * 100) < 50
+                                    && !this.caughtPokemons.contains(o)
+
+                    )
                     .findFirst();
 
             if (catchablePokemon.isEmpty()) {
@@ -92,18 +97,31 @@ public class BattleManager {
 
     private void displayStats() {
         System.out.printf(
-                "Opponent 1 HP: %s/%s%s%n",
+                "Opponent 1 (%s) HP: %s/%s%s%n",
+                this.opponents.getFirst().getName(),
                 this.opponents.getFirst().getCurrentHp(),
                 this.opponents.getFirst().getMaxHp(),
-                this.caughtPokemons.contains(this.opponents.getFirst()) ? "(caught)" : ""
+                this.caughtPokemons.contains(this.opponents.getFirst()) ? " (caught)" : ""
         );
-        System.out.printf("Opponent 2 HP: %s/%s%s%n",
+        System.out.printf(
+                "Opponent 2 (%s) HP: %s/%s%s%n",
+                this.opponents.get(1).getName(),
                 this.opponents.get(1).getCurrentHp(),
                 this.opponents.get(1).getMaxHp(),
-                this.caughtPokemons.contains(this.opponents.get(1)) ? "(caught)" : ""
+                this.caughtPokemons.contains(this.opponents.get(1)) ? " (caught)" : ""
         );
-        System.out.printf("Player Pokemon 1 HP: %s/100%n", this.playerPokemons.getFirst().getCurrentHp());
-        System.out.printf("Player Pokemon 2 HP: %s/100%n", this.playerPokemons.get(1).getCurrentHp());
+        System.out.printf(
+                "Player Pokemon 1 (%s) HP: %s/%s%n",
+                this.playerPokemons.getFirst().getName(),
+                this.playerPokemons.getFirst().getCurrentHp(),
+                this.playerPokemons.getFirst().getMaxHp()
+        );
+        System.out.printf(
+                "Player Pokemon 2 (%s) HP: %s/%s%n",
+                this.playerPokemons.get(1).getName(),
+                this.playerPokemons.get(1).getCurrentHp(),
+                this.playerPokemons.get(1).getMaxHp()
+        );
     }
 
     /**
@@ -133,8 +151,8 @@ public class BattleManager {
 
                 final Direction attackDirection =
                         this.gameManager.getSuccessChance(50) ?
-                        Direction.LEFT :
-                        Direction.RIGHT;
+                                Direction.LEFT :
+                                Direction.RIGHT;
 
                 final Direction dodgeDirection = new DodgeAction(this.gameManager)
                         .execute()
@@ -247,10 +265,10 @@ public class BattleManager {
     /**
      * Formula:
      * BattlePoints =
-     *      MinPoint +
-     *      (P1_HP + P2_HP + [2 * (1 - O1_HP / O1_MAX_HP)] + [2 * (1 - O2_HP / O2_MAX_HP)]) +
-     *      (NumCrit * PointsPerCrit) +
-     *      (NumCatch * PointsPerCatch)
+     * MinPoint +
+     * (P1_HP + P2_HP + [2 * (1 - O1_HP / O1_MAX_HP)] + [2 * (1 - O2_HP / O2_MAX_HP)]) +
+     * (NumCrit * PointsPerCrit) +
+     * (NumCatch * PointsPerCatch)
      *
      * @return the battle points earned for this battle
      */
