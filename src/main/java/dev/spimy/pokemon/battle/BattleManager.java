@@ -134,6 +134,7 @@ public class BattleManager {
     private void battle() {
         final Pokemon opponent = this.choosePokemon(this.opponents);
         final Pokemon playerPokemon = this.choosePokemon(this.playerPokemons);
+        final int chargeToAttack = 20;
 
         boolean attemptDodge;
         final int opponentIndex = opponent.getSpeed() > playerPokemon.getSpeed() ? 0 : 1;
@@ -143,7 +144,7 @@ public class BattleManager {
                 if (opponent.getCurrentHp() == 0) continue;
 
                 final Random random = new Random();
-                final int charge = random.nextInt(20, 100);
+                final int charge = random.nextInt(chargeToAttack, 100);
 
                 attemptDodge = new BattleActionSelection(this.gameManager)
                         .execute()
@@ -176,6 +177,12 @@ public class BattleManager {
 
                 final AttackAction action = new AttackAction(this.gameManager).execute();
                 final int charge = action.getCharged();
+
+                if (charge < chargeToAttack) {
+                    System.out.println("Attack missed.");
+                    continue;
+                }
+
                 this.attack(playerPokemon, opponent, charge);
             }
         }
