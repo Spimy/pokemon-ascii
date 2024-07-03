@@ -15,12 +15,12 @@ public class DodgeAction extends QuickTimeEvent<DodgeAction> {
         System.out.println("A: Dodge Left | D: Dodge Right");
 
         while (System.currentTimeMillis() < this.endTime) {
-            if (this.gameManager.getControl().isRight(qteActionKey)) {
+            if (this.gameManager.getControl().isRight(this.qteActionKey)) {
                 this.qteActive = false;
                 this.direction = Direction.RIGHT;
             }
 
-            if (this.gameManager.getControl().isLeft(qteActionKey)) {
+            if (this.gameManager.getControl().isLeft(this.qteActionKey)) {
                 this.qteActive = false;
                 this.direction = Direction.LEFT;
             }

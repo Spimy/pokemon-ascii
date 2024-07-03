@@ -19,12 +19,12 @@ public class PokeballSelection extends QuickTimeEvent<PokeballSelection> {
         int index = 0;
 
         while (qteActive) {
-            final List<Pokeball> pokeballs = gameManager.getPlayer().getInventory().keySet().stream().toList();
-            pokeball = pokeballs.get(index);
-            System.out.printf("%s ", pokeball);
+            final List<Pokeball> pokeballs = this.gameManager.getPlayer().getInventory().keySet().stream().toList();
+            this.pokeball = pokeballs.get(index);
+            System.out.printf("%s ", this.pokeball);
 
-            if (gameManager.getControl().isEnter(qteActionKey)) {
-                qteActive = false;
+            if (gameManager.getControl().isEnter(this.qteActionKey)) {
+                this.qteActive = false;
             }
 
             index = (index + 1) % pokeballs.size();

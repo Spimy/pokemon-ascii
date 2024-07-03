@@ -14,12 +14,12 @@ public class ActionSelection extends QuickTimeEvent<ActionSelection> {
         System.out.println("A: Battle | D: Catch");
 
         while (System.currentTimeMillis() < this.endTime) {
-            if (this.gameManager.getControl().isLeft(qteActionKey)) {
+            if (this.gameManager.getControl().isLeft(this.qteActionKey)) {
                 this.qteActive = false;
                 this.isBattle = true;
             }
 
-            if (this.gameManager.getControl().isRight(qteActionKey)) {
+            if (this.gameManager.getControl().isRight(this.qteActionKey)) {
                 this.qteActive = false;
                 this.isBattle = false;
             }

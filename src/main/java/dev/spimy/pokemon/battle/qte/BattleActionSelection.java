@@ -14,12 +14,12 @@ public class BattleActionSelection extends QuickTimeEvent<BattleActionSelection>
         System.out.println("A: Continue | D: Attempt Dodge");
 
         while (System.currentTimeMillis() < this.endTime) {
-            if (this.gameManager.getControl().isLeft(qteActionKey)) {
+            if (this.gameManager.getControl().isLeft(this.qteActionKey)) {
                 this.qteActive = false;
                 this.isDodge = false;
             }
 
-            if (this.gameManager.getControl().isRight(qteActionKey)) {
+            if (this.gameManager.getControl().isRight(this.qteActionKey)) {
                 this.qteActive = false;
                 this.isDodge = true;
             }
