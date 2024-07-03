@@ -105,6 +105,10 @@ public class BattleManager {
         System.out.printf("Player Pokemon 2 HP: %s/100%n", this.playerPokemons[1].getCurrentHp());
     }
 
+    /**
+     * If player goes second, then the player can only dodge or ATK
+     * If player goes first, then the player can ATK first and then dodge the opponent ATK
+     */
     private void battle() {
         final Pokemon opponent = this.choosePokemon(this.opponents);
         final Pokemon playerPokemon = this.choosePokemon(this.playerPokemons);
@@ -115,7 +119,7 @@ public class BattleManager {
         for (int i = 0; i < 2; i++) {
             if (i == opponentIndex) {
                 final Random random = new Random();
-                final int charge = random.nextInt(1, 100);
+                final int charge = random.nextInt(20, 100);
 
                 attemptDodge = new BattleActionSelection(this.gameManager)
                         .execute()
