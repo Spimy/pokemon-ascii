@@ -49,6 +49,9 @@ public class BattleManager {
                 System.out.println();
 
                 final int battlePoints = this.getBattlePoints();
+                this.gameManager.getScoreboard().addScore(battlePoints);
+                this.gameManager.getScoreboard().updateSaveFile();
+
                 System.out.printf("Battle Points earned: %s%n", battlePoints);
 
                 if (allPlayerPokemonDead) {
