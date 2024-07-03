@@ -211,7 +211,7 @@ public class BattleManager {
      * - Ultra Ball: 30% (2x)
      * - Master Ball: 100%
      *
-     * @param pokemon the index of the opponent Pokémon in the opponents array
+     * @param pokemon one of the Pokémon in the opponents array
      */
     private void catchPokemon(final Pokemon pokemon) {
         final Pokeball pokeball = new PokeballSelection(this.gameManager).execute().getSelectedPokeball();
