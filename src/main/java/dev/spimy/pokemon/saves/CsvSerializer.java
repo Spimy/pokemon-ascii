@@ -11,7 +11,7 @@ public abstract class CsvSerializer<T> {
     private final String saveFile;
     protected final URL root;
 
-    protected List<T> data = new ArrayList<>();
+    protected final List<T> data = new ArrayList<>();
 
     public CsvSerializer(final String saveFile) {
         this.saveFile = saveFile;
@@ -57,7 +57,6 @@ public abstract class CsvSerializer<T> {
                     index++;
                     continue;
                 }
-                ;
 
                 String[] lineData = line.split(",");
                 rawData.add(lineData);

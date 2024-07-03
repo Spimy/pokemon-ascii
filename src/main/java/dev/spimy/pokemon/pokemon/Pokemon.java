@@ -3,10 +3,10 @@ package dev.spimy.pokemon.pokemon;
 public class Pokemon {
 
     // Name of the Pokémon
-    private String name;
+    private final String name;
 
     // Type of the Pokémon (e.g., fire, water, grass)
-    private PokemonType type;
+    private final PokemonType type;
 
     // Max HP (hit points/health) of the Pokémon
     private int maxHp;
