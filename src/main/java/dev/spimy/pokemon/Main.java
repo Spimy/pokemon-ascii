@@ -16,7 +16,7 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Please restart after resizing terminal. Press Ctrl/CMD+C to exit.");
+            System.out.println("Please restart after resizing terminal. Press Ctrl+C to exit.");
         }
     }
 }
