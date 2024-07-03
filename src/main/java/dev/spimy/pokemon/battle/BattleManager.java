@@ -2,10 +2,8 @@ package dev.spimy.pokemon.battle;
 
 import dev.spimy.pokemon.GameManager;
 import dev.spimy.pokemon.State;
-import dev.spimy.pokemon.battle.qte.ActionSelection;
-import dev.spimy.pokemon.battle.qte.AttackAction;
-import dev.spimy.pokemon.battle.qte.BattleActionSelection;
-import dev.spimy.pokemon.battle.qte.DodgeAction;
+import dev.spimy.pokemon.battle.qte.*;
+import dev.spimy.pokemon.player.Pokeball;
 import dev.spimy.pokemon.pokemon.Pokemon;
 import dev.spimy.pokemon.pokemon.PokemonType;
 
@@ -220,8 +218,17 @@ public class BattleManager {
      * @param pokemon the index of the opponent Pokémon in the opponents array
      */
     private void catchPokemon(final Pokemon pokemon) {
-        final boolean success = this.gameManager.getSuccessChance(10);
+        final Pokeball pokeball = new PokeballSelection(this.gameManager).execute().getSelectedPokeball();
+        this.gameManager.getPlayer().getInventory().put(
+                pokeball,
+                this.gameManager.getPlayer().getInventory().get(pokeball) - 1
+        );
+        System.out.printf("Selected: %s%n", pokeball.name);
+
+        final boolean success = this.gameManager.getSuccessChance(pokeball.successRate);
         if (!success) return;
+
+        System.out.println("Successfully caught.");
         this.caughtPokemons.add(pokemon);
     }
 }
