@@ -15,6 +15,7 @@ public class PokeballSelection extends QuickTimeEvent<PokeballSelection> {
     @Override
     @SuppressWarnings("BusyWait")
     public PokeballSelection execute() {
+        System.out.println("Press Enter to Select Pokéball");
         int index = 0;
 
         while (qteActive) {
