@@ -10,8 +10,6 @@ import dev.spimy.pokemon.pokemon.PokemonType;
 import java.util.*;
 
 public class BattleManager {
-
-    // TODO: Switch int array to pokemon array, int for now is pokemon HP stat
     private final Pokemon[] opponents = new Pokemon[]{
             new Pokemon("Squirtle", PokemonType.WATER, 100, 100, 100, 100, "", 75, 200),
             new Pokemon("Charmander", PokemonType.FIRE, 100, 100, 100, 100, "", 75, 200)
@@ -21,9 +19,7 @@ public class BattleManager {
             new Pokemon("Charmander", PokemonType.FIRE, 100, 100, 100, 100, "", 75, 200)
     };
 
-    // Stores the index of caught Pokémon where the index is the same as the one for array of opponents
     private final List<Pokemon> caughtPokemons = new ArrayList<>();
-
     private final GameManager gameManager;
 
     public BattleManager(final GameManager gameManager) {
