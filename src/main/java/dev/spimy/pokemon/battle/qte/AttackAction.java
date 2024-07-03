@@ -32,7 +32,7 @@ public class AttackAction extends QuickTimeEvent<AttackAction> {
             }
         }
 
-        System.out.println(this.charged);
+        if (this.charged > 0) System.out.println(this.charged);
         this.qteActive = false;
         return this;
     }
