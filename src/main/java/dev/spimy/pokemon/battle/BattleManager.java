@@ -11,17 +11,18 @@ import dev.spimy.pokemon.pokemon.PokemonType;
 import java.util.*;
 
 public class BattleManager {
-    private final Pokemon[] opponents = new Pokemon[]{
+    private final List<Pokemon> opponents = List.of(
             new Pokemon("Squirtle", PokemonType.WATER, 100, 100, 100, 100, "", 75, 200),
             new Pokemon("Charmander", PokemonType.FIRE, 100, 100, 100, 100, "", 75, 200)
-    };
-    private final Pokemon[] playerPokemons = new Pokemon[]{
+    );
+    private final List<Pokemon> playerPokemons = List.of(
             new Pokemon("Squirtle", PokemonType.WATER, 100, 100, 100, 100, "", 75, 200),
             new Pokemon("Charmander", PokemonType.FIRE, 100, 100, 100, 100, "", 75, 200)
-    };
+    );
 
     private final List<Pokemon> caughtPokemons = new ArrayList<>();
     private final GameManager gameManager;
+
 
     public BattleManager(final GameManager gameManager) {
         this.gameManager = gameManager;
@@ -35,13 +36,11 @@ public class BattleManager {
         while (this.gameManager.getState() == State.BATTLE) {
             this.displayStats();
 
-            final boolean caughtAndDeadPokemon = Arrays.stream(this.opponents)
-                    .anyMatch(o -> o.getCurrentHp() == 0) && !this.caughtPokemons.isEmpty();
-            final boolean allOpponentPokemonDead = Arrays.stream(this.opponents)
-                    .allMatch(o -> o.getCurrentHp() == 0);
-            final boolean allPokemonCaught = this.caughtPokemons.size() >= this.opponents.length;
-            final boolean allPlayerPokemonDead = Arrays.stream(this.playerPokemons)
-                    .allMatch(o -> o.getCurrentHp() == 0);
+            final boolean allOpponentPokemonDead = this.opponents.stream().allMatch(o -> o.getCurrentHp() == 0);
+            final boolean allPokemonCaught = this.caughtPokemons.size() >= this.opponents.size();
+            final boolean allPlayerPokemonDead = this.playerPokemons.stream().allMatch(o -> o.getCurrentHp() == 0);
+            final boolean caughtAndDeadPokemon =
+                    this.opponents.stream().anyMatch(o -> o.getCurrentHp() == 0) && !this.caughtPokemons.isEmpty();
 
             // If all opponents Pokémon have 0 HP or if all player Pokémon have 0 HP, the battle is over
             if (caughtAndDeadPokemon || allOpponentPokemonDead || allPokemonCaught || allPlayerPokemonDead) {
@@ -57,7 +56,8 @@ public class BattleManager {
             }
 
             // If HP is below 50 then the Pokémon can be caught
-            final Optional<Pokemon> catchablePokemon = Arrays.stream(this.opponents)
+            final Optional<Pokemon> catchablePokemon = this.opponents
+                    .stream()
                     .filter(o -> o.getCurrentHp() > 0 && o.getCurrentHp() < 50 && !this.caughtPokemons.contains(o))
                     .findFirst();
 
@@ -87,17 +87,17 @@ public class BattleManager {
     private void displayStats() {
         System.out.printf(
                 "Opponent 1 HP: %s/%s%s%n",
-                this.opponents[0].getCurrentHp(),
-                this.opponents[0].getMaxHp(),
-                this.caughtPokemons.contains(this.opponents[0]) ? "(caught)" : ""
+                this.opponents.getFirst().getCurrentHp(),
+                this.opponents.getFirst().getMaxHp(),
+                this.caughtPokemons.contains(this.opponents.getFirst()) ? "(caught)" : ""
         );
         System.out.printf("Opponent 2 HP: %s/%s%s%n",
-                this.opponents[1].getCurrentHp(),
-                this.opponents[1].getMaxHp(),
-                this.caughtPokemons.contains(this.opponents[1]) ? "(caught)" : ""
+                this.opponents.get(1).getCurrentHp(),
+                this.opponents.get(1).getMaxHp(),
+                this.caughtPokemons.contains(this.opponents.get(1)) ? "(caught)" : ""
         );
-        System.out.printf("Player Pokemon 1 HP: %s/100%n", this.playerPokemons[0].getCurrentHp());
-        System.out.printf("Player Pokemon 2 HP: %s/100%n", this.playerPokemons[1].getCurrentHp());
+        System.out.printf("Player Pokemon 1 HP: %s/100%n", this.playerPokemons.getFirst().getCurrentHp());
+        System.out.printf("Player Pokemon 2 HP: %s/100%n", this.playerPokemons.get(1).getCurrentHp());
     }
 
     /**
@@ -150,19 +150,19 @@ public class BattleManager {
         }
     }
 
-    private Pokemon choosePokemon(final Pokemon[] pokemonList) {
+    private Pokemon choosePokemon(final List<Pokemon> pokemonList) {
         final Random random = new Random();
 
         int target = -1;
         boolean isCaught = true;
 
         // If the selected Pokémon has fainted or was caught, select again
-        while (target == -1 || pokemonList[target].getCurrentHp() == 0 || isCaught) {
-            target = random.nextInt(0, pokemonList.length);
-            isCaught = this.caughtPokemons.contains(pokemonList[target]);
+        while (target == -1 || pokemonList.get(target).getCurrentHp() == 0 || isCaught) {
+            target = random.nextInt(0, pokemonList.size());
+            isCaught = this.caughtPokemons.contains(pokemonList.get(target));
         }
 
-        return pokemonList[target];
+        return pokemonList.get(target);
     }
 
     /**
