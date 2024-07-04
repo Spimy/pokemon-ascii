@@ -58,6 +58,10 @@ public abstract class SaveFileHandler<T> {
         }
     }
 
+    public List<T> getData() {
+        return this.data;
+    }
+
     protected List<String[]> getRawData() {
         final File save = this.getSaveFile();
         final List<String[]> rawData = new ArrayList<>();
