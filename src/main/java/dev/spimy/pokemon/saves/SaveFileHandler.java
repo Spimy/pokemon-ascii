@@ -45,6 +45,7 @@ public abstract class SaveFileHandler<T> {
 
         for (String[] row : rawData) {
             final T parsedData = this.parseData(row);
+            if (parsedData == null) continue;
             this.data.add(parsedData);
         }
     }
