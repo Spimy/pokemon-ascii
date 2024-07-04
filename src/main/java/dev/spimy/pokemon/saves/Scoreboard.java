@@ -1,12 +1,10 @@
 package dev.spimy.pokemon.saves;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collections;
-import java.util.List;
 
 public class Scoreboard extends SaveFileHandler<Integer> {
-    private int lowestScoreIndex = 0;
-
     public Scoreboard() {
         super("scoreboard.csv");
         this.data.sort(Collections.reverseOrder());
@@ -44,7 +42,7 @@ public class Scoreboard extends SaveFileHandler<Integer> {
         // Last score is always the lowest score
         if (score < this.data.getLast()) return;
 
-        this.data.set(this.lowestScoreIndex, score);
+        this.data.set(this.data.size() - 1, score);
         this.data.sort(Collections.reverseOrder());
     }
 }
