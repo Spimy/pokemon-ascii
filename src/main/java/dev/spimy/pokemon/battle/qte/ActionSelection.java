@@ -6,7 +6,7 @@ public class ActionSelection extends QuickTimeEvent<ActionSelection> {
     private boolean isBattle;
 
     public ActionSelection(final GameManager gameManager) {
-        super(gameManager, 5);
+        super(gameManager, 8);
     }
 
     @Override
