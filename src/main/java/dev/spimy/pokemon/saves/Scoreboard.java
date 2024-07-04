@@ -1,7 +1,5 @@
 package dev.spimy.pokemon.saves;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collections;
 
 public class Scoreboard extends SaveFileHandler<Integer> {
@@ -11,7 +9,7 @@ public class Scoreboard extends SaveFileHandler<Integer> {
     }
 
     @Override
-    protected Integer parseData(String[] rawDataRow) {
+    protected Integer parseData(final String[] rawDataRow) {
         try {
             return Integer.parseInt(rawDataRow[0]);
         } catch (NumberFormatException _) {
@@ -20,16 +18,8 @@ public class Scoreboard extends SaveFileHandler<Integer> {
     }
 
     @Override
-    public void updateSaveFile() {
-        try (final PrintWriter printWriter = new PrintWriter(this.getSaveFile().getAbsoluteFile())) {
-            printWriter.println(this.headers[0]);
-
-            for (Integer score : this.data) {
-                printWriter.println(score);
-            }
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
+    protected String[] createColumns(final Integer data) {
+        return new String[]{String.valueOf(data)};
     }
 
     public void addBattleScore(final int score) {
