@@ -48,11 +48,11 @@ public class BattleManager {
             if (caughtAndDeadPokemon || allOpponentPokemonDead || allPokemonCaught || allPlayerPokemonDead) {
                 System.out.println();
 
-                final int battlePoints = this.getBattlePoints();
-                this.gameManager.getScoreboard().addScore(battlePoints);
+                final int battleScore = this.getBattleScore();
+                this.gameManager.getScoreboard().addBattleScore(battleScore);
                 this.gameManager.getScoreboard().updateSaveFile();
 
-                System.out.printf("Battle Points earned: %s%n", battlePoints);
+                System.out.printf("Battle Score earned: %s%n", battleScore);
 
                 if (allPlayerPokemonDead) {
                     System.out.println("You lost.");
@@ -288,18 +288,18 @@ public class BattleManager {
 
     /**
      * Formula:
-     * BattlePoints =
-     * MinPoint +
-     * (P1_HP + P2_HP + [2 * (1 - O1_HP / O1_MAX_HP)] + [2 * (1 - O2_HP / O2_MAX_HP)]) +
-     * (NumCrit * PointsPerCrit) +
-     * (NumCatch * PointsPerCatch)
+     * BattleScore =
+     *      MinScore +
+     *      (P1_HP + P2_HP + [2 * (1 - O1_HP / O1_MAX_HP)] + [2 * (1 - O2_HP / O2_MAX_HP)]) +
+     *      (NumCrit * ScorePerCrit) +
+     *      (NumCatch * ScorePerCatch)
      *
-     * @return the battle points earned for this battle
+     * @return the battle score earned for this battle
      */
-    private int getBattlePoints() {
-        final int minPoint = 1000;
-        final int pointsPerCrit = 500;
-        final int pointsPerCatch = 200;
+    private int getBattleScore() {
+        final int minScore = 1000;
+        final int scorePerCrit = 500;
+        final int scorePerCatch = 200;
 
         final int playerPokemonTotalHp = this.playerPokemons
                 .stream()
@@ -311,9 +311,9 @@ public class BattleManager {
                 .mapToDouble((p) -> 2 * (1 - ((double) p.getCurrentHp() / p.getMaxHp())))
                 .reduce(0, Double::sum);
 
-        final int critPoints = this.numCrit * pointsPerCrit;
-        final int catchPoints = this.numSuccessfulCatch * pointsPerCatch;
+        final int critScore = this.numCrit * scorePerCrit;
+        final int catchScore = this.numSuccessfulCatch * scorePerCatch;
 
-        return (int) (minPoint + playerPokemonTotalHp + opponentHpPercentage + critPoints + catchPoints);
+        return (int) (minScore + playerPokemonTotalHp + opponentHpPercentage + critScore + catchScore);
     }
 }
