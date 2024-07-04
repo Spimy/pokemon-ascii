@@ -7,13 +7,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CsvSerializer<T> {
+public abstract class SaveFileHandler<T> {
     private final String saveFile;
     protected final URL root;
 
     protected final List<T> data = new ArrayList<>();
 
-    public CsvSerializer(final String saveFile) {
+    public SaveFileHandler(final String saveFile) {
         this.saveFile = saveFile;
         this.root = getClass().getProtectionDomain().getCodeSource().getLocation();
         this.loadSaveFile();

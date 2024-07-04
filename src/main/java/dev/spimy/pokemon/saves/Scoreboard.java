@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Collections;
 import java.util.List;
 
-public class Scoreboard extends CsvSerializer<Integer> {
+public class Scoreboard extends SaveFileHandler<Integer> {
     private int lowestScoreIndex = 0;
 
     public Scoreboard() {
