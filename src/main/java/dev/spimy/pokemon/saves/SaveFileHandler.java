@@ -38,8 +38,16 @@ public abstract class SaveFileHandler<T> {
         }
     }
 
-    protected abstract void loadSaveFile();
+    protected void loadSaveFile() {
+        final List<String[]> rawData = this.getRawData();
 
+        for (String[] row : rawData) {
+            final T parsedData = this.parseData(row);
+            this.data.add(parsedData);
+        }
+    }
+
+    protected abstract T parseData(String[] rawDataRow);
     public abstract void updateSaveFile();
 
     protected List<String[]> getRawData() {
@@ -64,7 +72,7 @@ public abstract class SaveFileHandler<T> {
 
                 index++;
             }
-
+            bufferedReader.close();
         } catch (final IOException e) {
             return rawData;
         }

@@ -9,23 +9,15 @@ public class Scoreboard extends SaveFileHandler<Integer> {
 
     public Scoreboard() {
         super("scoreboard.csv");
+        this.data.sort(Collections.reverseOrder());
     }
 
     @Override
-    protected void loadSaveFile() {
-        final List<String[]> rawData = this.getRawData();
-
-        for (int i = 0; i < rawData.size(); i++) {
-            for (final String data : rawData.get(i)) {
-                try {
-                    final int score = Integer.parseInt(data);
-                    this.data.add(Integer.parseInt(data));
-
-                    if (score < this.data.get(this.lowestScoreIndex)) {
-                        this.lowestScoreIndex = i;
-                    }
-                } catch (NumberFormatException _) {}
-            }
+    protected Integer parseData(String[] rawDataRow) {
+        try {
+            return Integer.parseInt(rawDataRow[0]);
+        } catch (NumberFormatException _) {
+            return null;
         }
     }
 
@@ -42,14 +34,15 @@ public class Scoreboard extends SaveFileHandler<Integer> {
         }
     }
 
-    public void addScore(final int score) {
+    public void addBattleScore(final int score) {
         if (this.data.size() < 5) {
             this.data.add(score);
             this.data.sort(Collections.reverseOrder());
             return;
         }
 
-        if (score < this.data.get(this.lowestScoreIndex)) return;
+        // Last score is always the lowest score
+        if (score < this.data.getLast()) return;
 
         this.data.set(this.lowestScoreIndex, score);
         this.data.sort(Collections.reverseOrder());
