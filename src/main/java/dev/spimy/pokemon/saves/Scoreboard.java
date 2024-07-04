@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public class Scoreboard extends SaveFileHandler<Integer> {
     public Scoreboard() {
-        super("scoreboard.csv");
+        super("scoreboard", new String[]{"Top 5 Score"});
         this.data.sort(Collections.reverseOrder());
     }
 
@@ -22,7 +22,7 @@ public class Scoreboard extends SaveFileHandler<Integer> {
     @Override
     public void updateSaveFile() {
         try (final PrintWriter printWriter = new PrintWriter(this.getSaveFile().getAbsoluteFile())) {
-            printWriter.println("Top 5 Score");
+            printWriter.println(this.headers[0]);
 
             for (Integer score : this.data) {
                 printWriter.println(score);

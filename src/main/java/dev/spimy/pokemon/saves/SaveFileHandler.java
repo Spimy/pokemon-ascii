@@ -1,6 +1,9 @@
 package dev.spimy.pokemon.saves;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -10,12 +13,14 @@ import java.util.List;
 public abstract class SaveFileHandler<T> {
     private final String saveFile;
     protected final URL root;
+    protected final String[] headers;
 
     protected final List<T> data = new ArrayList<>();
 
-    public SaveFileHandler(final String saveFile) {
-        this.saveFile = saveFile;
+    public SaveFileHandler(final String fileName, final String[] headers) {
+        this.saveFile = fileName.concat(".csv");
         this.root = getClass().getProtectionDomain().getCodeSource().getLocation();
+        this.headers = headers;
         this.loadSaveFile();
     }
 
