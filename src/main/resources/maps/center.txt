@@ -17,6 +17,6 @@ ______________________________________________________________________
 |                                                     /              |
 |________________________|________X________|_________/_______________|
 
-HOSPITAL ✽
+HOSPITAL CENTRE ✽
 > Come here to heal your Pokemon
-    - You can heal your pokemon at the '+' in HEAL
+    - You can heal your Pokemon at the '+' in HEAL
