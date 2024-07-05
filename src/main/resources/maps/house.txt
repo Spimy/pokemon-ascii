@@ -18,4 +18,5 @@ ______________________________________________________________________
 |________________________|________X________|_________/_______________|
 
 HOSPITAL ✽
-> A place to heal your Pokemon
+> Come here to heal your Pokemon
+    - You can heal your pokemon at the '+' in HEAL
