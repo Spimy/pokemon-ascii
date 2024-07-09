@@ -18,6 +18,6 @@ ______________________________________________________________________
 |                                                                    |
 |_________________________________X__________________________________|
 
-POKEMON CENTRE
+POKEMON CENTRE ☉
 > Player centre for players to explore
    -A place for players to explore (No functionality for this section)

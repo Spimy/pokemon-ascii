@@ -1,18 +1,24 @@
 ______________________________________________________________________
-|                          |             |                           |
-|                          |             |                           |
-|                          |_____________|                           |
-|                                                                    |
-|                               Store                                |
-|                                                                    |
-|                                                                    |
-|                                                                    |
-|                                                                    |
-|                                                                    |
-|                                                                    |
-|                                                                    |
+|POKE BALL             | P |              | P |            ULTRA BALL|
+|                      | A |              | A |                      |
+|==========|>|         | Y |              | Y |         |\|==========|
+|                    P |___|              |___| U                    |
+|==========|>|                                          |\|==========|
+|__________________________|              |__________________________|
+|MASTER BALL           | P |              \  STOREROOM               |
+|                      | A |               \                         |
+|==========|<|         | Y |                \                        |
+|                    M |___|                 \                       |
+|==========|<|                                \                      |
+|__________________________|                   \_____________________|
 |                                                                    |
 |                                                                    |
 |                                                                    |
 |                                                                    |
 |_________________________________X__________________________________|
+
+POKEMON STORE
+> Allow players to buy poké ball which can be used in battle
+    - You can purchase a Poké Ball at the 'P' in POKE BALL
+    - You can purchase an Ultra Ball at the 'U' in ULTRA BALL
+    - You can purchase a Master Ball at the 'M' in MASTER BALL
