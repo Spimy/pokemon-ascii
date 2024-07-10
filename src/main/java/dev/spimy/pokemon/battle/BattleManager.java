@@ -23,6 +23,7 @@ public class BattleManager {
 
     private int numCrit = 0;
     private int numSuccessfulCatch = 0;
+    private int turnsUntilCatchable = 0;
 
     public BattleManager(final GameManager gameManager) {
         this.gameManager = gameManager;
@@ -49,8 +50,6 @@ public class BattleManager {
     }
 
     private void battleLoop() {
-
-
         while (this.gameManager.getState() == State.BATTLE) {
             this.displayStats();
 
@@ -95,7 +94,9 @@ public class BattleManager {
                     )
                     .findFirst();
 
-            if (catchablePokemon.isEmpty() || this.gameManager.getPlayer().getInventorySave().getTotalPokeballs() == 0) {
+            final boolean hasNoPokeballs = this.gameManager.getPlayer().getInventorySave().getTotalPokeballs() == 0;
+            if (catchablePokemon.isEmpty() || hasNoPokeballs || this.turnsUntilCatchable != 0) {
+                this.turnsUntilCatchable--;
                 this.battle();
                 System.out.println();
                 continue;
@@ -299,7 +300,10 @@ public class BattleManager {
         System.out.printf("Selected: %s%n", pokeball.name);
 
         final boolean success = this.gameManager.getSuccessChance(pokeball.successRate);
-        if (!success) return;
+        if (!success) {
+            this.turnsUntilCatchable += 2;
+            return;
+        }
 
         System.out.println("Successfully caught.");
 
