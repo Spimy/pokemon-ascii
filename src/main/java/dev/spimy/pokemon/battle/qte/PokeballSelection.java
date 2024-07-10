@@ -18,7 +18,7 @@ public class PokeballSelection extends QuickTimeEvent<PokeballSelection> {
         System.out.println("Press Enter to Select Pokéball");
         int index = 0;
 
-        while (qteActive) {
+        while (this.qteActive) {
             final List<Pokeball> pokeballs = this.gameManager.getPlayer().getInventory().keySet().stream().toList();
             this.pokeball = pokeballs.get(index);
             System.out.printf("%s ", this.pokeball);
