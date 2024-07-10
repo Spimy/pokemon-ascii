@@ -6,7 +6,7 @@ import dev.spimy.pokemon.pokemon.Pokemon;
 import java.util.List;
 
 public class PokemonSelection extends QuickTimeEvent<PokemonSelection> {
-    private List<Pokemon> pokemons;
+    private final List<Pokemon> pokemons;
     private int pokemonIndex;
 
     public PokemonSelection(final GameManager gameManager, final int eventTimeSeconds, final List<Pokemon> pokemons) {
