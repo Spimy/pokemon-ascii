@@ -20,10 +20,7 @@ public class Pokemon {
     // Speed of the Pokémon
     private double speed;
 
-    // Current status of the Pokémon (e.g., healthy, poisoned, paralyzed)
-    private String status;
-
-    private float critRate;
+    private double critRate;
 
     private int exp;
 
@@ -35,8 +32,7 @@ public class Pokemon {
             final int currentHp,
             final double attackPower,
             final double speed,
-            final String status,
-            final float critRate,
+            final double critRate,
             final int exp
     ) {
         this.name = name;
@@ -45,7 +41,6 @@ public class Pokemon {
         this.currentHp = currentHp;
         this.attackPower = attackPower;
         this.speed = speed;
-        this.status = status;
         this.critRate = critRate;
         this.exp = exp;
     }
@@ -91,19 +86,11 @@ public class Pokemon {
         this.speed = speed;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(final String status) {
-        this.status = status;
-    }
-
-    public float getCritRate() {
+    public double getCritRate() {
         return critRate;
     }
 
-    public void setCritRate(float critRate) {
+    public void setCritRate(final double critRate) {
         this.critRate = critRate;
     }
 
@@ -111,7 +98,7 @@ public class Pokemon {
         return exp;
     }
 
-    public void setExp(int exp) {
+    public void setExp(final int exp) {
         this.exp = exp;
     }
 
@@ -127,6 +114,21 @@ public class Pokemon {
 
         final double level = Math.floor((Math.log((double) this.exp / baseExp) / Math.log(growthRate)) + 1);
         return (int) level;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "%s,%s,%s,%s,%s,%s,%s,%s",
+            this.name,
+            this.type,
+            this.maxHp,
+            this.currentHp,
+            this.attackPower,
+            this.speed,
+            this.critRate,
+            this.exp
+        );
     }
 }
 
