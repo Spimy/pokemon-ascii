@@ -7,6 +7,7 @@ import dev.spimy.pokemon.player.Pokeball;
 import dev.spimy.pokemon.player.controller.Direction;
 import dev.spimy.pokemon.pokemon.Pokemon;
 import dev.spimy.pokemon.pokemon.PokemonType;
+import dev.spimy.pokemon.saves.OwnedPokemon;
 
 import java.util.*;
 
@@ -15,11 +16,8 @@ public class BattleManager {
             new Pokemon("Golduck", PokemonType.WATER, 321, 321, 210, 100, 69, 200),
             new Pokemon("Flareon", PokemonType.FIRE, 524, 524, 124, 120, 32, 200)
     );
-    private final List<Pokemon> playerPokemons = List.of(
-            new Pokemon("Squirtle", PokemonType.WATER, 428, 428, 144, 105, 75, 200),
-            new Pokemon("Charmander", PokemonType.FIRE, 232, 232, 269, 130, 47, 200)
-    );
 
+    private final List<Pokemon> playerPokemons;
     private final List<Pokemon> caughtPokemons = new ArrayList<>();
     private final GameManager gameManager;
 
@@ -28,6 +26,22 @@ public class BattleManager {
 
     public BattleManager(final GameManager gameManager) {
         this.gameManager = gameManager;
+
+        OwnedPokemon ownedPokemon = this.gameManager.getPlayer().getOwnedPokemon();
+        List<Pokemon> playerPokemons = new ArrayList<>(ownedPokemon.getData());;
+
+        ownedPokemon.tabulate();
+
+        int pokemon1Index = new PokemonSelection(this.gameManager, 30, playerPokemons)
+                .execute()
+                .getPokemonIndex();
+        Pokemon pokemon1 = playerPokemons.get(pokemon1Index);
+
+        System.out.println();
+        playerPokemons.remove(pokemon1Index);
+
+        Pokemon pokemon2 = playerPokemons.get(new Random().nextInt(playerPokemons.size()));
+        this.playerPokemons = List.of(pokemon1, pokemon2);
     }
 
     public void startBattle() {
@@ -35,6 +49,8 @@ public class BattleManager {
     }
 
     private void battleLoop() {
+
+
         while (this.gameManager.getState() == State.BATTLE) {
             this.displayStats();
 
@@ -59,6 +75,9 @@ public class BattleManager {
                 } else {
                     System.out.println("You won.");
                 }
+
+                this.caughtPokemons.forEach(p -> this.gameManager.getPlayer().getOwnedPokemon().addPokemon(p));
+                this.gameManager.getPlayer().getOwnedPokemon().updateSaveFile();
 
                 this.gameManager.setState(State.BATTLEEND);
                 return;
