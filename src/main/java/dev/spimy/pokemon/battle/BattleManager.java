@@ -28,7 +28,7 @@ public class BattleManager {
         this.gameManager = gameManager;
 
         OwnedPokemon ownedPokemon = this.gameManager.getPlayer().getOwnedPokemon();
-        List<Pokemon> playerPokemons = new ArrayList<>(ownedPokemon.getData());;
+        List<Pokemon> playerPokemons = new ArrayList<>(ownedPokemon.getData());
 
         ownedPokemon.tabulate();
 
