@@ -13,8 +13,8 @@ import java.util.*;
 
 public class BattleManager {
     private final List<Pokemon> opponents = List.of(
-            new Pokemon("Golduck", PokemonType.WATER, 321, 321, 210, 100, 69, 200),
-            new Pokemon("Flareon", PokemonType.FIRE, 524, 524, 124, 120, 32, 200)
+            new Pokemon("Golduck", PokemonType.WATER, 321, 10, 210, 100, 69, 200),
+            new Pokemon("Flareon", PokemonType.FIRE, 524, 10, 124, 120, 32, 200)
     );
 
     private final List<Pokemon> playerPokemons;
@@ -78,6 +78,7 @@ public class BattleManager {
 
                 this.caughtPokemons.forEach(p -> this.gameManager.getPlayer().getOwnedPokemon().addPokemon(p));
                 this.gameManager.getPlayer().getOwnedPokemon().updateSaveFile();
+                this.gameManager.getPlayer().getInventorySave().updateSaveFile();
 
                 this.gameManager.setState(State.BATTLEEND);
                 return;
@@ -94,7 +95,7 @@ public class BattleManager {
                     )
                     .findFirst();
 
-            if (catchablePokemon.isEmpty()) {
+            if (catchablePokemon.isEmpty() || this.gameManager.getPlayer().getInventorySave().getTotalPokeballs() == 0) {
                 this.battle();
                 System.out.println();
                 continue;
@@ -105,13 +106,13 @@ public class BattleManager {
                     .isBattle();
 
             if (isBattle) {
-                System.out.println("battle");
+                System.out.println("Battle");
                 this.battle();
                 System.out.println();
                 continue;
             }
 
-            System.out.println("catch");
+            System.out.println("Catch");
             this.catchPokemon(catchablePokemon.get());
             System.out.println();
         }
@@ -290,9 +291,10 @@ public class BattleManager {
      */
     private void catchPokemon(final Pokemon pokemon) {
         final Pokeball pokeball = new PokeballSelection(this.gameManager).execute().getSelectedPokeball();
-        this.gameManager.getPlayer().getInventory().put(
+
+        this.gameManager.getPlayer().getInventorySave().getPokeballs().put(
                 pokeball,
-                this.gameManager.getPlayer().getInventory().get(pokeball) - 1
+                this.gameManager.getPlayer().getInventorySave().getPokeballs().get(pokeball) - 1
         );
         System.out.printf("Selected: %s%n", pokeball.name);
 
@@ -309,7 +311,7 @@ public class BattleManager {
      * Formula:
      * BattleScore =
      *      MinScore +
-     *      (P1_HP + P2_HP + [2 * (1 - O1_HP / O1_MAX_HP)] + [2 * (1 - O2_HP / O2_MAX_HP)]) +
+     *      (P1_HP + P2_HP + [2 * (RAND(300, 501) - O1_HP / O1_MAX_HP)] + [RAND(300, 501) * (1 - O2_HP / O2_MAX_HP)]) +
      *      (NumCrit * ScorePerCrit) +
      *      (NumCatch * ScorePerCatch)
      *
@@ -320,6 +322,8 @@ public class BattleManager {
         final int scorePerCrit = 500;
         final int scorePerCatch = 200;
 
+        final Random random = new Random();
+
         final int playerPokemonTotalHp = this.playerPokemons
                 .stream()
                 .mapToInt(Pokemon::getCurrentHp)
@@ -327,7 +331,7 @@ public class BattleManager {
 
         final double opponentHpPercentage = this.opponents
                 .stream()
-                .mapToDouble((p) -> 2 * (1 - ((double) p.getCurrentHp() / p.getMaxHp())))
+                .mapToDouble((p) -> random.nextInt(300, 501) * (1 - ((double) p.getCurrentHp() / p.getMaxHp())))
                 .reduce(0, Double::sum);
 
         final int critScore = this.numCrit * scorePerCrit;
