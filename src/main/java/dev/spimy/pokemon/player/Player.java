@@ -2,6 +2,7 @@ package dev.spimy.pokemon.player;
 
 import dev.spimy.pokemon.player.controller.Control;
 import dev.spimy.pokemon.player.controller.Direction;
+import dev.spimy.pokemon.saves.OwnedPokemon;
 import org.jline.terminal.Terminal;
 
 import java.util.HashMap;
@@ -11,6 +12,8 @@ public class Player {
     private final Control control;
     private final Position position;
     private final HashMap<Pokeball, Integer> inventory = new HashMap<>();
+
+    private final OwnedPokemon ownedPokemon = new OwnedPokemon();
 
     private Direction direction;
 
@@ -75,5 +78,9 @@ public class Player {
 
     public HashMap<Pokeball, Integer> getInventory() {
         return inventory;
+    }
+
+    public OwnedPokemon getOwnedPokemon() {
+        return ownedPokemon;
     }
 }
