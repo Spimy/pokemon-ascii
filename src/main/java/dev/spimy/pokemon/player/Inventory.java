@@ -4,10 +4,12 @@ import java.util.HashMap;
 
 public class Inventory {
     private int exp;
-    private HashMap<Pokeball, Integer> pokeballs;
+    private int money;
+    private final HashMap<Pokeball, Integer> pokeballs;
 
-    public Inventory(int exp, HashMap<Pokeball, Integer> pokeballs) {
+    public Inventory(final int exp, final int money, final HashMap<Pokeball, Integer> pokeballs) {
         this.exp = exp;
+        this.money = money;
         this.pokeballs = pokeballs;
     }
 
@@ -17,6 +19,14 @@ public class Inventory {
 
     public void setExp(final int exp) {
         this.exp = exp;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     public HashMap<Pokeball, Integer> getPokeballs() {
