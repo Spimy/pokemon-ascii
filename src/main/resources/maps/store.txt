@@ -17,8 +17,8 @@ ______________________________________________________________________
 |                                                                    |
 |_________________________________X__________________________________|
 
-POKEMON STORE
+POKEBALL STORE
 > Allow players to buy poké ball which can be used in battle
-    - You can purchase a Poké Ball at the 'P' in POKE BALL
-    - You can purchase an Ultra Ball at the 'U' in ULTRA BALL
-    - You can purchase a Master Ball at the 'M' in MASTER BALL
+   - You can purchase a Poké Ball at the 'P' in POKE BALL     : $120
+   - You can purchase an Ultra Ball at the 'U' in ULTRA BALL  : $180
+   - You can purchase a Master Ball at the 'M' in MASTER BALL : $500
