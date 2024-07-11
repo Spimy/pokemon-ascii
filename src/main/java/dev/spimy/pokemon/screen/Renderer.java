@@ -177,6 +177,19 @@ public class Renderer {
         this.updateScreen();
     }
 
+    public void renderHealed() {
+        this.drawBorder();
+        this.renderMetadata();
+
+        final int BOTTOM_MARGIN = 2;
+        final String[] dialogueArray = Ascii.getHealedDialogue().getContent().split("\n");
+        final int startRow = this.terminal.getHeight() - dialogueArray.length - BOTTOM_MARGIN;
+
+        this.renderContent(dialogueArray, startRow, Ascii.getHealedDialogue().getColor());
+
+        this.updateScreen();
+    }
+
     private int renderLogo() {
         final String[] logoArray = Ascii.getLogo().getContent().split("\n");
         final int startRow = (int) Math.floor(this.terminal.getHeight() * 0.2);

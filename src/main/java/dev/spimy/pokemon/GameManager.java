@@ -133,6 +133,18 @@ public class GameManager {
                     }
                     cleared = false;
                 }
+                case State.HEAL -> {
+                    try {
+                        this.renderer.renderHealed();
+
+                        Thread.sleep(1500);
+                        cleared = false;
+
+                        this.setState(State.PLAY);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }
@@ -141,9 +153,11 @@ public class GameManager {
         this.player.setDirection(key);
         this.player.move();
         this.renderer.renderPlayer(this.player);
+
         this.checkDoor();
         this.checkGrass();
         this.checkPurchase();
+        this.checkHeal();
     }
 
     public void checkDoor() {
@@ -227,6 +241,17 @@ public class GameManager {
         }
 
         this.getPlayer().getInventorySave().updateSaveFile();
+    }
+
+    public void checkHeal() {
+        if (this.map.getCurrentMap() != MapLayer.CENTER) return;
+        final char selectedChar = this.player.getPosition().getMapChar().charAt(0);
+        if (selectedChar != '+') return;
+
+        this.getPlayer().getOwnedPokemon().getData().forEach(p -> p.setCurrentHp(p.getMaxHp()));
+        this.getPlayer().getOwnedPokemon().updateSaveFile();
+
+        this.setState(State.HEAL);
     }
 
     public void checkGrass() {
