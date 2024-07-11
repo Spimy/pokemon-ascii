@@ -293,7 +293,7 @@ public class BattleManager {
     private void catchPokemon(final Pokemon pokemon) {
         final Pokeball pokeball = new PokeballSelection(this.gameManager).execute().getSelectedPokeball();
 
-        this.gameManager.getPlayer().getInventorySave().getPokeballs().put(
+        this.gameManager.getPlayer().getInventorySave().getData().getFirst().getPokeballs().put(
                 pokeball,
                 this.gameManager.getPlayer().getInventorySave().getPokeballs().get(pokeball) - 1
         );
