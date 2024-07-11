@@ -103,17 +103,14 @@ public class Pokemon {
     }
 
     /**
-     * Level is scaled exponentially based on the exp of the Pokémon.
-     * For each level, the amount of exp required to level up again is 1.5x the previous amount of exp.
+     * The total exp required for the next level is calculated through current exp + current level * base exp
+     * In the case of 500 base exp, total exp for level 1 to level 5 are as such: 0, 500, 1500, 3000, 5000
      *
      * @return level of the Pokémon
      */
     public int getLevel() {
         final int baseExp = 500;
-        final double growthRate = 1.5;
-
-        final double level = Math.floor((Math.log((double) this.exp / baseExp) / Math.log(growthRate)) + 1);
-        return (int) level;
+        return (int) Math.floor((1 + Math.sqrt(1 + 8 * (double) this.exp / baseExp)) / 2);
     }
 
     @Override
