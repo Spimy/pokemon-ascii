@@ -3,7 +3,7 @@ package dev.spimy.pokemon.battle.qte;
 import dev.spimy.pokemon.GameManager;
 
 public class ActionSelection extends QuickTimeEvent<ActionSelection> {
-    private boolean isBattle;
+    private boolean isCatch;
 
     public ActionSelection(final GameManager gameManager) {
         super(gameManager, 8);
@@ -16,12 +16,12 @@ public class ActionSelection extends QuickTimeEvent<ActionSelection> {
         while (System.currentTimeMillis() < this.endTime) {
             if (this.gameManager.getControl().isLeft(this.qteActionKey)) {
                 this.qteActive = false;
-                this.isBattle = true;
+                this.isCatch = false;
             }
 
             if (this.gameManager.getControl().isRight(this.qteActionKey)) {
                 this.qteActive = false;
-                this.isBattle = false;
+                this.isCatch = true;
             }
 
             if (this.qteActive) continue;
@@ -29,11 +29,11 @@ public class ActionSelection extends QuickTimeEvent<ActionSelection> {
         }
 
         this.qteActive = false;
-        this.isBattle = true;
+        this.isCatch = false;
         return this;
     }
 
-    public boolean isBattle() {
-        return this.isBattle;
+    public boolean isCatch() {
+        return this.isCatch;
     }
 }
