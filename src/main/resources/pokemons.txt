@@ -1,17 +1,17 @@
-Pikachu : ELECTRIC
+Pikachu : ELECTRIC : STARTER
 Raichu : ELECTRIC
 Pichu : ELECTRIC
-Eevee : NORMAL
+Eevee : NORMAL : STARTER
 Vaporeon : WATER
 Jolteon : ELECTRIC
 Flareon : FIRE
-Charmander : FIRE
+Charmander : FIRE : STARTER
 Charmeleon : FIRE
 Charizard : FIRE
-Bulbasaur : GRASS
+Bulbasaur : GRASS : STARTER
 Ivysaur : GRASS
 Venusaur : GRASS
-Squirtle : WATER
+Squirtle : WATER : STARTER
 Wartortle : WATER
 Blastoise : WATER
 Weedle : BUG

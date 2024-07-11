@@ -7,19 +7,31 @@ import java.util.List;
 
 public class PokemonSelection extends QuickTimeEvent<PokemonSelection> {
     private final List<Pokemon> pokemons;
+    private final boolean pickStarter;
+
     private int pokemonIndex;
 
-    public PokemonSelection(final GameManager gameManager, final int eventTimeSeconds, final List<Pokemon> pokemons) {
+    public PokemonSelection(
+            final GameManager gameManager,
+            final int eventTimeSeconds,
+            final List<Pokemon> pokemons,
+            final boolean pickStarter
+    ) {
         super(gameManager, eventTimeSeconds);
         this.pokemons = pokemons;
+        this.pickStarter = pickStarter;
     }
 
     @Override
     @SuppressWarnings("BusyWait")
     public PokemonSelection execute() {
-        System.out.println("Press Enter to Select Pokémon. Do so wisely as the second Pokémon will be completely random!");
-        int index = 0;
+        if (this.pickStarter) {
+            System.out.println("Press Enter to Select Starter Pokémon. Do so wisely as your second starter will be completely random!");
+        } else {
+            System.out.println("Press Enter to Select Pokémon. Do so wisely as the second Pokémon will be completely random!");
+        }
 
+        int index = 0;
         final int longestWaitTime = 1000;
         final int shortestWaitTime = 50;
         final int waitTime = Math.max(longestWaitTime / this.pokemons.size(), shortestWaitTime);

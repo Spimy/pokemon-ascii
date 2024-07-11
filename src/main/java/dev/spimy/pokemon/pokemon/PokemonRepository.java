@@ -55,4 +55,31 @@ public class PokemonRepository {
             Math.max(playerExp + random.nextInt(range * 2 + 1) - range, playerExp)
         );
     }
+
+    public List<Pokemon> getStarterPokemons() {
+        final List<String[]> starterMetadatas = this.pokemonMetadatas
+                .stream()
+                .filter(
+                        metadata -> metadata
+                                .split(" : ")[metadata.split(" : ").length - 1]
+                                .equalsIgnoreCase("STARTER")
+                )
+                .map(metadata -> metadata.split(" : ")).toList();
+
+        final Random random = new Random();
+        return starterMetadatas.stream().map(d -> {
+            final int hp = random.nextInt(300, 600);
+
+            return new Pokemon(
+                    d[0],
+                    PokemonType.valueOf(d[1]),
+                    hp,
+                    hp,
+                    random.nextInt(100, 501),
+                    random.nextInt(60, 201),
+                    random.nextInt(101),
+                    random.nextInt(50)
+            );
+        }).toList();
+    }
 }

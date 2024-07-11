@@ -27,26 +27,49 @@ public class BattleManager {
     public BattleManager(final GameManager gameManager) {
         this.gameManager = gameManager;
 
+        // Select opponent Pokémons
         this.opponents = List.of(
                 this.gameManager.getPokemonRepository().createRandomPokemon(),
                 this.gameManager.getPokemonRepository().createRandomPokemon()
         );
 
-        OwnedPokemon ownedPokemon = this.gameManager.getPlayer().getOwnedPokemon();
-        List<Pokemon> playerPokemons = new ArrayList<>(ownedPokemon.getData());
+        // Get Pokémons that the player owns
+        final OwnedPokemon ownedPokemon = this.gameManager.getPlayer().getOwnedPokemon();
 
+        // If player has now Pokémons, then they need to select a starter Pokémon
+        boolean pickStarter = false;
+        if (ownedPokemon.getData().isEmpty()) {
+            pickStarter = true;
+            this.gameManager.getPokemonRepository().getStarterPokemons().forEach(p -> ownedPokemon.getData().add(p));
+        }
+
+        // Display the Pokémons that can be selected
         ownedPokemon.tabulate();
 
-        int pokemon1Index = new PokemonSelection(this.gameManager, 30, playerPokemons)
+        // Make a shallow copy of the Pokémons that can be selected so that manipulating it does not affect the player
+        final List<Pokemon> playerPokemons = new ArrayList<>(ownedPokemon.getData());
+
+        // QTE to choose their first Pokémon
+        int pokemon1Index = new PokemonSelection(this.gameManager, 30, playerPokemons, pickStarter)
                 .execute()
                 .getPokemonIndex();
-        Pokemon pokemon1 = playerPokemons.get(pokemon1Index);
+        final Pokemon pokemon1 = playerPokemons.get(pokemon1Index);
 
         System.out.println();
         playerPokemons.remove(pokemon1Index);
 
-        Pokemon pokemon2 = playerPokemons.get(new Random().nextInt(playerPokemons.size()));
+        // Second Pokémon is completely random from the remaining pool of Pokémons
+        final Pokemon pokemon2 = playerPokemons.get(new Random().nextInt(playerPokemons.size()));
+
+        // Set the selected Pokémons for battle
         this.playerPokemons = List.of(pokemon1, pokemon2);
+
+        // If the user picked starter Pokémons then only the ones picked should be saved
+        if (pickStarter) {
+            ownedPokemon.getData().clear();
+            ownedPokemon.addPokemon(pokemon1);
+            ownedPokemon.addPokemon(pokemon2);
+        }
     }
 
     public void startBattle() {
