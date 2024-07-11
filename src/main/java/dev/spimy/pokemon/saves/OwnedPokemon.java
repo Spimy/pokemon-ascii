@@ -82,6 +82,7 @@ public class OwnedPokemon extends SaveFileHandler<Pokemon> {
 
         String headerLine = headerLineBuilder.toString();
         System.out.println(headerLine);
+        System.out.println("-".repeat(headerLine.length()));
 
         // Print each row formatted according to column widths
         for (int i = 0; i < flattened.size() - 1; i++) {
