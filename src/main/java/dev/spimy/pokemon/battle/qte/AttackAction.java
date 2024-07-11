@@ -6,7 +6,7 @@ public class AttackAction extends QuickTimeEvent<AttackAction> {
     private int charged;
 
     public AttackAction(final GameManager gameManager) {
-        super(gameManager, 3);
+        super(gameManager, 2);
     }
 
     @Override
