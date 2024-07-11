@@ -1,7 +1,9 @@
 package dev.spimy.pokemon.screen;
 
 import dev.spimy.pokemon.GameManager;
+import dev.spimy.pokemon.player.Inventory;
 import dev.spimy.pokemon.player.Player;
+import dev.spimy.pokemon.player.Pokeball;
 import dev.spimy.pokemon.player.Position;
 import dev.spimy.pokemon.screen.map.GameMap;
 import org.jline.jansi.Ansi;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Renderer {
+    private final GameManager gameManager;
     private final Terminal terminal;
     private final GameMap map;
 
@@ -20,6 +23,7 @@ public class Renderer {
     private final String[][] buffer;
 
     public Renderer(GameManager gameManager, GameMap map) {
+        this.gameManager = gameManager;
         this.terminal = gameManager.getTerminal();
         this.map = map;
 
@@ -39,7 +43,7 @@ public class Renderer {
 
     public void renderGame(Player player) {
         this.renderMap();
-        this.renderMapName();
+        this.renderMetadata();
         this.renderPlayer(player);
         this.updateScreen();
     }
@@ -50,17 +54,47 @@ public class Renderer {
         this.renderContent(map, startRow);
     }
 
-    private void renderMapName() {
+    private void renderMetadata() {
         this.drawBorder();
 
-        int y = (int) (this.terminal.getWidth() * 0.05);
-        for (int i = 0; i < this.map.getCurrentMap().toString().length(); i++) {
+        int column = (int) (this.terminal.getWidth() * 0.05);
+        Inventory inventory = this.gameManager.getPlayer().getInventorySave().getData().getFirst();
+
+        String top = String.format(
+                "%s | Level: %s | Money: %s",
+                this.map.getCurrentMap().toString(),
+                inventory.getLevel(),
+                inventory.getMoney()
+        );
+        String bottom = String.format(
+                "%s: %s | %s: %s | %s: %s",
+                Pokeball.NORMAL.name,
+                inventory.getPokeballs().get(Pokeball.NORMAL),
+                Pokeball.ULTRA.name,
+                inventory.getPokeballs().get(Pokeball.ULTRA),
+                Pokeball.MASTER.name,
+                inventory.getPokeballs().get(Pokeball.MASTER)
+        );
+
+        for (int i = 0; i < top.length(); i++) {
             final String s = Ansi.ansi()
-                    .a(this.map.getCurrentMap().toString().charAt(i))
+                    .bg(Theme.BORDER_COLOR)
+                    .fg(Theme.PLAYER_COLOR)
+                    .a(top.charAt(i))
                     .reset()
                     .toString();
 
-            this.buffer[0][y + i] = s;
+            this.buffer[0][column + i] = s;
+        }
+        for (int i = 0; i < bottom.length(); i++) {
+            final String s = Ansi.ansi()
+                    .bg(Theme.BORDER_COLOR)
+                    .fg(Theme.PLAYER_COLOR)
+                    .a(bottom.charAt(i))
+                    .reset()
+                    .toString();
+
+            this.buffer[this.buffer.length - 1][column + i] = s;
         }
     }
 
@@ -132,7 +166,7 @@ public class Renderer {
 
     public void renderOutOfBounds() {
         this.drawBorder();
-        this.renderMapName();
+        this.renderMetadata();
 
         final int BOTTOM_MARGIN = 2;
         final String[] dialogueArray = Ascii.getOutOfBoundDialogue().getContent().split("\n");
