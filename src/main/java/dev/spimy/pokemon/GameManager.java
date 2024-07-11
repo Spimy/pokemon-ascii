@@ -144,6 +144,7 @@ public class GameManager {
         if (!this.map.getDoors().containsKey(selectedDoor)) return;
 
         final MapLayer mapBeforeSet = this.map.getCurrentMap();
+        if (mapBeforeSet != MapLayer.OVERWORLD && selectedDoor != MapLayer.OVERWORLD.doorChar) return;
 
         final boolean isSet = this.map.setCurrentMap(this.map.getDoors().get(selectedDoor));
         if (!isSet) return;
