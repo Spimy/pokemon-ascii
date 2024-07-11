@@ -38,9 +38,6 @@ public class PokemonRepository {
         final int playerExp = this.player.getInventorySave().getData().getFirst().getExp();
         final int playerLevel = this.player.getInventorySave().getData().getFirst().getLevel();
 
-        final int levelRange = 2;
-        final int range = playerExp - (250 * (playerLevel - levelRange - 1) * (playerLevel - levelRange));
-
         final String[] metadata = this.pokemonMetadatas.get(index).split(" : ");
         final int hp = random.nextInt(100, 501) * playerLevel;
 
@@ -52,7 +49,7 @@ public class PokemonRepository {
             random.nextInt(100, 501) * (1 + ((double) playerLevel / 100)),
             random.nextInt(60, 201) * (1 + ((double) playerLevel / 100)),
             Math.min(random.nextInt(101) * (1 + (playerLevel / 100)), 100),
-            Math.max(playerExp + random.nextInt(range * 2 + 1) - range, playerExp)
+            Math.max(playerExp + random.nextInt(500 * 2 + 1) - 500, playerExp)
         );
     }
 
