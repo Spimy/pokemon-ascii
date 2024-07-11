@@ -1,7 +1,9 @@
 package dev.spimy.pokemon;
 
 import dev.spimy.pokemon.battle.BattleManager;
+import dev.spimy.pokemon.player.Inventory;
 import dev.spimy.pokemon.player.Player;
+import dev.spimy.pokemon.player.Pokeball;
 import dev.spimy.pokemon.player.controller.Control;
 import dev.spimy.pokemon.pokemon.PokemonRepository;
 import dev.spimy.pokemon.saves.Scoreboard;
@@ -12,6 +14,7 @@ import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class GameManager {
@@ -140,6 +143,7 @@ public class GameManager {
         this.renderer.renderPlayer(this.player);
         this.checkDoor();
         this.checkGrass();
+        this.checkPurchase();
     }
 
     public void checkDoor() {
@@ -175,6 +179,56 @@ public class GameManager {
         this.player.setPosition(coordinates[0], coordinates[1]);
     }
 
+    public void checkPurchase() {
+        if (this.map.getCurrentMap() != MapLayer.STORE) return;
+
+        final List<Character> validChars = List.of('P', 'U', 'M');
+        final char selectedChar = this.player.getPosition().getMapChar().charAt(0);
+        if (!validChars.contains(selectedChar)) return;
+
+        final Inventory inventory = this.getPlayer().getInventorySave().getData().getFirst();
+        switch (selectedChar) {
+            case 'P' -> {
+                if (inventory.getMoney() < 120) return;
+
+                this.getPlayer().getInventorySave().getData().getFirst().setMoney(
+                       inventory.getMoney() - 120
+                );
+
+                this.getPlayer().getInventorySave().getData().getFirst().getPokeballs().put(
+                        Pokeball.NORMAL,
+                        inventory.getPokeballs().get(Pokeball.NORMAL) + 1
+                );
+            }
+            case 'U' -> {
+                if (inventory.getMoney() < 180) return;
+
+                this.getPlayer().getInventorySave().getData().getFirst().setMoney(
+                        inventory.getMoney() - 180
+                );
+
+                this.getPlayer().getInventorySave().getData().getFirst().getPokeballs().put(
+                        Pokeball.ULTRA,
+                        inventory.getPokeballs().get(Pokeball.ULTRA) + 1
+                );
+            }
+            case 'M' -> {
+                if (inventory.getMoney() < 500) return;
+
+                this.getPlayer().getInventorySave().getData().getFirst().setMoney(
+                        inventory.getMoney() - 500
+                );
+
+                this.getPlayer().getInventorySave().getData().getFirst().getPokeballs().put(
+                        Pokeball.MASTER,
+                        inventory.getPokeballs().get(Pokeball.MASTER) + 1
+                );
+            }
+        }
+
+        this.getPlayer().getInventorySave().updateSaveFile();
+    }
+
     public void checkGrass() {
         final String mapChar = this.player.getPosition().getMapChar();
         if (!mapChar.equals(this.map.getGrass())) return;
@@ -194,7 +248,6 @@ public class GameManager {
     }
 
     public void quit() {
-//        this.scoreboard.updateSaveFile();
         System.out.print("\u001B[H\u001B[2J");
         System.out.print("\u001B[H\u001B[2J");
         System.exit(0);
