@@ -20,6 +20,7 @@ public abstract class QuickTimeEvent<T> {
         InputHandler.setQuickTimeEvents(this);
     }
 
+    @SuppressWarnings("unused")
     public abstract T execute();
 
     public void handleInputs(final int key) {
