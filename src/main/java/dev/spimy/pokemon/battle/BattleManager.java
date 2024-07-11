@@ -13,8 +13,8 @@ import java.util.*;
 
 public class BattleManager {
     private final List<Pokemon> opponents = List.of(
-            new Pokemon("Golduck", PokemonType.WATER, 321, 10, 210, 100, 69, 200),
-            new Pokemon("Flareon", PokemonType.FIRE, 524, 10, 124, 120, 32, 200)
+            new Pokemon("Golduck", PokemonType.WATER, 321, 321, 210, 100, 69, 200),
+            new Pokemon("Flareon", PokemonType.FIRE, 524, 524, 124, 120, 32, 200)
     );
 
     private final List<Pokemon> playerPokemons;
@@ -53,70 +53,72 @@ public class BattleManager {
         while (this.gameManager.getState() == State.BATTLE) {
             this.displayStats();
 
-            final boolean allOpponentPokemonDead = this.opponents.stream().allMatch(o -> o.getCurrentHp() == 0);
-            final boolean allPokemonCaught = this.caughtPokemons.size() >= this.opponents.size();
-            final boolean allPlayerPokemonDead = this.playerPokemons.stream().allMatch(o -> o.getCurrentHp() == 0);
-            final boolean caughtAndDeadPokemon =
-                    this.opponents.stream().anyMatch(o -> o.getCurrentHp() == 0) && !this.caughtPokemons.isEmpty();
-
-            // If all opponents Pokémon have 0 HP or if all player Pokémon have 0 HP, the battle is over
-            if (caughtAndDeadPokemon || allOpponentPokemonDead || allPokemonCaught || allPlayerPokemonDead) {
-                System.out.println();
-
-                final int battleScore = this.getBattleScore();
-                this.gameManager.getScoreboard().addBattleScore(battleScore);
-                this.gameManager.getScoreboard().updateSaveFile();
-
-                System.out.printf("Battle Score earned: %s%n", battleScore);
-
-                if (allPlayerPokemonDead) {
-                    System.out.println("You lost.");
-                } else {
-                    System.out.println("You won.");
-                }
-
-                this.caughtPokemons.forEach(p -> this.gameManager.getPlayer().getOwnedPokemon().addPokemon(p));
-                this.gameManager.getPlayer().getOwnedPokemon().updateSaveFile();
-                this.gameManager.getPlayer().getInventorySave().updateSaveFile();
-
-                this.gameManager.setState(State.BATTLEEND);
+            if (isBattleOver()) {
+                this.handleBattleEnd();
                 return;
             }
 
-            // If HP is below 50 then the Pokémon can be caught
-            final Optional<Pokemon> catchablePokemon = this.opponents
-                    .stream()
-                    .filter(
-                            o -> ((double) o.getCurrentHp() / o.getMaxHp() * 100) > 0
-                                    && ((double) o.getCurrentHp() / o.getMaxHp() * 100) < 50
-                                    && !this.caughtPokemons.contains(o)
+            final Optional<Pokemon> catchablePokemon = this.getCatchablePokemon();
+            if (catchablePokemon.isPresent() && this.canCatch()) {
+                final boolean isCatch = new ActionSelection(this.gameManager)
+                        .execute()
+                        .isCatch();
 
-                    )
-                    .findFirst();
+                if (isCatch) {
+                    System.out.println("Catch");
+                    this.catchPokemon(catchablePokemon.get());
 
-            final boolean hasNoPokeballs = this.gameManager.getPlayer().getInventorySave().getTotalPokeballs() == 0;
-            if (catchablePokemon.isEmpty() || hasNoPokeballs || this.turnsUntilCatchable != 0) {
-                this.turnsUntilCatchable--;
-                this.battle();
-                System.out.println();
-                continue;
+                    System.out.println();
+                    continue;
+                }
             }
 
-            final boolean isBattle = new ActionSelection(this.gameManager)
-                    .execute()
-                    .isBattle();
-
-            if (isBattle) {
-                System.out.println("Battle");
-                this.battle();
-                System.out.println();
-                continue;
-            }
-
-            System.out.println("Catch");
-            this.catchPokemon(catchablePokemon.get());
+            if (this.turnsUntilCatchable > 0) this.turnsUntilCatchable--;
+            this.battle();
             System.out.println();
         }
+    }
+
+    private void handleBattleEnd() {
+        System.out.println();
+
+        int battleScore = this.getBattleScore();
+        this.gameManager.getScoreboard().addBattleScore(battleScore);
+        this.gameManager.getScoreboard().updateSaveFile();
+
+        System.out.printf("Battle Score earned: %s%n", battleScore);
+
+        if (allPlayerPokemonDead()) {
+            System.out.println("You lost.");
+        } else {
+            System.out.println("You won.");
+        }
+
+        this.caughtPokemons.forEach(p -> this.gameManager.getPlayer().getOwnedPokemon().addPokemon(p));
+        this.gameManager.getPlayer().getOwnedPokemon().updateSaveFile();
+        this.gameManager.getPlayer().getInventorySave().updateSaveFile();
+
+        this.gameManager.setState(State.BATTLEEND);
+    }
+
+    private boolean isBattleOver() {
+        return this.caughtAndDeadPokemon() || this.allOpponentPokemonDead() || this.allPokemonCaught() || this.allPlayerPokemonDead();
+    }
+
+    private boolean allOpponentPokemonDead() {
+        return this.opponents.stream().allMatch(o -> o.getCurrentHp() == 0);
+    }
+
+    private boolean allPokemonCaught() {
+        return this.caughtPokemons.size() >= this.opponents.size();
+    }
+
+    private boolean allPlayerPokemonDead() {
+        return this.playerPokemons.stream().allMatch(o -> o.getCurrentHp() == 0);
+    }
+
+    private boolean caughtAndDeadPokemon() {
+        return this.opponents.stream().anyMatch(o -> o.getCurrentHp() == 0) && !this.caughtPokemons.isEmpty();
     }
 
     private void displayStats() {
@@ -281,6 +283,24 @@ public class BattleManager {
         return (int) damage;
     }
 
+    private Optional<Pokemon> getCatchablePokemon() {
+        // If HP is below 50 then the Pokémon can be caught
+        return this.opponents
+                .stream()
+                .filter(
+                        o -> ((double) o.getCurrentHp() / o.getMaxHp() * 100) > 0
+                                && ((double) o.getCurrentHp() / o.getMaxHp() * 100) < 50
+                                && !this.caughtPokemons.contains(o)
+
+                )
+                .findFirst();
+    }
+
+    private boolean canCatch() {
+        final boolean hasPokeballs = this.gameManager.getPlayer().getInventorySave().getTotalPokeballs() > 0;
+        return hasPokeballs && this.turnsUntilCatchable == 0;
+    }
+
     /**
      * Kept simple, not following the exact formula for catching.
      * Success chance rates:
@@ -301,6 +321,7 @@ public class BattleManager {
 
         final boolean success = this.gameManager.getSuccessChance(pokeball.successRate);
         if (!success) {
+            System.out.println("Failed to catch.");
             this.turnsUntilCatchable += 2;
             return;
         }
