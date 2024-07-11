@@ -82,22 +82,34 @@ public class BattleManager {
     private void handleBattleEnd() {
         System.out.println();
 
+        // Set battle score
         int battleScore = this.getBattleScore();
         this.gameManager.getScoreboard().addBattleScore(battleScore);
         this.gameManager.getScoreboard().updateSaveFile();
 
         System.out.printf("Battle Score earned: %s%n", battleScore);
 
+        // Print battle status and calculate money earned based on the status
+        final int money;
         if (allPlayerPokemonDead()) {
+            money = (int) (battleScore * 0.005);
             System.out.println("You lost.");
         } else {
+            money = (int) (battleScore * 0.05);
             System.out.println("You won.");
         }
 
+        // Increase money
+        this.gameManager.getPlayer().getInventorySave().getData().getFirst().setMoney(
+                this.gameManager.getPlayer().getInventorySave().getData().getFirst().getMoney() + money
+        );
+
+        // Transfer caught Pokémons to inventory
         this.caughtPokemons.forEach(p -> this.gameManager.getPlayer().getOwnedPokemon().addPokemon(p));
         this.gameManager.getPlayer().getOwnedPokemon().updateSaveFile();
         this.gameManager.getPlayer().getInventorySave().updateSaveFile();
 
+        // Set the state to the battle end state
         this.gameManager.setState(State.BATTLEEND);
     }
 
