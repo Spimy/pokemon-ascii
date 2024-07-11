@@ -6,7 +6,6 @@ import dev.spimy.pokemon.battle.qte.*;
 import dev.spimy.pokemon.player.Pokeball;
 import dev.spimy.pokemon.player.controller.Direction;
 import dev.spimy.pokemon.pokemon.Pokemon;
-import dev.spimy.pokemon.pokemon.PokemonType;
 import dev.spimy.pokemon.saves.OwnedPokemon;
 
 import java.util.ArrayList;
@@ -15,13 +14,10 @@ import java.util.Optional;
 import java.util.Random;
 
 public class BattleManager {
-    private final List<Pokemon> opponents = List.of(
-            new Pokemon("Golduck", PokemonType.WATER, 321, 321, 210, 100, 69, 200),
-            new Pokemon("Flareon", PokemonType.FIRE, 524, 524, 124, 120, 32, 200)
-    );
-
+    private final List<Pokemon> opponents;
     private final List<Pokemon> playerPokemons;
     private final List<Pokemon> caughtPokemons = new ArrayList<>();
+
     private final GameManager gameManager;
 
     private int numCrit = 0;
@@ -30,6 +26,11 @@ public class BattleManager {
 
     public BattleManager(final GameManager gameManager) {
         this.gameManager = gameManager;
+
+        this.opponents = List.of(
+                this.gameManager.getPokemonRepository().createRandomPokemon(),
+                this.gameManager.getPokemonRepository().createRandomPokemon()
+        );
 
         OwnedPokemon ownedPokemon = this.gameManager.getPlayer().getOwnedPokemon();
         List<Pokemon> playerPokemons = new ArrayList<>(ownedPokemon.getData());
