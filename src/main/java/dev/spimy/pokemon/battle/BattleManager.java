@@ -106,7 +106,7 @@ public class BattleManager {
 
         // Increase money
         this.gameManager.getPlayer().getInventorySave().getData().getFirst().setMoney(
-                this.gameManager.getPlayer().getInventorySave().getData().getFirst().getMoney() + money
+            this.gameManager.getPlayer().getInventorySave().getData().getFirst().getMoney() + money
         );
 
         // Increase exp of player Pokémons
@@ -135,6 +135,12 @@ public class BattleManager {
             }
         }
         System.out.println();
+
+        // Increase player exp
+        // There is no need to handle levelling up as player level is only used to scale opponent Pokémons in battle
+        this.gameManager.getPlayer().getInventorySave().getData().getFirst().setExp(
+            this.gameManager.getPlayer().getInventorySave().getData().getFirst().getExp() + (int) (battleScore * 0.05)
+        );
 
         // Transfer caught Pokémons to inventory
         this.caughtPokemons.forEach(p -> this.gameManager.getPlayer().getOwnedPokemon().addPokemon(p));
