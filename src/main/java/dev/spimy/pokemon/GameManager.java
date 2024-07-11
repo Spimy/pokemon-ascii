@@ -3,6 +3,7 @@ package dev.spimy.pokemon;
 import dev.spimy.pokemon.battle.BattleManager;
 import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.controller.Control;
+import dev.spimy.pokemon.pokemon.PokemonRepository;
 import dev.spimy.pokemon.saves.Scoreboard;
 import dev.spimy.pokemon.screen.Renderer;
 import dev.spimy.pokemon.screen.map.GameMap;
@@ -14,14 +15,15 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class GameManager {
-    final private Terminal terminal;
-    final private Control control;
-    final private GameMap map;
-    final private Scoreboard scoreboard;
+    private final Terminal terminal;
+    private final Control control;
+    private final GameMap map;
+    private final Scoreboard scoreboard;
 
     private Player player;
     private Renderer renderer;
     private State state;
+    private PokemonRepository pokemonRepository;
 
     public GameManager(final State state, final Terminal terminal) {
         this.state = state;
@@ -37,6 +39,7 @@ public class GameManager {
 
         this.renderer = new Renderer(this, this.map);
         this.player = new Player(this.terminal, this.control);
+        this.pokemonRepository = new PokemonRepository(this.player);
     }
 
     public void startGame() {
@@ -212,5 +215,9 @@ public class GameManager {
 
     public Scoreboard getScoreboard() {
         return scoreboard;
+    }
+
+    public PokemonRepository getPokemonRepository() {
+        return pokemonRepository;
     }
 }
