@@ -9,7 +9,10 @@ import dev.spimy.pokemon.pokemon.Pokemon;
 import dev.spimy.pokemon.pokemon.PokemonType;
 import dev.spimy.pokemon.saves.OwnedPokemon;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 public class BattleManager {
     private final List<Pokemon> opponents = List.of(
@@ -81,6 +84,8 @@ public class BattleManager {
 
     private void handleBattleEnd() {
         System.out.println();
+        System.out.println("-".repeat(10));
+        System.out.println();
 
         // Set battle score
         int battleScore = this.getBattleScore();
@@ -103,6 +108,33 @@ public class BattleManager {
         this.gameManager.getPlayer().getInventorySave().getData().getFirst().setMoney(
                 this.gameManager.getPlayer().getInventorySave().getData().getFirst().getMoney() + money
         );
+
+        // Increase exp of player Pokémons
+        int[] currentLevels = this.playerPokemons.stream().mapToInt(Pokemon::getLevel).toArray();
+        for (int i = 0; i < this.playerPokemons.size(); i++) {
+            this.playerPokemons.get(i).setExp(this.playerPokemons.get(i).getExp() + (int) (battleScore * 0.05));
+
+            // Pokémon has levelled up, therefore enhance its stats
+            if (this.playerPokemons.get(i).getLevel() > currentLevels[i]) {
+                System.out.println();
+
+                System.out.printf(
+                        "%s has levelled up! Level %s -> %s%n",
+                        this.playerPokemons.get(i).getName(),
+                        currentLevels[i],
+                        this.playerPokemons.get(i).getLevel()
+                );
+                System.out.println("Max stats have increase!");
+
+                this.playerPokemons.get(i).setMaxHp((int) (this.playerPokemons.get(i).getMaxHp() * 1.05));
+                this.playerPokemons.get(i).setAttackPower((int) (this.playerPokemons.get(i).getAttackPower() * 1.04));
+                this.playerPokemons.get(i).setSpeed((int) (this.playerPokemons.get(i).getSpeed() * 1.03));
+                this.playerPokemons.get(i).setCritRate(
+                        Math.min((int) (this.playerPokemons.get(i).getCritRate() * 1.02), 100)
+                );
+            }
+        }
+        System.out.println();
 
         // Transfer caught Pokémons to inventory
         this.caughtPokemons.forEach(p -> this.gameManager.getPlayer().getOwnedPokemon().addPokemon(p));
