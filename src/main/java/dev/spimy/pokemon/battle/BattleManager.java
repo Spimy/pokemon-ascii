@@ -421,8 +421,6 @@ public class BattleManager {
         final int scorePerCrit = 500;
         final int scorePerCatch = 200;
 
-        final Random random = new Random();
-
         final int playerPokemonTotalHp = this.playerPokemons
                 .stream()
                 .mapToInt(Pokemon::getCurrentHp)
