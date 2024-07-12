@@ -3,10 +3,6 @@ package dev.spimy.pokemon.player.saves;
 import dev.spimy.pokemon.pokemon.Pokemon;
 import dev.spimy.pokemon.pokemon.PokemonType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
-
 public class OwnedPokemon extends SaveFileHandler<Pokemon> {
     public OwnedPokemon() {
         super("pokemons", new String[]{
