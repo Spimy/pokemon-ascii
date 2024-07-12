@@ -150,11 +150,11 @@ public class BattleManager {
                 );
                 System.out.println("Max stats have increase!");
 
-                this.playerPokemons.get(i).setMaxHp((int) (this.playerPokemons.get(i).getMaxHp() * 1.05));
-                this.playerPokemons.get(i).setAttackPower((int) (this.playerPokemons.get(i).getAttackPower() * 1.04));
-                this.playerPokemons.get(i).setSpeed((int) (this.playerPokemons.get(i).getSpeed() * 1.03));
+                this.playerPokemons.get(i).setMaxHp((int) (this.playerPokemons.get(i).getMaxHp() * 1.3));
+                this.playerPokemons.get(i).setAttackPower((int) (this.playerPokemons.get(i).getAttackPower() * 1.2));
+                this.playerPokemons.get(i).setSpeed((int) (this.playerPokemons.get(i).getSpeed() * 1.1));
                 this.playerPokemons.get(i).setCritRate(
-                        Math.min((int) (this.playerPokemons.get(i).getCritRate() * 1.02), 100)
+                        Math.min((int) (this.playerPokemons.get(i).getCritRate() * 1.05), 100)
                 );
             }
         }
@@ -410,7 +410,7 @@ public class BattleManager {
      * Formula:
      * BattleScore =
      *      MinScore +
-     *      (P1_HP + P2_HP + [2 * (RAND(300, 501) - O1_HP / O1_MAX_HP)] + [RAND(300, 501) * (1 - O2_HP / O2_MAX_HP)]) +
+     *      (P1_HP + P2_HP + [2 * (1 - O1_HP / O1_MAX_HP)] + [2 * (1 - O2_HP / O2_MAX_HP)]) +
      *      (NumCrit * ScorePerCrit) +
      *      (NumCatch * ScorePerCatch)
      *
@@ -430,7 +430,7 @@ public class BattleManager {
 
         final double opponentHpPercentage = this.opponents
                 .stream()
-                .mapToDouble((p) -> random.nextInt(300, 501) * (1 - ((double) p.getCurrentHp() / p.getMaxHp())))
+                .mapToDouble((p) -> 2 * (1 - ((double) p.getCurrentHp() / p.getMaxHp())))
                 .reduce(0, Double::sum);
 
         final int critScore = this.numCrit * scorePerCrit;
