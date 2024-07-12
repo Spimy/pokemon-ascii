@@ -11,6 +11,7 @@ public class BattleActionSelection extends QuickTimeEvent<BattleActionSelection>
 
     @Override
     public BattleActionSelection execute() {
+        super.execute();
         System.out.println("A: Continue | D: Attempt Dodge");
 
         while (System.currentTimeMillis() < this.endTime) {

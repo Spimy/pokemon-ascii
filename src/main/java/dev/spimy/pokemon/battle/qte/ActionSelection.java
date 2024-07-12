@@ -11,6 +11,7 @@ public class ActionSelection extends QuickTimeEvent<ActionSelection> {
 
     @Override
     public ActionSelection execute() {
+        super.execute();
         System.out.println("A: Battle | D: Catch");
 
         while (System.currentTimeMillis() < this.endTime) {

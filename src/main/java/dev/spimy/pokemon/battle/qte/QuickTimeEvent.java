@@ -8,7 +8,7 @@ import java.util.Random;
 public abstract class QuickTimeEvent<T> {
     protected final Random random;
     protected final GameManager gameManager;
-    protected final long endTime;
+    protected long endTime;
 
     protected boolean qteActive = true;
     protected volatile int qteActionKey; // Thank you, Lai, for teaching me about the volatile keyword
@@ -20,8 +20,26 @@ public abstract class QuickTimeEvent<T> {
         InputHandler.setQuickTimeEvents(this);
     }
 
-    @SuppressWarnings("unused")
-    public abstract T execute();
+    public QuickTimeEvent<T> execute() {
+        System.out.println();
+        System.out.print("Action will start in: ");
+        this.endTime += 3000L;
+
+        for (int i = 3; i > 0; i--) {
+            System.out.printf("%s ", i);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        System.out.println();
+        System.out.println();
+
+        return this;
+    };
 
     public void handleInputs(final int key) {
         if (!qteActive) {

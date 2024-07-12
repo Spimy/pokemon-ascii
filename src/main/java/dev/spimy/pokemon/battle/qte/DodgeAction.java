@@ -7,7 +7,7 @@ public class DodgeAction extends QuickTimeEvent<DodgeAction> {
     private Direction direction;
 
     public DodgeAction(final GameManager gameManager) {
-        super(gameManager, 2);
+        super(gameManager, 1);
     }
 
     @Override
