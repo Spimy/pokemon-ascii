@@ -39,7 +39,7 @@ public abstract class QuickTimeEvent<T> {
         System.out.println();
 
         return this;
-    };
+    }
 
     public void handleInputs(final int key) {
         if (!qteActive) {
