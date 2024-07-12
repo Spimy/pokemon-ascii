@@ -1,6 +1,6 @@
 package dev.spimy.pokemon;
 
-import dev.spimy.pokemon.player.controller.InputHandler;
+import dev.spimy.pokemon.controller.InputHandler;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 

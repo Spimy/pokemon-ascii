@@ -1,7 +1,7 @@
 package dev.spimy.pokemon.player;
 
-import dev.spimy.pokemon.player.controller.Control;
-import dev.spimy.pokemon.player.controller.Direction;
+import dev.spimy.pokemon.controller.Control;
+import dev.spimy.pokemon.controller.Direction;
 import dev.spimy.pokemon.saves.InventorySave;
 import dev.spimy.pokemon.saves.OwnedPokemon;
 import org.jline.terminal.Terminal;

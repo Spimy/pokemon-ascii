@@ -1,7 +1,7 @@
 package dev.spimy.pokemon.battle.qte;
 
 import dev.spimy.pokemon.GameManager;
-import dev.spimy.pokemon.player.controller.InputHandler;
+import dev.spimy.pokemon.controller.InputHandler;
 
 import java.util.Random;
 

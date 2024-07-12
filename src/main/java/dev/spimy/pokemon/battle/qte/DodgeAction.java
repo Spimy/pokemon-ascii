@@ -1,7 +1,7 @@
 package dev.spimy.pokemon.battle.qte;
 
 import dev.spimy.pokemon.GameManager;
-import dev.spimy.pokemon.player.controller.Direction;
+import dev.spimy.pokemon.controller.Direction;
 
 public class DodgeAction extends QuickTimeEvent<DodgeAction> {
     private Direction direction;

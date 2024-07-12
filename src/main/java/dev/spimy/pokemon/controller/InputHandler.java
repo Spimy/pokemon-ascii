@@ -1,4 +1,4 @@
-package dev.spimy.pokemon.player.controller;
+package dev.spimy.pokemon.controller;
 
 import dev.spimy.pokemon.GameManager;
 import dev.spimy.pokemon.State;

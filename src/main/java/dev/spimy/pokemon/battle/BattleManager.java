@@ -4,7 +4,7 @@ import dev.spimy.pokemon.GameManager;
 import dev.spimy.pokemon.State;
 import dev.spimy.pokemon.battle.qte.*;
 import dev.spimy.pokemon.player.Pokeball;
-import dev.spimy.pokemon.player.controller.Direction;
+import dev.spimy.pokemon.controller.Direction;
 import dev.spimy.pokemon.pokemon.Pokemon;
 import dev.spimy.pokemon.saves.OwnedPokemon;
 

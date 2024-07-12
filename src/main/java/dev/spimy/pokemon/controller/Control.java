@@ -1,4 +1,4 @@
-package dev.spimy.pokemon.player.controller;
+package dev.spimy.pokemon.controller;
 
 public class Control {
     final int upp = 80;           // P

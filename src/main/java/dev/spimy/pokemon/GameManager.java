@@ -4,7 +4,7 @@ import dev.spimy.pokemon.battle.BattleManager;
 import dev.spimy.pokemon.player.Inventory;
 import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.Pokeball;
-import dev.spimy.pokemon.player.controller.Control;
+import dev.spimy.pokemon.controller.Control;
 import dev.spimy.pokemon.pokemon.PokemonRepository;
 import dev.spimy.pokemon.saves.Scoreboard;
 import dev.spimy.pokemon.screen.Renderer;
