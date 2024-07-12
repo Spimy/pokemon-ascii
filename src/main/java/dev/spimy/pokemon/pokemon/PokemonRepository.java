@@ -46,8 +46,8 @@ public class PokemonRepository {
             PokemonType.valueOf(metadata[1]),
             hp,
             hp,
-            random.nextInt(100, 501) * (1 + ((double) playerLevel / 100)),
-            random.nextInt(60, 201) * (1 + ((double) playerLevel / 100)),
+                (int) (random.nextInt(100, 501) * (1 + ((double) playerLevel / 110))),
+                (int) (random.nextInt(60, 201) * (1 + ((double) playerLevel / 110))),
             Math.min(random.nextInt(101) * (1 + (playerLevel / 100)), 100),
             Math.max(playerExp + random.nextInt(500 * 2 + 1) - 500, playerExp)
         );

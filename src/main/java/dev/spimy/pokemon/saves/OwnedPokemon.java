@@ -22,9 +22,9 @@ public class OwnedPokemon extends SaveFileHandler<Pokemon> {
                 PokemonType.valueOf(rawDataRow[1]),
                 Integer.parseInt(rawDataRow[2]),
                 Integer.parseInt(rawDataRow[3]),
-                Double.parseDouble(rawDataRow[4]),
-                Double.parseDouble(rawDataRow[5]),
-                Double.parseDouble(rawDataRow[6]),
+                Integer.parseInt(rawDataRow[4]),
+                Integer.parseInt(rawDataRow[5]),
+                Integer.parseInt(rawDataRow[6]),
                 Integer.parseInt(rawDataRow[7])
             );
 

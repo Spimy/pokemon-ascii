@@ -15,12 +15,12 @@ public class Pokemon {
     private int currentHp;
 
     // Attack power of the Pokémon
-    private double attackPower;
+    private int attackPower;
 
     // Speed of the Pokémon
-    private double speed;
+    private int speed;
 
-    private double critRate;
+    private int critRate;
 
     private int exp;
 
@@ -30,9 +30,9 @@ public class Pokemon {
             final PokemonType type,
             final int maxHp,
             final int currentHp,
-            final double attackPower,
-            final double speed,
-            final double critRate,
+            final int attackPower,
+            final int speed,
+            final int critRate,
             final int exp
     ) {
         this.name = name;
@@ -74,23 +74,23 @@ public class Pokemon {
         return attackPower;
     }
 
-    public void setAttackPower(final double attackPower) {
+    public void setAttackPower(final int attackPower) {
         this.attackPower = attackPower;
     }
 
-    public double getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 
-    public void setSpeed(final double speed) {
+    public void setSpeed(final int speed) {
         this.speed = speed;
     }
 
-    public double getCritRate() {
+    public int getCritRate() {
         return critRate;
     }
 
-    public void setCritRate(final double critRate) {
+    public void setCritRate(final int critRate) {
         this.critRate = critRate;
     }
 
