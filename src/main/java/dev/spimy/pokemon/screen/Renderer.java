@@ -5,6 +5,7 @@ import dev.spimy.pokemon.player.Inventory;
 import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.Pokeball;
 import dev.spimy.pokemon.player.Position;
+import dev.spimy.pokemon.screen.ascii.Ascii;
 import dev.spimy.pokemon.screen.map.GameMap;
 import org.jline.jansi.Ansi;
 import org.jline.jansi.Ansi.Color;

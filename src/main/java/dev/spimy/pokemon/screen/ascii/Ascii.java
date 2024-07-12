@@ -1,17 +1,9 @@
-package dev.spimy.pokemon.screen;
+package dev.spimy.pokemon.screen.ascii;
 
 
 import org.jline.jansi.Ansi.Color;
 
 public class Ascii {
-    public interface AsciiArt {
-        String getContent();
-
-        default Color getColor() {
-            return Color.WHITE;
-        }
-    }
-
     public static AsciiArt getLogo() {
         return new AsciiArt() {
             @Override
