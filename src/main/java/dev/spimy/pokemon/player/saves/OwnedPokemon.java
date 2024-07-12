@@ -1,4 +1,4 @@
-package dev.spimy.pokemon.saves;
+package dev.spimy.pokemon.player.saves;
 
 import dev.spimy.pokemon.pokemon.Pokemon;
 import dev.spimy.pokemon.pokemon.PokemonType;

@@ -1,4 +1,4 @@
-package dev.spimy.pokemon.saves;
+package dev.spimy.pokemon.player.saves;
 
 import java.io.*;
 import java.net.URISyntaxException;

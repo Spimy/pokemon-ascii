@@ -2,8 +2,8 @@ package dev.spimy.pokemon.player;
 
 import dev.spimy.pokemon.controller.Control;
 import dev.spimy.pokemon.controller.Direction;
-import dev.spimy.pokemon.saves.InventorySave;
-import dev.spimy.pokemon.saves.OwnedPokemon;
+import dev.spimy.pokemon.player.saves.InventorySave;
+import dev.spimy.pokemon.player.saves.OwnedPokemon;
 import org.jline.terminal.Terminal;
 
 import java.util.concurrent.ThreadLocalRandom;

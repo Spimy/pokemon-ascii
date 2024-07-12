@@ -6,7 +6,7 @@ import dev.spimy.pokemon.battle.qte.*;
 import dev.spimy.pokemon.player.Pokeball;
 import dev.spimy.pokemon.controller.Direction;
 import dev.spimy.pokemon.pokemon.Pokemon;
-import dev.spimy.pokemon.saves.OwnedPokemon;
+import dev.spimy.pokemon.player.saves.OwnedPokemon;
 
 import java.util.ArrayList;
 import java.util.List;

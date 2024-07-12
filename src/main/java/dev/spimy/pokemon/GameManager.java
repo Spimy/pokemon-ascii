@@ -6,7 +6,7 @@ import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.Pokeball;
 import dev.spimy.pokemon.controller.Control;
 import dev.spimy.pokemon.pokemon.PokemonRepository;
-import dev.spimy.pokemon.saves.Scoreboard;
+import dev.spimy.pokemon.player.saves.Scoreboard;
 import dev.spimy.pokemon.screen.Renderer;
 import dev.spimy.pokemon.screen.map.GameMap;
 import dev.spimy.pokemon.screen.map.MapLayer;
