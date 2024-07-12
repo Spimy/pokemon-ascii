@@ -23,6 +23,7 @@ public class BattleManager {
     private int numCrit = 0;
     private int numSuccessfulCatch = 0;
     private int turnsUntilCatchable = 0;
+    private int turn = 0;
 
     public BattleManager(final GameManager gameManager) {
         this.gameManager = gameManager;
@@ -32,6 +33,14 @@ public class BattleManager {
                 this.gameManager.getPokemonRepository().createRandomPokemon(),
                 this.gameManager.getPokemonRepository().createRandomPokemon()
         );
+
+        // Display opponent Pokémon stats for player to make an informed decision
+        final StatDisplay statDisplay = new StatDisplay();
+
+        System.out.println("Wild Pokémons:");
+        statDisplay.tabulate(this.opponents);
+
+        System.out.println();
 
         // Get Pokémons that the player owns
         final OwnedPokemon ownedPokemon = this.gameManager.getPlayer().getOwnedPokemon();
@@ -44,7 +53,8 @@ public class BattleManager {
         }
 
         // Display the Pokémons that can be selected
-        ownedPokemon.tabulate();
+        System.out.println("Your Pokémons:");
+        statDisplay.tabulate(ownedPokemon.getData());
 
         // Make a shallow copy of the Pokémons that can be selected so that manipulating it does not affect the player
         final List<Pokemon> playerPokemons = new ArrayList<>(ownedPokemon.getData());
@@ -78,6 +88,8 @@ public class BattleManager {
 
     private void battleLoop() {
         while (this.gameManager.getState() == State.BATTLE) {
+            turn++;
+
             this.displayStats();
 
             if (isBattleOver()) {
@@ -106,9 +118,18 @@ public class BattleManager {
         }
     }
 
+    private String getTurnSeparator() {
+        return String.format(
+                "%s Turn %s %s%n",
+                "-".repeat(5),
+                turn,
+                "-".repeat(5)
+        );
+    }
+
     private void handleBattleEnd() {
         System.out.println();
-        System.out.println("-".repeat(10));
+        System.out.println("-".repeat(this.getTurnSeparator().length()));
         System.out.println();
 
         // Set battle score
@@ -196,6 +217,8 @@ public class BattleManager {
     }
 
     private void displayStats() {
+        System.out.println(this.getTurnSeparator());
+
         System.out.printf(
                 "Opponent 1 (%s) HP: %s/%s%s%n",
                 this.opponents.getFirst().getName(),
@@ -203,6 +226,7 @@ public class BattleManager {
                 this.opponents.getFirst().getMaxHp(),
                 this.caughtPokemons.contains(this.opponents.getFirst()) ? " (caught)" : ""
         );
+
         System.out.printf(
                 "Opponent 2 (%s) HP: %s/%s%s%n",
                 this.opponents.get(1).getName(),
@@ -210,12 +234,14 @@ public class BattleManager {
                 this.opponents.get(1).getMaxHp(),
                 this.caughtPokemons.contains(this.opponents.get(1)) ? " (caught)" : ""
         );
+
         System.out.printf(
                 "Player Pokemon 1 (%s) HP: %s/%s%n",
                 this.playerPokemons.getFirst().getName(),
                 this.playerPokemons.getFirst().getCurrentHp(),
                 this.playerPokemons.getFirst().getMaxHp()
         );
+
         System.out.printf(
                 "Player Pokemon 2 (%s) HP: %s/%s%n",
                 this.playerPokemons.get(1).getName(),
