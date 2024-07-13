@@ -17,16 +17,9 @@ public class GameMap {
     private final HashMap<Character, MapLayer> doors = new HashMap<>();
     private final HashMap<String, ArrayList<String>> loadedMaps = new HashMap<>();
     private final List<Character> walls = List.of('_', '/', '\\', '|');
-    private final String grass;
 
     public GameMap() {
         this.currentMap = MapLayer.OVERWORLD;
-        this.grass = Ansi.ansi()
-                .bg(Theme.BACKGROUND_COLOR)
-                .fg(Theme.GRASS_COLOR)
-                .a(';')
-                .reset()
-                .toString();
         this.loadMaps();
     }
 
@@ -96,6 +89,11 @@ public class GameMap {
     }
 
     public String getGrass() {
-        return this.grass;
+        return Ansi.ansi()
+                .bg(Theme.BACKGROUND_COLOR)
+                .fg(Theme.GRASS_COLOR)
+                .a(';')
+                .reset()
+                .toString();
     }
 }
