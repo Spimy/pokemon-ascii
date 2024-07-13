@@ -103,7 +103,7 @@ public class GameManager {
                     try {
                         this.renderer.renderDialogue(Ascii.getOutOfBoundDialogue());
 
-                        Thread.sleep(1500);
+                        Thread.sleep(2000);
                         cleared = false;
 
                         this.player.backtrack();
@@ -138,7 +138,7 @@ public class GameManager {
                     try {
                         this.renderer.renderDialogue(Ascii.getHealedDialogue());
 
-                        Thread.sleep(1500);
+                        Thread.sleep(2000);
                         cleared = false;
 
                         this.setState(State.PLAY);
