@@ -33,6 +33,7 @@ public class Renderer {
         this.buffer = new String[this.terminal.getHeight()][this.terminal.getWidth()];
 
         this.initializeArrays();
+        this.renderMap();
         this.drawBorder();
     }
 

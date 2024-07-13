@@ -42,7 +42,7 @@ public class GameManager {
         this.terminal.puts(InfoCmp.Capability.cursor_invisible);
 
         this.renderer = new Renderer(this, this.map);
-        this.player = new Player(this.terminal, this.control);
+        this.player = new Player(this.terminal, this.control, this.renderer, this.map);
         this.pokemonRepository = new PokemonRepository(this.player);
     }
 

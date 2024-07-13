@@ -4,6 +4,8 @@ import dev.spimy.pokemon.controller.Control;
 import dev.spimy.pokemon.controller.Direction;
 import dev.spimy.pokemon.player.saves.InventorySave;
 import dev.spimy.pokemon.player.saves.OwnedPokemon;
+import dev.spimy.pokemon.screen.Renderer;
+import dev.spimy.pokemon.screen.map.GameMap;
 import org.jline.terminal.Terminal;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,13 +19,15 @@ public class Player {
 
     private Direction direction;
 
-    public Player(final Terminal terminal, final Control control) {
+    public Player(final Terminal terminal, final Control control, final Renderer renderer, final GameMap map) {
         this.control = control;
 
         final int height = terminal.getHeight();
         final int width = terminal.getWidth();
 
-        this.position = new Position(height / 2, width / 2);
+        final int[] lobbyCoordinates = map.getLobbyCoordinates(renderer.getBuffer());
+
+        this.position = lobbyCoordinates == null ? new Position(height / 2, width / 2) : new Position(lobbyCoordinates[0] + 1, lobbyCoordinates[1]);
         this.direction = Direction.values()[ThreadLocalRandom.current().nextInt(Direction.values().length)];
     }
 

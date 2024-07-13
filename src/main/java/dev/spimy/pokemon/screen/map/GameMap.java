@@ -19,7 +19,7 @@ public class GameMap {
     private final List<Character> walls = List.of('_', '/', '\\', '|');
 
     public GameMap() {
-        this.currentMap = MapLayer.OVERWORLD;
+        this.currentMap = MapLayer.HOUSE;
         this.loadMaps();
     }
 
@@ -84,8 +84,19 @@ public class GameMap {
             }
         }
 
-
         return doorCoordinates;
+    }
+
+    public int[] getLobbyCoordinates(final String[][] buffer) {
+        for (int i = 0; i < buffer.length; i++) {
+            for (int j = 0; j < buffer[i].length; j++) {
+                if (buffer[i][j].charAt(0) == '=') {
+                    return new int[]{i, j};
+                }
+            }
+        }
+
+        return null;
     }
 
     public String getGrass() {
