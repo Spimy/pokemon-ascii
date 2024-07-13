@@ -27,7 +27,9 @@ public class Player {
 
         final int[] lobbyCoordinates = map.getLobbyCoordinates(renderer.getBuffer());
 
-        this.position = lobbyCoordinates == null ? new Position(height / 2, width / 2) : new Position(lobbyCoordinates[0] + 1, lobbyCoordinates[1]);
+        this.position = lobbyCoordinates == null
+                ? new Position(height / 2, width / 2)
+                : new Position(lobbyCoordinates[0] + 1, lobbyCoordinates[1]);
         this.direction = Direction.values()[ThreadLocalRandom.current().nextInt(Direction.values().length)];
     }
 
