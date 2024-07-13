@@ -209,13 +209,7 @@ public class Renderer {
                 final String curChar = String.valueOf(contentRow.charAt(j - startCol));
 
                 if (curChar.equals(";")) {
-                    // Doing this because for some reason, using this.map.getGrass() does not render properly
-                    this.buffer[i][j] = Ansi.ansi()
-                            .bg(Theme.BACKGROUND_COLOR)
-                            .fg(Theme.GRASS_COLOR)
-                            .a(curChar)
-                            .reset()
-                            .toString();
+                    this.buffer[i][j] = this.map.getGrass();
                     continue;
                 }
 
