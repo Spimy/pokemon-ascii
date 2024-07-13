@@ -8,6 +8,7 @@ import dev.spimy.pokemon.controller.Control;
 import dev.spimy.pokemon.pokemon.PokemonRepository;
 import dev.spimy.pokemon.player.saves.Scoreboard;
 import dev.spimy.pokemon.screen.Renderer;
+import dev.spimy.pokemon.screen.ascii.Ascii;
 import dev.spimy.pokemon.screen.map.GameMap;
 import dev.spimy.pokemon.screen.map.MapLayer;
 import org.jline.terminal.Terminal;
@@ -100,7 +101,7 @@ public class GameManager {
                 }
                 case State.OUTOFBOUNDS -> {
                     try {
-                        this.renderer.renderOutOfBounds();
+                        this.renderer.renderDialogue(Ascii.getOutOfBoundDialogue());
 
                         Thread.sleep(1500);
                         cleared = false;
@@ -135,7 +136,7 @@ public class GameManager {
                 }
                 case State.HEAL -> {
                     try {
-                        this.renderer.renderHealed();
+                        this.renderer.renderDialogue(Ascii.getHealedDialogue());
 
                         Thread.sleep(1500);
                         cleared = false;

@@ -6,6 +6,7 @@ import dev.spimy.pokemon.player.Player;
 import dev.spimy.pokemon.player.Pokeball;
 import dev.spimy.pokemon.player.Position;
 import dev.spimy.pokemon.screen.ascii.Ascii;
+import dev.spimy.pokemon.screen.ascii.AsciiArt;
 import dev.spimy.pokemon.screen.map.GameMap;
 import org.jline.jansi.Ansi;
 import org.jline.jansi.Ansi.Color;
@@ -165,28 +166,15 @@ public class Renderer {
         this.updateScreen();
     }
 
-    public void renderOutOfBounds() {
+    public void renderDialogue(AsciiArt dialogue) {
         this.drawBorder();
         this.renderMetadata();
 
         final int BOTTOM_MARGIN = 2;
-        final String[] dialogueArray = Ascii.getOutOfBoundDialogue().getContent().split("\n");
+        final String[] dialogueArray = dialogue.getContent().split("\n");
         final int startRow = this.terminal.getHeight() - dialogueArray.length - BOTTOM_MARGIN;
 
-        this.renderContent(dialogueArray, startRow, Ascii.getOutOfBoundDialogue().getColor());
-
-        this.updateScreen();
-    }
-
-    public void renderHealed() {
-        this.drawBorder();
-        this.renderMetadata();
-
-        final int BOTTOM_MARGIN = 2;
-        final String[] dialogueArray = Ascii.getHealedDialogue().getContent().split("\n");
-        final int startRow = this.terminal.getHeight() - dialogueArray.length - BOTTOM_MARGIN;
-
-        this.renderContent(dialogueArray, startRow, Ascii.getHealedDialogue().getColor());
+        this.renderContent(dialogueArray, startRow, dialogue.getColor());
 
         this.updateScreen();
     }
