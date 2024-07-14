@@ -141,7 +141,7 @@ public class BattleManager {
 
         // Print battle status and calculate money earned based on the status
         final int money;
-        if (allPlayerPokemonDead()) {
+        if (this.allPlayerPokemonDead()) {
             money = (int) (battleScore * 0.005);
             System.out.println("You lost.");
         } else {
@@ -433,12 +433,28 @@ public class BattleManager {
     }
 
     /**
-     * Formula:
-     * BattleScore =
-     *      MinScore +
-     *      (P1_HP + P2_HP + [2 * (1 - O1_HP / O1_MAX_HP)] + [2 * (1 - O2_HP / O2_MAX_HP)]) +
-     *      (NumCrit * ScorePerCrit) +
-     *      (NumCatch * ScorePerCatch)
+     * Formula depends on whether the battle was won or lost.
+
+     * <ul>
+     * <li>Winning formula:
+     * <pre>
+     *     Battle Score = max(minScore,
+     *                       minScore + hpWeight * (2 * playerPokemonTotalHp - opponentTotalHp)
+     *                                 + scorePerCrit * numCrit
+     *                                 + scorePerCatch * numSuccessfulCatch
+     *                                 + turnWeight * (turnWeight / T))
+     * </pre>
+     * </li>
+     * <li>Losing formula:
+     * <pre>
+     *     Battle Score = max(minScore,
+     *                       minScore + hpWeight * (2 * playerPokemonTotalHp - opponentTotalHp)
+     *                                 + scorePerCrit * numCrit
+     *                                 + scorePerCatch * numSuccessfulCatch
+     *                                 - (1 - turnWeight) * turnWeight * T)
+     * </pre>
+     * </li>
+     * </ul>
      *
      * @return the battle score earned for this battle
      */
@@ -446,20 +462,32 @@ public class BattleManager {
         final int minScore = 1000;
         final int scorePerCrit = 500;
         final int scorePerCatch = 200;
+        final int hpWeight = 10;
+        final int turnWeight = 5;
 
         final int playerPokemonTotalHp = this.playerPokemons
                 .stream()
                 .mapToInt(Pokemon::getCurrentHp)
                 .reduce(0, Integer::sum);
 
-        final double opponentHpPercentage = this.opponents
+        final double opponentTotalHp = this.opponents
                 .stream()
-                .mapToDouble((p) -> 2 * (1 - ((double) p.getCurrentHp() / p.getMaxHp())))
-                .reduce(0, Double::sum);
+                .mapToInt(Pokemon::getCurrentHp)
+                .reduce(0, Integer::sum);
 
-        final int critScore = this.numCrit * scorePerCrit;
-        final int catchScore = this.numSuccessfulCatch * scorePerCatch;
+        int score = minScore;
+        if (this.allPlayerPokemonDead()) {
+            score += (int) (hpWeight * (2 * playerPokemonTotalHp - opponentTotalHp)
+                                + scorePerCrit * this.numCrit
+                                + scorePerCatch * this.numSuccessfulCatch
+                                - (1 - turnWeight) * this.turn);
+        } else {
+            score += (int) (hpWeight * (2 * playerPokemonTotalHp - opponentTotalHp)
+                                + scorePerCrit * this.numCrit
+                                + scorePerCatch * this.numSuccessfulCatch
+                                + turnWeight * (int) Math.round((double) turnWeight / this.turn));
+        }
 
-        return (int) (minScore + playerPokemonTotalHp + opponentHpPercentage + critScore + catchScore);
+        return Math.max(minScore, score);
     }
 }
