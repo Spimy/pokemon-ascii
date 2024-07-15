@@ -18,7 +18,7 @@ public class StatDisplay {
                 .toList());
         flattened.add(this.headers);
 
-        int[] columnWidths = new int[this.headers.length];
+        final int[] columnWidths = new int[this.headers.length];
 
         // Initialize column widths with header lengths
         for (int i = 0; i < this.headers.length; i++) {
@@ -32,12 +32,12 @@ public class StatDisplay {
             }
         }
 
-        StringBuilder headerLineBuilder = new StringBuilder();
+        final StringBuilder headerLineBuilder = new StringBuilder();
         for (int i = 0; i < this.headers.length; i++) {
-            String header = this.headers[i];
-            int width = columnWidths[i];
+            final String header = this.headers[i];
+            final int width = columnWidths[i];
 
-            String formattedHeader = this.centerString(header, width);
+            final String formattedHeader = this.centerString(header, width);
             headerLineBuilder.append(formattedHeader);
 
             if (i < this.headers.length - 1) {
@@ -45,7 +45,7 @@ public class StatDisplay {
             }
         }
 
-        String headerLine = headerLineBuilder.toString();
+        final String headerLine = headerLineBuilder.toString();
         System.out.println(headerLine);
         System.out.println("-".repeat(headerLine.length()));
 
@@ -57,13 +57,13 @@ public class StatDisplay {
     }
 
     private String getRowLine(final String[] row, final int[] columnWidths) {
-        StringBuilder rowLineBuilder = new StringBuilder();
+        final StringBuilder rowLineBuilder = new StringBuilder();
 
         for (int i = 0; i < row.length; i++) {
-            String item = row[i];
-            int width = columnWidths[i];
+            final String item = row[i];
+            final int width = columnWidths[i];
 
-            String formattedItem = this.centerString(item, width);
+            final String formattedItem = this.centerString(item, width);
             rowLineBuilder.append(formattedItem);
 
             if (i < row.length - 1) {
