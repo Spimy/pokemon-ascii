@@ -25,7 +25,7 @@ public class Inventory {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(final int money) {
     this.money = money;
     }
 
