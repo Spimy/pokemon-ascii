@@ -13,8 +13,8 @@ import org.jline.jansi.Ansi.Color;
 import org.jline.terminal.Terminal;
 import org.jline.utils.InfoCmp.Capability;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Renderer {
     private final GameManager gameManager;
@@ -52,7 +52,7 @@ public class Renderer {
     }
 
     private void renderMap() {
-        final ArrayList<String> map = this.map.getCurrentMapData();
+        final List<String> map = this.map.getCurrentMapData();
         final int startRow = Math.floorDiv(this.buffer.length - map.size(), 2);
         this.renderContent(map, startRow);
     }
@@ -227,7 +227,7 @@ public class Renderer {
         }
     }
 
-    private void renderContent(final ArrayList<String> content, int x) {
+    private void renderContent(final List<String> content, int x) {
         this.renderContent(content.toArray(new String[0]), x, Theme.FOREGROUND_COLOR);
     }
 

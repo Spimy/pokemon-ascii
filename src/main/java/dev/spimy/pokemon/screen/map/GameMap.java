@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class GameMap {
     private MapLayer currentMap;
     private final HashMap<Character, MapLayer> doors = new HashMap<>();
-    private final HashMap<String, ArrayList<String>> loadedMaps = new HashMap<>();
+    private final HashMap<String, List<String>> loadedMaps = new HashMap<>();
     private final List<Character> walls = List.of('_', '/', '\\', '|');
 
     public GameMap() {
@@ -61,7 +61,7 @@ public class GameMap {
         return this.currentMap;
     }
 
-    public ArrayList<String> getCurrentMapData() {
+    public List<String> getCurrentMapData() {
         return this.loadedMaps.get(this.getCurrentMap().resourcePath);
     }
 
