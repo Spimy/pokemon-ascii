@@ -302,7 +302,7 @@ public class BattleManager {
                 if (playerPokemon.getCurrentHp() == 0) continue;
 
                 final AttackAction action = new AttackAction(this.gameManager).execute();
-                final int charge = action.getCharged();
+                final int charge = action.getCharge();
 
                 if (charge < chargeToAttack) {
                     System.out.println("Attack missed.");
