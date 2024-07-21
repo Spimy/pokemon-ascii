@@ -5,6 +5,8 @@ public class Position {
     private int currY;
     private int prevX;
     private int prevY;
+
+    // String because the map char could include extra bits for ANSI colouring
     private String mapChar;
 
     public Position(final int x, final int y) {
