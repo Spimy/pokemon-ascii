@@ -141,7 +141,7 @@ public class BattleManager {
 
         // Print battle status and calculate money earned based on the status
         final int money;
-        if (this.allPlayerPokemonDead()) {
+        if (this.allPlayerPokemonDefeated()) {
             money = (int) (battleScore * 0.005);
             System.out.println("You lost.");
         } else {
@@ -197,10 +197,10 @@ public class BattleManager {
     }
 
     private boolean isBattleOver() {
-        return this.caughtAndDeadPokemon() || this.allOpponentPokemonDead() || this.allPokemonCaught() || this.allPlayerPokemonDead();
+        return this.caughtAndDefeatedPokemon() || this.allOpponentPokemonDefeated() || this.allPokemonCaught() || this.allPlayerPokemonDefeated();
     }
 
-    private boolean allOpponentPokemonDead() {
+    private boolean allOpponentPokemonDefeated() {
         return this.opponents.stream().allMatch(o -> o.getCurrentHp() == 0);
     }
 
@@ -208,11 +208,11 @@ public class BattleManager {
         return this.caughtPokemons.size() >= this.opponents.size();
     }
 
-    private boolean allPlayerPokemonDead() {
+    private boolean allPlayerPokemonDefeated() {
         return this.playerPokemons.stream().allMatch(o -> o.getCurrentHp() == 0);
     }
 
-    private boolean caughtAndDeadPokemon() {
+    private boolean caughtAndDefeatedPokemon() {
         return this.opponents.stream().anyMatch(o -> o.getCurrentHp() == 0) && !this.caughtPokemons.isEmpty();
     }
 
@@ -476,7 +476,7 @@ public class BattleManager {
                 .reduce(0, Integer::sum);
 
         int score = minScore;
-        if (this.allPlayerPokemonDead()) {
+        if (this.allPlayerPokemonDefeated()) {
             score += (int) (hpWeight * (2 * playerPokemonTotalHp - opponentTotalHp)
                                 + scorePerCrit * this.numCrit
                                 + scorePerCatch * this.numSuccessfulCatch
