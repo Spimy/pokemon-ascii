@@ -14,8 +14,8 @@ import java.util.Optional;
 import java.util.Random;
 
 public class BattleManager {
-    private final List<Pokemon> opponents;
-    private final List<Pokemon> playerPokemons;
+    private List<Pokemon> opponents;
+    private List<Pokemon> playerPokemons;
     private final List<Pokemon> caughtPokemons = new ArrayList<>();
 
     private final GameManager gameManager;
@@ -27,7 +27,9 @@ public class BattleManager {
 
     public BattleManager(final GameManager gameManager) {
         this.gameManager = gameManager;
+    }
 
+    public void startBattle() {
         // Select opponent Pokémons
         this.opponents = List.of(
                 this.gameManager.getPokemonRepository().createRandomPokemon(),
@@ -80,9 +82,7 @@ public class BattleManager {
             ownedPokemon.addPokemon(pokemon1);
             ownedPokemon.addPokemon(pokemon2);
         }
-    }
 
-    public void startBattle() {
         this.battleLoop();
     }
 
