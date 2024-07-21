@@ -13,11 +13,10 @@ public class PokemonSelection extends QuickTimeEvent<PokemonSelection> {
 
     public PokemonSelection(
             final GameManager gameManager,
-            final int eventTimeSeconds,
             final List<Pokemon> pokemons,
             final boolean pickStarter
     ) {
-        super(gameManager, eventTimeSeconds);
+        super(gameManager, 30);
         this.pokemons = pokemons;
         this.pickStarter = pickStarter;
     }

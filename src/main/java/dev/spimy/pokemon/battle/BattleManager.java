@@ -60,7 +60,7 @@ public class BattleManager {
         final List<Pokemon> playerPokemons = new ArrayList<>(ownedPokemon.getData());
 
         // QTE to choose their first Pokémon
-        int pokemon1Index = new PokemonSelection(this.gameManager, 30, playerPokemons, pickStarter)
+        int pokemon1Index = new PokemonSelection(this.gameManager, playerPokemons, pickStarter)
                 .execute()
                 .getPokemonIndex();
         final Pokemon pokemon1 = playerPokemons.get(pokemon1Index);
