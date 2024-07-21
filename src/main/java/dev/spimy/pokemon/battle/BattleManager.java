@@ -118,104 +118,6 @@ public class BattleManager {
         }
     }
 
-    private String getTurnSeparator() {
-        return String.format(
-                "%s Turn %s %s%n",
-                "-".repeat(5),
-                turn,
-                "-".repeat(5)
-        );
-    }
-
-    private void handleBattleEnd() {
-        System.out.println();
-        System.out.println("-".repeat(this.getTurnSeparator().length()));
-        System.out.println();
-
-        // Set battle score
-        int battleScore = this.getBattleScore();
-        this.gameManager.getScoreboard().addBattleScore(battleScore);
-        this.gameManager.getScoreboard().updateSaveFile();
-
-        System.out.printf("Battle Score earned: %s%n", battleScore);
-
-        // Print battle status and calculate money earned based on the status
-        final int money;
-        if (this.allPlayerPokemonDefeated()) {
-            money = (int) (battleScore * 0.005);
-            System.out.println("You lost.");
-        } else {
-            money = (int) (battleScore * 0.05);
-            System.out.println("You won.");
-        }
-
-        // Increase money
-        this.gameManager.getPlayer().getInventorySave().getData().getFirst().setMoney(
-            this.gameManager.getPlayer().getInventorySave().getData().getFirst().getMoney() + money
-        );
-
-        // Increase exp of player Pokémons
-        int[] currentLevels = this.playerPokemons.stream().mapToInt(Pokemon::getLevel).toArray();
-        for (int i = 0; i < this.playerPokemons.size(); i++) {
-            this.playerPokemons.get(i).setExp(this.playerPokemons.get(i).getExp() + (int) (battleScore * 0.05));
-
-            // Pokémon has levelled up, therefore enhance its stats
-            if (this.playerPokemons.get(i).getLevel() > currentLevels[i]) {
-                System.out.println();
-
-                System.out.printf(
-                        "%s has levelled up! Level %s -> %s%n",
-                        this.playerPokemons.get(i).getName(),
-                        currentLevels[i],
-                        this.playerPokemons.get(i).getLevel()
-                );
-                System.out.println("Max stats have increase!");
-
-                this.playerPokemons.get(i).setMaxHp((int) (this.playerPokemons.get(i).getMaxHp() * 1.3));
-                this.playerPokemons.get(i).setAttackPower((int) (this.playerPokemons.get(i).getAttackPower() * 1.2));
-                this.playerPokemons.get(i).setSpeed((int) (this.playerPokemons.get(i).getSpeed() * 1.1));
-                this.playerPokemons.get(i).setCritRate(
-                        Math.min((int) (this.playerPokemons.get(i).getCritRate() * 1.05), 100)
-                );
-            }
-        }
-        System.out.println();
-
-        // Increase player exp
-        // There is no need to handle levelling up as player level is only used to scale opponent Pokémons in battle
-        this.gameManager.getPlayer().getInventorySave().getData().getFirst().setExp(
-            this.gameManager.getPlayer().getInventorySave().getData().getFirst().getExp() + (int) (battleScore * 0.05)
-        );
-
-        // Transfer caught Pokémons to inventory
-        this.caughtPokemons.forEach(p -> this.gameManager.getPlayer().getOwnedPokemon().addPokemon(p));
-        this.gameManager.getPlayer().getOwnedPokemon().updateSaveFile();
-        this.gameManager.getPlayer().getInventorySave().updateSaveFile();
-
-        // Set the state to the battle end state
-        this.gameManager.setState(State.BATTLEEND);
-    }
-
-    private boolean isBattleOver() {
-        return this.caughtAndDefeatedPokemon() || this.allOpponentPokemonDefeated() || this.allPokemonCaught() || this.allPlayerPokemonDefeated();
-    }
-
-    private boolean allOpponentPokemonDefeated() {
-        return this.opponents.stream().allMatch(o -> o.getCurrentHp() == 0);
-    }
-
-    private boolean allPokemonCaught() {
-        return this.caughtPokemons.size() >= this.opponents.size();
-    }
-
-    private boolean allPlayerPokemonDefeated() {
-        return this.playerPokemons.stream().allMatch(o -> o.getCurrentHp() == 0);
-    }
-
-    private boolean caughtAndDefeatedPokemon() {
-        return this.opponents.stream().anyMatch(o -> o.getCurrentHp() == 0) && !this.caughtPokemons.isEmpty();
-    }
-
     private void displayStats() {
         System.out.println(this.getTurnSeparator());
 
@@ -248,6 +150,64 @@ public class BattleManager {
                 this.playerPokemons.get(1).getCurrentHp(),
                 this.playerPokemons.get(1).getMaxHp()
         );
+    }
+
+    private String getTurnSeparator() {
+        return String.format(
+                "%s Turn %s %s%n",
+                "-".repeat(5),
+                turn,
+                "-".repeat(5)
+        );
+    }
+
+    private boolean canCatch() {
+        final boolean hasPokeballs = this.gameManager.getPlayer().getInventorySave().getTotalPokeballs() > 0;
+        return hasPokeballs && this.turnsUntilCatchable == 0;
+    }
+
+    private Optional<Pokemon> getCatchablePokemon() {
+        // If HP is below 50 then the Pokémon can be caught
+        return this.opponents
+                .stream()
+                .filter(
+                        o -> ((double) o.getCurrentHp() / o.getMaxHp() * 100) > 0
+                                && ((double) o.getCurrentHp() / o.getMaxHp() * 100) < 50
+                                && !this.caughtPokemons.contains(o)
+
+                )
+                .findFirst();
+    }
+
+    /**
+     * Kept simple, not following the exact formula for catching.
+     * Success chance rates:
+     * - Poké Ball: 15%
+     * - Ultra Ball: 30% (2x)
+     * - Master Ball: 100%
+     *
+     * @param pokemon one of the Pokémon in the opponents array
+     */
+    private void catchPokemon(final Pokemon pokemon) {
+        final Pokeball pokeball = new PokeballSelection(this.gameManager).execute().getSelectedPokeball();
+
+        this.gameManager.getPlayer().getInventorySave().getData().getFirst().getPokeballs().put(
+                pokeball,
+                this.gameManager.getPlayer().getInventorySave().getPokeballs().get(pokeball) - 1
+        );
+        System.out.printf("Selected: %s%n", pokeball.name);
+
+        final boolean success = this.gameManager.getSuccessChance(pokeball.successRate);
+        if (!success) {
+            System.out.println("Failed to catch.");
+            this.turnsUntilCatchable += 2;
+            return;
+        }
+
+        System.out.println("Successfully caught.");
+
+        this.numSuccessfulCatch++;
+        this.caughtPokemons.add(pokemon);
     }
 
     /**
@@ -339,6 +299,7 @@ public class BattleManager {
         to.setCurrentHp(Math.max(newHp, 0));
     }
 
+
     /**
      * A variation of the damage formula used by the classic Gen 1 Pokémon game.
      * <a href="https://m.bulbapedia.bulbagarden.net/wiki/Damage">Source</a>.
@@ -383,53 +344,93 @@ public class BattleManager {
         return (int) damage;
     }
 
-    private Optional<Pokemon> getCatchablePokemon() {
-        // If HP is below 50 then the Pokémon can be caught
-        return this.opponents
-                .stream()
-                .filter(
-                        o -> ((double) o.getCurrentHp() / o.getMaxHp() * 100) > 0
-                                && ((double) o.getCurrentHp() / o.getMaxHp() * 100) < 50
-                                && !this.caughtPokemons.contains(o)
+    private void handleBattleEnd() {
+        System.out.println();
+        System.out.println("-".repeat(this.getTurnSeparator().length()));
+        System.out.println();
 
-                )
-                .findFirst();
-    }
+        // Set battle score
+        int battleScore = this.getBattleScore();
+        this.gameManager.getScoreboard().addBattleScore(battleScore);
+        this.gameManager.getScoreboard().updateSaveFile();
 
-    private boolean canCatch() {
-        final boolean hasPokeballs = this.gameManager.getPlayer().getInventorySave().getTotalPokeballs() > 0;
-        return hasPokeballs && this.turnsUntilCatchable == 0;
-    }
+        System.out.printf("Battle Score earned: %s%n", battleScore);
 
-    /**
-     * Kept simple, not following the exact formula for catching.
-     * Success chance rates:
-     * - Poké Ball: 15%
-     * - Ultra Ball: 30% (2x)
-     * - Master Ball: 100%
-     *
-     * @param pokemon one of the Pokémon in the opponents array
-     */
-    private void catchPokemon(final Pokemon pokemon) {
-        final Pokeball pokeball = new PokeballSelection(this.gameManager).execute().getSelectedPokeball();
-
-        this.gameManager.getPlayer().getInventorySave().getData().getFirst().getPokeballs().put(
-                pokeball,
-                this.gameManager.getPlayer().getInventorySave().getPokeballs().get(pokeball) - 1
-        );
-        System.out.printf("Selected: %s%n", pokeball.name);
-
-        final boolean success = this.gameManager.getSuccessChance(pokeball.successRate);
-        if (!success) {
-            System.out.println("Failed to catch.");
-            this.turnsUntilCatchable += 2;
-            return;
+        // Print battle status and calculate money earned based on the status
+        final int money;
+        if (this.allPlayerPokemonDefeated()) {
+            money = (int) (battleScore * 0.005);
+            System.out.println("You lost.");
+        } else {
+            money = (int) (battleScore * 0.05);
+            System.out.println("You won.");
         }
 
-        System.out.println("Successfully caught.");
+        // Increase money
+        this.gameManager.getPlayer().getInventorySave().getData().getFirst().setMoney(
+            this.gameManager.getPlayer().getInventorySave().getData().getFirst().getMoney() + money
+        );
 
-        this.numSuccessfulCatch++;
-        this.caughtPokemons.add(pokemon);
+        // Increase exp of player Pokémons
+        int[] currentLevels = this.playerPokemons.stream().mapToInt(Pokemon::getLevel).toArray();
+        for (int i = 0; i < this.playerPokemons.size(); i++) {
+            this.playerPokemons.get(i).setExp(this.playerPokemons.get(i).getExp() + (int) (battleScore * 0.05));
+
+            // Pokémon has levelled up, therefore enhance its stats
+            if (this.playerPokemons.get(i).getLevel() > currentLevels[i]) {
+                System.out.println();
+
+                System.out.printf(
+                        "%s has levelled up! Level %s -> %s%n",
+                        this.playerPokemons.get(i).getName(),
+                        currentLevels[i],
+                        this.playerPokemons.get(i).getLevel()
+                );
+                System.out.println("Max stats have increase!");
+
+                this.playerPokemons.get(i).setMaxHp((int) (this.playerPokemons.get(i).getMaxHp() * 1.3));
+                this.playerPokemons.get(i).setAttackPower((int) (this.playerPokemons.get(i).getAttackPower() * 1.2));
+                this.playerPokemons.get(i).setSpeed((int) (this.playerPokemons.get(i).getSpeed() * 1.1));
+                this.playerPokemons.get(i).setCritRate(
+                        Math.min((int) (this.playerPokemons.get(i).getCritRate() * 1.05), 100)
+                );
+            }
+        }
+        System.out.println();
+
+        // Increase player exp
+        // There is no need to handle levelling up as player level is only used to scale opponent Pokémons in battle
+        this.gameManager.getPlayer().getInventorySave().getData().getFirst().setExp(
+            this.gameManager.getPlayer().getInventorySave().getData().getFirst().getExp() + (int) (battleScore * 0.05)
+        );
+
+        // Transfer caught Pokémons to inventory
+        this.caughtPokemons.forEach(p -> this.gameManager.getPlayer().getOwnedPokemon().addPokemon(p));
+        this.gameManager.getPlayer().getOwnedPokemon().updateSaveFile();
+        this.gameManager.getPlayer().getInventorySave().updateSaveFile();
+
+        // Set the state to the battle end state
+        this.gameManager.setState(State.BATTLEEND);
+    }
+
+    private boolean isBattleOver() {
+        return this.caughtAndDefeatedPokemon() || this.allOpponentPokemonDefeated() || this.allPokemonCaught() || this.allPlayerPokemonDefeated();
+    }
+
+    private boolean allOpponentPokemonDefeated() {
+        return this.opponents.stream().allMatch(o -> o.getCurrentHp() == 0);
+    }
+
+    private boolean allPokemonCaught() {
+        return this.caughtPokemons.size() >= this.opponents.size();
+    }
+
+    private boolean allPlayerPokemonDefeated() {
+        return this.playerPokemons.stream().allMatch(o -> o.getCurrentHp() == 0);
+    }
+
+    private boolean caughtAndDefeatedPokemon() {
+        return this.opponents.stream().anyMatch(o -> o.getCurrentHp() == 0) && !this.caughtPokemons.isEmpty();
     }
 
     /**
