@@ -1,11 +1,11 @@
 package dev.spimy.pokemon.screen.ascii;
 
-import org.jline.jansi.Ansi;
+import org.jline.jansi.Ansi.Color;
 
 public interface AsciiArt {
     String getContent();
 
-    default Ansi.Color getColor() {
-        return Ansi.Color.WHITE;
+    default Color getColor() {
+        return Color.WHITE;
     }
 }
