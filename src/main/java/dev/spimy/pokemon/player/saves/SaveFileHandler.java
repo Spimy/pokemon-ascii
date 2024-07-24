@@ -29,7 +29,7 @@ public abstract class SaveFileHandler<T> {
                             Paths.get(this.root.toURI()).toString(),
                             "..",
                             "data"
-                    ).toString()
+                    ).normalize().toString()
             );
 
             if (!dataFolder.exists()) dataFolder.mkdir();
