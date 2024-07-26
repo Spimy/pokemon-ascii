@@ -104,9 +104,8 @@ public class BattleManager {
                         .isCatch();
 
                 if (isCatch) {
-                    System.out.println("Catch");
+                    System.out.println();
                     this.catchPokemon(catchablePokemon.get());
-
                     System.out.println();
                     continue;
                 }
@@ -195,6 +194,8 @@ public class BattleManager {
                 pokeball,
                 this.gameManager.getPlayer().getInventorySave().getPokeballs().get(pokeball) - 1
         );
+
+        System.out.println();
         System.out.printf("Selected: %s%n", pokeball.name);
 
         final boolean success = this.gameManager.getSuccessChance(pokeball.successRate);
